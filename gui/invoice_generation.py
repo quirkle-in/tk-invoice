@@ -1,4 +1,5 @@
 import tkinter as tk
+from models import createInvoice, createDetails
 
 
 class InvoiceForm:
@@ -21,7 +22,7 @@ class InvoiceForm:
 
         ''' TAX INVOICE FORM '''
 
-        tk.Label(self.window, text = "TAX INVOICE").place(x = 500, y = 20)
+        tk.Label(self.window, text = "TAX INVOICE").place(x = 490, y = 20)
 
         tk.Label(self.window, text = "Invoice Number:").place(x = 100, y = 80)
         tk.Label(self.window, text = "Invoice Date:").place(x = 100, y = 100)
@@ -29,7 +30,7 @@ class InvoiceForm:
         tk.Label(self.window, text = "State:").place(x = 100, y = 140)
         tk.Label(self.window, text = "Code:").place(x = 320, y = 140)
         
-        tk.Label(self.window, text = "BILL TO PARTY").place(x = 600, y = 60)
+        tk.Label(self.window, text = "BILL TO PARTY").place(x = 740, y = 60)
         tk.Label(self.window, text = "Name:").place(x = 600, y = 80)
         tk.Label(self.window, text = "Address:").place(x = 600, y = 100)
         tk.Label(self.window, text = "GSTIN Unique ID:").place(x = 600, y = 120)
@@ -37,6 +38,8 @@ class InvoiceForm:
         tk.Label(self.window, text = "State Code:").place(x = 820, y = 140)
 
         ''' GOODS FORM / LISTBOX '''
+        
+        tk.Label(self.window, text = "GOODS").place(x = 500, y = 180)
 
 
 
@@ -86,7 +89,7 @@ class InvoiceForm:
         btn_invoice_submit = tk.Button(
             self.window, text="Submit"
         )
-        btn_invoice_submit.place(x = 500, y = 560)
+        btn_invoice_submit.place(x = 490, y = 560)
 
         self.window.mainloop()
 
@@ -103,8 +106,37 @@ class InvoiceForm:
         pass
 
         ''' data retrieval, store in dict, pass dict to next func '''
-        res = None
-        pass
+
+        '''
+        resp = createInvoice(
+            invoice_date = '2021-03-07',
+            party_name = 'First Party',
+            party_address = 'Jaisalllllllll Apartments New, Mumbai 40006.',
+            party_gst = 'ABC1234QWERTY',
+            party_state = 'LIQUID',
+            party_state_code = '12084',
+            total = 19847.98,
+            total_cgst = 347.33,
+            total_sgst = 342.1,
+            purchase = True
+        )
+
+        print('resp: ', resp)
+
+        resp_det = createDetails(
+            invoice_id = resp,
+            name = 'Jaisal Bhai Shah',
+            hsn = 789,
+            qty = 700,
+            rate = 2.2,
+            mrp =  0.1,
+            total = 23,
+            discount = 90.2,
+            tax_value = 23847.3
+        )
+
+        print('resop_det',resp_det)
+        '''
 
         ''' popup with result '''
         pass
