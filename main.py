@@ -1,14 +1,38 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from models import Base, engine
 
-engine = create_engine('mysql+mysqlconnector://root:scott@localhost:3306/bill', echo=True)
-Base = declarative_base()
+if not engine.dialect.has_table(engine, 'Invoice'):
+    print('Creating tables')
+    Base.metadata.create_all(bind = engine) 
+else:
+    print('Table Exists')
 
-# from setup import *
+from models import createInvoice, createDetails
 
-from sqlalchemy.orm import sessionmaker
+resp = createInvoice(
+    invoice_date = '2021-03-07',
+    party_name = 'First Party',
+    party_address = 'Jaisalllllllll Apartments New, Mumbai 40006.',
+    party_gst = 'ABC1234QWERTY',
+    party_state = 'LIQUID',
+    party_state_code = '12084',
+    total = 19847.98,
+    total_cgst = 347.33,
+    total_sgst = 342.1,
+    purchase = True
+)
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+print('resp: ', resp)
 
-Base.metadata.create_all(bind = engine)
+resp_det = createDetails(
+    invoice_id = resp,
+    name = 'Jaisal Bhai Shah',
+    hsn = 789,
+    qty = 700,
+    rate = 2.2,
+    mrp =  0.1,
+    total = 23,
+    discount = 90.2,
+    tax_value = 23847.3
+)
 
+print('resop_det',resp_det)
