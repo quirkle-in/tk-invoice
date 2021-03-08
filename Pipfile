@@ -10,6 +10,7 @@ mysqlclient = "*"
 python-dotenv = "*"
 fpdf = "*"
 tkcalendar = "*"
+ttkthemes = "*"
 
 [dev-packages]
 
