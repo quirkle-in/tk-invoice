@@ -196,7 +196,8 @@ class InvoiceForm:
     def insertInvoice(self):
 
         resp = createInvoice(
-            invoice_date=self.entry_invoice_date.get(),
+            invoice_date=datetime.strptime(
+                self.entry_invoice_date.get(), '%d/%m/%Y'),
             invoice_no=self.entry_invoice_no.get(),
             party_name=self.entry_party_name.get(),
             party_address=self.entry_party_address.get(),
@@ -238,7 +239,8 @@ class InvoiceForm:
                 j = j + 1
 
     def onSubmit(self):
-        # inv_id = self.insertInvoice()
-        # print(inv_id)
+
         self.performCaluclations()
+        inv_id = self.insertInvoice()
+        print(inv_id)
         # self.window.destroy()

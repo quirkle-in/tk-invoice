@@ -30,7 +30,7 @@ class Invoice(Base):
     invoice_id = Column(Integer, primary_key=True,
                         index=True,  autoincrement=True)
     invoice_no = Column(Integer, unique=True, autoincrement=True)
-    invoice_date = Column(DateTime, default=datetime.datetime.now()),
+    invoice_date = Column(Date),
     party_name = Column(String(100), nullable=False)
     party_address = Column(String(200), default='')
     party_gst = Column(String(200), default=0)
