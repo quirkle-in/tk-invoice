@@ -125,6 +125,8 @@ class InvoiceForm:
         btn_date_refresher = tk.Button(self.window, text = "Refresh", command=self.date_refresh)
         btn_date_refresher.place(x=390, y=98)
 
+        self.dating.set('click ')
+
         ''' Window Mainloop '''
         self.window.mainloop()
 
