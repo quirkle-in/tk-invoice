@@ -11,7 +11,7 @@ class Table:
 
         # gets the cols
         self.titles = [column.key for column in Details.__table__.columns]
-
+        self.titles.remove('invoice_id')
         self.entries = []
 
         ''' HEADER ROW '''
@@ -41,14 +41,20 @@ class Table:
                 col += 1
 
         f.place(x=50, y=200)
-        # print(self.entries)
+        for i in self.entries:
+            print(type(i['total']))
+            break
+        
+
 
 
     def getGoodsDetails(self):
+        list_of_entries = []
         for row in range(len(self.entries)):
             txn = {key: None for key in self.titles}
             for field in self.entries[row]:
                 txn[field] = self.entries[row][field].get()
-            print(txn)
+            list_of_entries.append(txn)
+        return list_of_entries
 
         

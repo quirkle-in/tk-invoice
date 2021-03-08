@@ -201,10 +201,32 @@ class InvoiceForm:
         )
         return resp
 
+    def insertDetails(self, inv_id):
+        dets = self.goods_table.getGoodsDetails()
+        print(dets)
+        # resp =createDetails(invoice_id,
+        #           name,
+        #           hsn,
+        #           qty,
+        #           rate,
+        #           mrp,
+        #           total,
+        #           discount,
+        #           tax_value)
+        
+    def performCaluclations(self):
+        dets = self.goods_table.getGoodsDetails()
+        j = 0
+        for i in dets:
+            if i['deet_id'] != '':
+                i['total'] = int(i['qty']) * int(i['rate']) - int(i['discount'])
+                print(type(i['total']))
+                print(self.goods_table.entries[j])
+                print(self.goods_table.entries[j]['total'].set(i['total']))
+                j = j + 1
 
     def onSubmit(self):
-        inv_id = self.insertInvoice()
-        print(inv_id)
-        self.goods_table.getGoodsDetails()
-
+        # inv_id = self.insertInvoice()
+        # print(inv_id)
+        self.performCaluclations()
         #self.window.destroy()
