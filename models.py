@@ -7,8 +7,8 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-engine = create_engine(os.getenv("MYSQL_DB_URL"), echo=True)
-
+engine = create_engine(os.getenv("MYSQL_DB_URL"), echo = False)
+engine
 
 from sqlalchemy.orm import sessionmaker
 
