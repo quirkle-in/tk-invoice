@@ -128,10 +128,17 @@ class InvoiceForm:
         self.entry_gst_reverse_charge = tk.Entry(self.window)
         self.entry_gst_reverse_charge.place(x=750, y=520)
 
-        '''Date Picker event binder'''
+        '''Generating goods details'''
         self.entry_invoice_date.bind("<1>", self.calOpen)
         self.goods_table = Table(self.window)
-        
+
+        ''' Purchase option '''
+        self.typeVar = tk.IntVar()
+        self.purchase_radio_button = tk.Radiobutton(self.window, text="Purchase", variable=self.typeVar, value=0)
+        self.purchase_radio_button.place(x = 100, y = 390)
+
+        self.sale_radio_button = tk.Radiobutton(self.window, text="Sale", variable=self.typeVar, value=1)
+        self.sale_radio_button.place(x = 200, y = 390)
 
         ''' Date refresher button '''
         btn_date_refresher = tk.Button(self.window, text = "Refresh", command=self.date_refresh)
@@ -151,10 +158,6 @@ class InvoiceForm:
         os.remove("/gui/date.txt")
         self.window.destroy()
 
-
-    def create_invoice(self):
-        ''' data validation '''
-        pass
     
 
     def calOpen(self, event):
@@ -182,13 +185,14 @@ class InvoiceForm:
             total = self.entry_total_tax_amt.get(),
             total_cgst = self.entry_cgst.get(),
             total_sgst = self.entry_sgst.get(),
-            purchase = True
+            purchase = self.typeVar.get()
         )
-        print(resp)
+        return resp
 
 
     def onSubmit(self):
-        self.insertInvoice()
+        inv_id = self.insertInvoice()
+        print(inv_id)
         self.goods_table.getGoodsDetails()
 
         #self.window.destroy()
