@@ -19,7 +19,7 @@ class Table:
         col = 0
         for field in self.titles:
             self.i = ttk.Entry(f, width=12, font=('Arial', 10,))
-            self.i.insert(tk.END, field.replace("_", " ").title())
+            self.i.insert(tk.END, field.replace("_", " ").upper())
             self.i.config(state='readonly')
             self.i.grid(row=0, column=col)
             col += 1
