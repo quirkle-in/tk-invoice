@@ -11,13 +11,8 @@ from dotenv import load_dotenv
 from sqlalchemy.sql.sqltypes import Date
 load_dotenv()
 
-<<<<<<< HEAD
-engine = create_engine(os.getenv("SQLITE_URL"), echo = True)
-#engine
-=======
 engine = create_engine(os.getenv("SQLITE_URL"), echo=False)
 # engine
->>>>>>> 7df2ffd24b80f7f745974a39087072d27873b91e
 
 
 SessionLocal = sessionmaker(bind=engine)
