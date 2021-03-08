@@ -12,8 +12,8 @@ class CalWindow:
 
         self.window = tk.Tk()
         self.window.configure(background = "#f3f3f3")
-        self.window.title("Create an Invoice")
-        self.window.geometry("400x400")
+        self.window.title("Date")
+        self.window.geometry("250x250")
         self.window.resizable(False, True)
 
         style = ThemedStyle(self.window)
