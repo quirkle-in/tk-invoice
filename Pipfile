@@ -11,6 +11,7 @@ python-dotenv = "*"
 fpdf = "*"
 tkcalendar = "*"
 ttkthemes = "*"
+sqlite-bro = "*"
 
 [dev-packages]
 
