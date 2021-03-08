@@ -15,27 +15,18 @@ class MainWindow:
             self.window, text="Create an Invoice",
             command=self.create_invoice_page
         )
-        self.btn_create_invoice.pack(expand = True)
+        self.btn_create_invoice.pack(expand=True)
 
-<<<<<<< HEAD
-        self.btn_create_invoice.pack(
-            expand=True
-=======
         self.btn_view_invoices = tk.Button(
             self.window, text="View Invoices",
-            command = self.view_invoice_page
->>>>>>> 5735f2cdbb5c71663d4b9d908f22a3499d8f5a50
+            command=self.view_invoice_page
         )
-        self.btn_view_invoices.pack(expand = True)
-
+        self.btn_view_invoices.pack(expand=True)
 
         self.window.mainloop()
 
     def create_invoice_page(self):
         InvoiceForm()
-<<<<<<< HEAD
-=======
-    
+
     def view_invoice_page(self):
         ViewInvoiceWindow()
->>>>>>> 5735f2cdbb5c71663d4b9d908f22a3499d8f5a50

@@ -1,6 +1,7 @@
 import tkinter as tk
 from models import createInvoice, createDetails
 from gui.goods_table import Table
+import tkinter.messagebox
 
 
 class InvoiceForm:
@@ -106,11 +107,10 @@ class InvoiceForm:
         self.entry_gst_reverse_charge = tk.Entry(self.window)
         self.entry_gst_reverse_charge.place(x=750, y=520)
 
-        btn_invoice_submit = tk.Button(
-            self.window, text="Submit"
-        )
-        btn_invoice_submit.place(x=490, y=560)
         self.goods_table = Table(self.window)
+        btn_invoice_submit = tk.Button(
+            self.window, text="Submit", command=self.goods_table.getGoodsDetails)
+        btn_invoice_submit.place(x=490, y=560)
         self.window.mainloop()
 
     def back_to_home_page(self):
