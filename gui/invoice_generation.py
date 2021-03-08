@@ -1,9 +1,9 @@
-import tkinter as tk
 from models import createInvoice, createDetails
-from gui.goods_table import Table
+from models import get_last_invoice
 from gui.datepick import CalWindow
+from gui.goods_table import Table
 from datetime import datetime
-
+import tkinter as tk
 import os
 
 class InvoiceForm:
@@ -15,6 +15,21 @@ class InvoiceForm:
         self.window.geometry("1000x600")
         self.window.resizable(False, True)
 
+        
+        try:
+            x = get_last_invoice()
+            print(x)
+            if not x:
+                return
+            else:
+                self.invoice_number_default = tk.IntVar(self.window)
+                self.invoice_number_default.set(x)
+            print(self.invoice_number_default)
+        except Exception as e:
+            print(e)
+            self.window.destroy()
+            return
+
         self.invoice_data = {}
 
         self.back_to_home = tk.Button(
@@ -25,6 +40,7 @@ class InvoiceForm:
 
         ''' DATE PICKER STRING VAR '''
         self.dating = tk.StringVar(self.window)
+        self.dating.set(datetime.now().strftime("%d/%m/%y"))
 
         ''' TAX INVOICE FORM '''
 
@@ -68,7 +84,7 @@ class InvoiceForm:
 
         ''' ENTRY WIDGETS '''
 
-        self.entry_invoice_no = tk.Entry(self.window)
+        self.entry_invoice_no = tk.Entry(self.window, text = self.invoice_number_default)
         self.entry_invoice_no.place(x=250, y=80)
         self.entry_invoice_date = tk.Entry(self.window, textvariable = self.dating) # date picker
         self.entry_invoice_date.place(x=250, y=100)
@@ -128,7 +144,6 @@ class InvoiceForm:
         btn_date_refresher = tk.Button(self.window, text = "Refresh", command=self.date_refresh)
         btn_date_refresher.place(x=390, y=98)
 
-        self.dating.set('click ')
         btn_invoice_submit = tk.Button(
             self.window, text="Submit", command=self.onSubmit)
         btn_invoice_submit.place(x=490, y=560)
@@ -139,7 +154,8 @@ class InvoiceForm:
 
     def back_to_home_page(self):
         ''' confirmation '''
-        pass
+        
+        os.remove("/gui/date.txt")
         self.window.destroy()
 
     
@@ -150,7 +166,7 @@ class InvoiceForm:
 
     def date_refresh(self):
         date_val = ''
-        with open('date.txt', 'r') as file:
+        with open('gui/date.txt', 'r') as file:
             date_val = file.read()
         print(date_val)
         self.dating.set(date_val)
@@ -160,6 +176,7 @@ class InvoiceForm:
         
         resp = createInvoice(
             invoice_date = self.entry_invoice_date.get(),
+            invoice_no = self.entry_invoice_no.get(),
             party_name = self.entry_party_name.get(),
             party_address = self.entry_party_address.get(),
             party_gst = self.entry_party_gstin.get(),

@@ -10,4 +10,5 @@ if __name__ == "__main__":
     else:
         #print('Table Exists')
         pass
+    
     MainWindow()

@@ -32,8 +32,7 @@ class CalWindow:
     
     def date_getter(self):
         self.val = self.cal.get_date()
-        os.chdir('gui/')
-        with open('date.txt', 'a') as file:
+        with open('gui/date.txt', 'w') as file:
             file.write(self.val)
             
         self.window.destroy()
