@@ -5,6 +5,7 @@ from gui.goods_table import Table
 from datetime import datetime
 import tkinter as tk
 import os
+from pathlib import Path
 
 class InvoiceForm:
     def __init__(self):
@@ -40,7 +41,7 @@ class InvoiceForm:
 
         ''' DATE PICKER STRING VAR '''
         self.dating = tk.StringVar(self.window)
-        self.dating.set(datetime.now().strftime("%d/%m/%y"))
+        self.dating.set(datetime.now().strftime("%d/%m/%Y"))
 
         ''' TAX INVOICE FORM '''
 
@@ -166,10 +167,20 @@ class InvoiceForm:
 
     def date_refresh(self):
         date_val = ''
-        with open('gui/date.txt', 'r') as file:
-            date_val = file.read()
-        print(date_val)
-        self.dating.set(date_val)
+        if not Path('gui/date.txt').is_file():
+            with open('gui/date.txt', 'w') as file:
+                file.write(datetime.now().strftime("%d/%m/%Y"))
+           
+            with open('gui/date.txt', 'r') as file:
+                date_val = file.read()
+            print(date_val)
+            self.dating.set(date_val)
+        else:
+            with open('gui/date.txt', 'r') as file:
+                date_val = file.read()
+            print(date_val)
+            self.dating.set(date_val)
+
 
     
     def insertInvoice(self):
