@@ -1,7 +1,10 @@
 import tkinter as tk
 from models import createInvoice, createDetails
 from gui.goods_table import Table
+from gui.datepick import CalWindow
+from datetime import datetime
 
+import os
 
 class InvoiceForm:
     def __init__(self):
@@ -19,6 +22,9 @@ class InvoiceForm:
             command=self.back_to_home_page
         )
         self.back_to_home.place(x=50, y=20)  # place(x = 100, y = 50)
+
+        ''' DATE PICKER STRING VAR '''
+        self.dating = tk.StringVar(self.window)
 
         ''' TAX INVOICE FORM '''
 
@@ -64,7 +70,7 @@ class InvoiceForm:
 
         self.entry_invoice_no = tk.Entry(self.window)
         self.entry_invoice_no.place(x=250, y=80)
-        self.entry_invoice_date = tk.Entry(self.window)
+        self.entry_invoice_date = tk.Entry(self.window, textvariable = self.dating) # date picker
         self.entry_invoice_date.place(x=250, y=100)
         self.entry_reverse_charges = tk.Entry(self.window)
         self.entry_reverse_charges.place(x=250, y=120)
@@ -106,11 +112,20 @@ class InvoiceForm:
         self.entry_gst_reverse_charge = tk.Entry(self.window)
         self.entry_gst_reverse_charge.place(x=750, y=520)
 
+        '''Date Picker event binder'''
+        self.entry_invoice_date.bind("<1>", self.calOpen)
+
         btn_invoice_submit = tk.Button(
             self.window, text="Submit"
         )
         btn_invoice_submit.place(x=490, y=560)
         self.goods_table = Table(self.window)
+
+        ''' Date refresher button '''
+        btn_date_refresher = tk.Button(self.window, text = "Refresh", command=self.date_refresh)
+        btn_date_refresher.place(x=390, y=98)
+
+        ''' Window Mainloop '''
         self.window.mainloop()
 
     def back_to_home_page(self):
@@ -123,6 +138,17 @@ class InvoiceForm:
         ''' data validation '''
 
         pass
+    
+    def calOpen(self, event):
+        CalWindow()
+
+    def date_refresh(self):
+        date_val = ''
+        with open('date.txt', 'r') as file:
+            date_val = file.read()
+        print(date_val)
+        self.dating.set(date_val)
+        
 
         ''' data retrieval, store in dict, pass dict to next func '''
 
