@@ -1,6 +1,8 @@
 from gui.view_data_window import ViewInvoiceWindow
 from gui.invoice_generation import InvoiceForm
 import tkinter as tk
+from tkinter import ttk
+from ttkthemes import ThemedStyle
 
 
 class MainWindow:
@@ -11,13 +13,16 @@ class MainWindow:
         self.window.geometry("1000x600")
         self.window.resizable(False, False)
 
-        self.btn_create_invoice = tk.Button(
+        style = ThemedStyle(self.window)
+        style.set_theme("vista")
+
+        self.btn_create_invoice = ttk.Button(
             self.window, text="Create an Invoice",
             command=self.create_invoice_page
         )
         self.btn_create_invoice.pack(expand=True)
 
-        self.btn_view_invoices = tk.Button(
+        self.btn_view_invoices = ttk.Button(
             self.window, text="View Invoices",
             command = self.view_invoice_page
         )

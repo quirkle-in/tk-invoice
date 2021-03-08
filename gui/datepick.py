@@ -2,6 +2,8 @@
 from tkcalendar import Calendar 
 from datetime import datetime
 import tkinter as tk
+from tkinter import ttk
+from ttkthemes import ThemedStyle
 import os
 
 
@@ -14,6 +16,9 @@ class CalWindow:
         self.window.geometry("400x400")
         self.window.resizable(False, True)
 
+        style = ThemedStyle(self.window)
+        style.set_theme("vista")
+
         self.invoice_data = {}
 
         self.val = tk.StringVar()
@@ -25,7 +30,7 @@ class CalWindow:
         self.cal.pack()
 
         # Add Button and Label 
-        tk.Button(self.window, text = "Get Date", command = self.date_getter).pack() 
+        ttk.Button(self.window, text = "Get Date", command = self.date_getter).pack() 
 
         self.window.mainloop()
 
