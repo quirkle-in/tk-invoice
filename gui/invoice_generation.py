@@ -114,19 +114,18 @@ class InvoiceForm:
 
         '''Date Picker event binder'''
         self.entry_invoice_date.bind("<1>", self.calOpen)
-
-        btn_invoice_submit = tk.Button(
-            self.window, text="Submit"
-        )
-        btn_invoice_submit.place(x=490, y=560)
         self.goods_table = Table(self.window)
+        
 
         ''' Date refresher button '''
         btn_date_refresher = tk.Button(self.window, text = "Refresh", command=self.date_refresh)
         btn_date_refresher.place(x=390, y=98)
 
         self.dating.set('click ')
-
+        btn_invoice_submit = tk.Button(
+            self.window, text="Submit", command=self.onSubmit)
+        btn_invoice_submit.place(x=490, y=560)
+        
         ''' Window Mainloop '''
         self.window.mainloop()
 
@@ -151,6 +150,27 @@ class InvoiceForm:
         print(date_val)
         self.dating.set(date_val)
         
+
+    
+    def insertInvoice(self):
+        
+        resp = createInvoice(
+            invoice_date = self.entry_invoice_date.get(),
+            party_name = self.entry_party_name.get(),
+            party_address = self.entry_party_address.get(),
+            party_gst = self.entry_party_gstin.get(),
+            party_state = self.entry_party_state.get(),
+            party_state_code = self.entry_party_code.get(),
+            total = self.entry_total_tax_amt.get(),
+            total_cgst = self.entry_cgst.get(),
+            total_sgst = self.entry_sgst.get(),
+            purchase = True
+        )
+        print(resp)
+
+    def onSubmit(self):
+        self.insertInvoice()
+        self.goods_table.getGoodsDetails()
 
         ''' data retrieval, store in dict, pass dict to next func '''
 
