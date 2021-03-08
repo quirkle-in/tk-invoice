@@ -9,6 +9,7 @@ from ttkthemes import ThemedStyle
 import os
 from pathlib import Path
 
+
 class InvoiceForm:
     def __init__(self):
 
@@ -23,7 +24,7 @@ class InvoiceForm:
 
         try:
             x = get_last_invoice()
-            #print(x)
+            # print(x)
             if not x:
                 return
             else:
@@ -49,9 +50,9 @@ class InvoiceForm:
 
         ''' TAX INVOICE FORM '''
 
-        ttk.Label(self.window, text="TAX INVOICE", 
-            font = ("Arial", 12, "bold")
-        ).place(x=490, y=20)
+        ttk.Label(self.window, text="TAX INVOICE",
+                  font=("Arial", 12, "bold")
+                  ).place(x=490, y=20)
 
         ttk.Label(self.window, text="Invoice Number:").place(x=100, y=80)
         ttk.Label(self.window, text="Invoice Date:").place(x=100, y=100)
@@ -68,9 +69,9 @@ class InvoiceForm:
 
         ''' GOODS FORM / LISTBOX '''
 
-        ttk.Label(self.window, text="GOODS", 
-            font = ("Arial", 10, "bold")
-        ).place(x=500, y=180)
+        ttk.Label(self.window, text="GOODS",
+                  font=("Arial", 10, "bold")
+                  ).place(x=500, y=180)
 
         ''' BOTTOM '''
 
@@ -95,16 +96,19 @@ class InvoiceForm:
 
         ''' Purchase / Sale option '''
         self.typeVar = tk.IntVar()
-        self.purchase_radio_button = tk.Radiobutton(self.window, text="Purchase", variable=self.typeVar, value=0)
-        self.purchase_radio_button.place(x = 250, y = 20)
+        self.purchase_radio_button = tk.Radiobutton(
+            self.window, text="Purchase", variable=self.typeVar, value=0)
+        self.purchase_radio_button.place(x=250, y=20)
 
-        self.sale_radio_button = ttk.Radiobutton(self.window, text="Sale", variable=self.typeVar, value=1)
-        self.sale_radio_button.place(x = 350, y = 20)
+        self.sale_radio_button = ttk.Radiobutton(
+            self.window, text="Sale", variable=self.typeVar, value=1)
+        self.sale_radio_button.place(x=350, y=20)
 
-
-        self.entry_invoice_no = ttk.Entry(self.window, text = self.invoice_number_default)
+        self.entry_invoice_no = ttk.Entry(
+            self.window, text=self.invoice_number_default)
         self.entry_invoice_no.place(x=250, y=80)
-        self.entry_invoice_date = ttk.Entry(self.window, textvariable = self.dating) # date picker
+        self.entry_invoice_date = ttk.Entry(
+            self.window, textvariable=self.dating)  # date picker
         self.entry_invoice_date.place(x=250, y=100)
         self.entry_reverse_charges = ttk.Entry(self.window)
         self.entry_reverse_charges.place(x=250, y=120)
@@ -150,18 +154,17 @@ class InvoiceForm:
         self.entry_invoice_date.bind("<1>", self.calOpen)
         self.goods_table = Table(self.window)
 
-       
         ''' Date refresher button '''
-        btn_date_refresher = ttk.Button(self.window, text = "Refresh", command=self.date_refresh)
+        btn_date_refresher = ttk.Button(
+            self.window, text="Refresh", command=self.date_refresh)
         btn_date_refresher.place(x=390, y=98)
 
         btn_invoice_submit = ttk.Button(
             self.window, text="Submit", command=self.onSubmit)
         btn_invoice_submit.place(x=490, y=560)
-        
+
         ''' Window Mainloop '''
         self.window.mainloop()
-
 
     def back_to_home_page(self):
         ''' confirmation '''
@@ -171,18 +174,15 @@ class InvoiceForm:
             pass
         self.window.destroy()
 
-    
-
     def calOpen(self, event):
         CalWindow()
-
 
     def date_refresh(self):
         date_val = ''
         if not Path('gui/date.txt').is_file():
             with open('gui/date.txt', 'w') as file:
                 file.write(datetime.now().strftime("%d/%m/%Y"))
-           
+
             with open('gui/date.txt', 'r') as file:
                 date_val = file.read()
             print(date_val)
@@ -193,22 +193,20 @@ class InvoiceForm:
             print(date_val)
             self.dating.set(date_val)
 
-
-    
     def insertInvoice(self):
-        
+
         resp = createInvoice(
-            invoice_date = self.entry_invoice_date.get(),
-            invoice_no = self.entry_invoice_no.get(),
-            party_name = self.entry_party_name.get(),
-            party_address = self.entry_party_address.get(),
-            party_gst = self.entry_party_gstin.get(),
-            party_state = self.entry_party_state.get(),
-            party_state_code = self.entry_party_code.get(),
-            total = self.entry_total_tax_amt.get(),
-            total_cgst = self.entry_cgst.get(),
-            total_sgst = self.entry_sgst.get(),
-            purchase = self.typeVar.get()
+            invoice_date=self.entry_invoice_date.get(),
+            invoice_no=self.entry_invoice_no.get(),
+            party_name=self.entry_party_name.get(),
+            party_address=self.entry_party_address.get(),
+            party_gst=self.entry_party_gstin.get(),
+            party_state=self.entry_party_state.get(),
+            party_state_code=self.entry_party_code.get(),
+            total=self.entry_total_tax_amt.get(),
+            total_cgst=self.entry_cgst.get(),
+            total_sgst=self.entry_sgst.get(),
+            purchase=self.typeVar.get()
         )
         return resp
 
@@ -224,20 +222,23 @@ class InvoiceForm:
         #           total,
         #           discount,
         #           tax_value)
-        
+
     def performCaluclations(self):
         dets = self.goods_table.getGoodsDetails()
         j = 0
         for i in dets:
             if i['deet_id'] != '':
-                i['total'] = int(i['qty']) * int(i['rate']) - int(i['discount'])
+                i['total'] = int(i['qty']) * int(i['rate'])
+                i['taxable_amount'] = int(i['total'] - int(i['discount']))
                 print(type(i['total']))
                 print(self.goods_table.entries[j])
                 print(self.goods_table.entries[j]['total'].set(i['total']))
+                self.goods_table.entries[j]['taxable_amount'].set(
+                    i['taxable_amount'])
                 j = j + 1
 
     def onSubmit(self):
         # inv_id = self.insertInvoice()
         # print(inv_id)
         self.performCaluclations()
-        #self.window.destroy()
+        # self.window.destroy()
