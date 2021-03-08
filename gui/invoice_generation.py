@@ -1,13 +1,13 @@
-from models import createInvoice, createDetails
 from models import get_last_invoice
 from gui.datepick import CalWindow
 from gui.goods_table import Table
-from datetime import datetime
-import tkinter as tk
-from tkinter import ttk
 from ttkthemes import ThemedStyle
-import os
+from models import createInvoice
+from datetime import datetime
 from pathlib import Path
+from tkinter import ttk
+import tkinter as tk
+import os
 
 
 class InvoiceForm:
@@ -166,6 +166,7 @@ class InvoiceForm:
         ''' Window Mainloop '''
         self.window.mainloop()
 
+
     def back_to_home_page(self):
         ''' confirmation '''
         try:
@@ -174,8 +175,10 @@ class InvoiceForm:
             pass
         self.window.destroy()
 
+
     def calOpen(self, event):
         CalWindow()
+
 
     def date_refresh(self):
         date_val = ''
@@ -192,6 +195,7 @@ class InvoiceForm:
                 date_val = file.read()
             print(date_val)
             self.dating.set(date_val)
+
 
     def insertInvoice(self):
 
@@ -210,18 +214,11 @@ class InvoiceForm:
         )
         return resp
 
+
     def insertDetails(self, inv_id):
         dets = self.goods_table.getGoodsDetails()
         print(dets)
-        # resp =createDetails(invoice_id,
-        #           name,
-        #           hsn,
-        #           qty,
-        #           rate,
-        #           mrp,
-        #           total,
-        #           discount,
-        #           tax_value)
+
 
     def performCaluclations(self):
         dets = self.goods_table.getGoodsDetails()
@@ -236,6 +233,7 @@ class InvoiceForm:
                 self.goods_table.entries[j]['taxable_amount'].set(
                     i['taxable_amount'])
                 j = j + 1
+
 
     def onSubmit(self):
         inv_id = self.insertInvoice()
