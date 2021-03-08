@@ -1,7 +1,6 @@
-from tkinter import *
-import tkinter.messagebox
 from models import Details
-
+import tkinter.messagebox
+from tkinter import *
 
 class Table:
 
@@ -9,6 +8,7 @@ class Table:
 
         f = Frame(root)
         # code for creating table
+
         # gets the cols
         self.titles = [column.key for column in Details.__table__.columns]
 
@@ -42,6 +42,7 @@ class Table:
 
         f.place(x=100, y=200)
         # print(self.entries)
+
 
     def getGoodsDetails(self):
         for row in range(len(self.entries)):

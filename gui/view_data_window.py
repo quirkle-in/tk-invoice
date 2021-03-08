@@ -107,6 +107,7 @@ class ViewInvoiceWindow:
 
         self.window.destroy()
     
+
     def export_to_pdf(self):
         res = generate_invoices_pdf(self.invoices)
         print(res)

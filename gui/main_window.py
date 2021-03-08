@@ -1,5 +1,5 @@
-from gui.invoice_generation import InvoiceForm
 from gui.view_data_window import ViewInvoiceWindow
+from gui.invoice_generation import InvoiceForm
 import tkinter as tk
 
 
@@ -25,8 +25,10 @@ class MainWindow:
 
         self.window.mainloop()
 
+
     def create_invoice_page(self):
         InvoiceForm()
+
     
     def view_invoice_page(self):
         ViewInvoiceWindow()

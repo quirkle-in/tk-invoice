@@ -69,14 +69,18 @@ def createInvoice(invoice_date,
                   purchase):
     try:
         inv = Invoice(
-            invoice_date=invoice_date, party_name=party_name, party_address=party_address, party_gst=party_gst, party_state=party_state,
-                      party_state_code=party_state_code, total=total, total_cgst=total_cgst, total_sgst=total_sgst, purchase=purchase)
+            invoice_date=invoice_date, party_name=party_name, 
+            party_address=party_address, party_gst=party_gst, 
+            party_state=party_state, party_state_code=party_state_code, 
+            total=total, total_cgst=total_cgst, total_sgst=total_sgst, 
+            purchase=purchase)
         db.add(inv)
         db.commit()
-        print(inv)
+        #print(inv)
         return inv.invoice_id
     except Exception as e:
-        print(e) ### dthe previous one return the id, yes
+        print(e)
+        db.rollback()
         return False
 
 
@@ -90,14 +94,18 @@ def createDetails(invoice_id,
                   discount,
                   tax_value):
     try:
-        det = Details(invoice_id=invoice_id, name=name, hsn=hsn, qty=qty, rate=rate,
-                      mrp=mrp, total=total, discount=discount, tax_value=tax_value)
+        det = Details(
+            invoice_id=invoice_id, name=name, hsn=hsn, 
+            qty=qty, rate=rate, mrp=mrp, total=total, 
+            discount=discount, tax_value=tax_value
+        )
         db.add(det)
         db.commit()
         print('commited deets')
         return det.deet_id
     except Exception as e:
         print(e)
+        db.rollback()
         return False
 
 

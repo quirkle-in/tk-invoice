@@ -1,7 +1,7 @@
 # Import Required Library 
-import tkinter as tk
 from tkcalendar import Calendar 
 from datetime import datetime
+import tkinter as tk
 import os
 
 
@@ -18,11 +18,12 @@ class CalWindow:
 
         self.val = tk.StringVar()
 
-        self.m, self.d, self.y = int(datetime.now().strftime("%m")), int(datetime.now().strftime("%d")), int(datetime.now().strftime("%Y"))
+        today = datetime.now()
+        self.m, self.d, self.y = int(today.strftime("%m")), int(today.strftime("%d")), int(today.strftime("%Y"))
 
         self.cal = Calendar(self.window, selectmode='day', year = self.y, month = self.m, day = self.d)
         self.cal.pack()
-        #done
+
         # Add Button and Label 
         tk.Button(self.window, text = "Get Date", command = self.date_getter).pack() 
 
