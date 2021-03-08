@@ -8,6 +8,7 @@ sqlalchemy = "*"
 mysql-connector-python = "*"
 mysqlclient = "*"
 python-dotenv = "*"
+fpdf = "*"
 
 [dev-packages]
 
