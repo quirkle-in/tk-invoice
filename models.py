@@ -8,12 +8,12 @@ from dotenv import load_dotenv
 from sqlalchemy.sql.sqltypes import Date
 load_dotenv()
 
-engine = create_engine(os.getenv("SQLITE_URL"), echo = False)
+engine = create_engine(os.getenv("SQLITE_URL"), echo = True)
 #engine
 
 from sqlalchemy.orm import sessionmaker
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(bind=engine)
 
 Base = declarative_base()
 

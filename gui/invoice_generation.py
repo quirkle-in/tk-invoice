@@ -237,7 +237,7 @@ class InvoiceForm:
                 j = j + 1
 
     def onSubmit(self):
-        # inv_id = self.insertInvoice()
-        # print(inv_id)
+        inv_id = self.insertInvoice()
+        print(inv_id)
         self.performCaluclations()
-        #self.window.destroy()
+        self.window.destroy()
