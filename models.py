@@ -99,3 +99,7 @@ def createDetails(invoice_id,
     except Exception as e:
         print(e)
         return False
+
+
+def get_all_invoices():
+    return db.query(Invoice).all()
