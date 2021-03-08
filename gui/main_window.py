@@ -19,7 +19,7 @@ class MainWindow:
 
         self.btn_view_invoices = tk.Button(
             self.window, text="View Invoices",
-            command=self.view_invoice_page
+            command = self.view_invoice_page
         )
         self.btn_view_invoices.pack(expand=True)
 
@@ -27,6 +27,6 @@ class MainWindow:
 
     def create_invoice_page(self):
         InvoiceForm()
-
+    
     def view_invoice_page(self):
         ViewInvoiceWindow()

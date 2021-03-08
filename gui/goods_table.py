@@ -49,3 +49,5 @@ class Table:
             for field in self.entries[row]:
                 txn[field] = self.entries[row][field].get()
             print(txn)
+
+        

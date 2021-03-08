@@ -9,6 +9,7 @@ mysql-connector-python = "*"
 mysqlclient = "*"
 python-dotenv = "*"
 fpdf = "*"
+tkcalendar = "*"
 
 [dev-packages]
 

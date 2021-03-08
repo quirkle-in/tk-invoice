@@ -1,17 +1,24 @@
 import tkinter as tk
 from models import get_all_invoices, Invoice
+from pdf_generation.all_invoices_pdf import generate_invoices_pdf
 
 
 class InvoiceTable:
     def __init__(self, window, invoices):
+
+        self.canvas = tk.Canvas(window)
+        
+        self.canvas.place(x = 0, y = 20)
+  
         fields = [column.key for column in Invoice.__table__.columns]
         
         ''' header row '''
         col = 0
         for f in fields:
-            self.e = tk.Entry(window, width=12)
+            self.e = tk.Entry(self.canvas, width=15, 
+                justify = tk.CENTER, font = ('Arial', 8, "bold"))
             self.e.grid(row = 0, column = col) 
-            self.e.insert(tk.END, str(f))
+            self.e.insert(tk.END, str(f).replace("_", " ").title())
             col += 1
 
         ''' data rows '''
@@ -19,7 +26,7 @@ class InvoiceTable:
             invoice = invoices[i].__dict__
             col = 0
             for field in fields:
-                self.e = tk.Entry(window, width=12)
+                self.e = tk.Entry(self.canvas, width=15)
                 self.e.grid(row = i + 1, column = col) 
                 self.e.insert(tk.END, str(invoice[field]))
                 col += 1
@@ -37,21 +44,33 @@ class ViewInvoiceWindow:
 
         self.window = tk.Tk()
         self.window.configure(background = "#f3f3f3")
-        self.window.title("Home")
+        self.window.title("View Invoices")
         self.window.geometry("1000x600")
         self.window.resizable(False, False)
 
-        tk.Label(
-            self.window, text = "Invoices"
-        ).pack()
+
+        self.back_to_home = tk.Button(
+            self.window, text="Back",
+            command = self.back_to_home_page
+        )
+        self.back_to_home.place(x = 50, y = 20)#place(x = 100, y = 50)
+
+        tk.Label(self.window, text = "VIEW INVOICES").place(x = 490, y = 20)
 
         self.dataframe = tk.Frame(
             self.window, width = 1000, height = 300
         )
-        self.dataframe.pack()
+        self.dataframe.place(x = 40, y = 100)
 
         T = InvoiceTable(self.dataframe, self.invoices)
         
+        self.btn_export_pdf = tk.Button(
+            self.window, text = "Export to PDF",
+            command = self.export_to_pdf
+        )
+        self.btn_export_pdf.place(x = 500, y = 500)#place(x = 100, y = 50)
+
+
         self.window.mainloop()
     
     
@@ -80,3 +99,14 @@ class ViewInvoiceWindow:
         self.scrollbar_y.config(command = self.invoice_listbox.yview)
         self.scrollbar_x.config(command = self.invoice_listbox.xview)
         '''
+
+        
+    def back_to_home_page(self):
+        ''' confirmation '''
+        pass
+
+        self.window.destroy()
+    
+    def export_to_pdf(self):
+        res = generate_invoices_pdf(self.invoices)
+        print(res)
