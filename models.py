@@ -5,10 +5,11 @@ from sqlalchemy.dialects.mysql import FLOAT
 
 import os
 from dotenv import load_dotenv
+from sqlalchemy.sql.sqltypes import Date
 load_dotenv()
 
 engine = create_engine(os.getenv("MYSQL_DB_URL"), echo = False)
-engine
+#engine
 
 from sqlalchemy.orm import sessionmaker
 
@@ -26,8 +27,8 @@ class Invoice(Base):
 
     __tablename__ = "invoice"
 
-    #id = Column(Integer, primary_key=True, index=True) #YU{P}#you werent passing any value to this, shouldn't it be set on its own? then why youput auto incrmenet
     invoice_id = Column(Integer, primary_key=True, index = True,  autoincrement=True) 
+    invoice_no = Column(Integer, unique = True, autoincrement=True) 
     invoice_date = Column(DateTime, default=datetime.datetime.now()), #so it sets and increases it on its own duh ca have multiple primary keys tho
     party_name = Column(String(100), nullable=False)
     party_address = Column(String(200), default='')
@@ -56,23 +57,39 @@ class Details(Base):
     tax_value = Column(FLOAT)
 
 
+def get_last_invoice():
+    x = db.query(Invoice).order_by(
+        Invoice.invoice_id.desc()
+    ).first()
+    if not x: x = 1
+    return x.invoice_no + 1
 
-def createInvoice(invoice_date,
-                  party_name,
-                  party_address,
-                  party_gst,
-                  party_state,
-                  party_state_code,
-                  total,
-                  total_cgst,
-                  total_sgst,
-                  purchase):
+def get_last_invoice():
+    x = db.query(Invoice).order_by(
+        Invoice.invoice_id.desc()
+    ).first()
+    if not x: return 1
+    return x.invoice_no + 1
+
+def createInvoice(
+                invoice_date,
+                party_name,
+                party_address,
+                party_gst,
+                party_state,
+                party_state_code,
+                total,
+                total_cgst,
+                total_sgst,
+                purchase,
+                invoice_no):
     try:
         inv = Invoice(
-            invoice_date=invoice_date, party_name=party_name, 
-            party_address=party_address, party_gst=party_gst, 
-            party_state=party_state, party_state_code=party_state_code, 
-            total=total, total_cgst=total_cgst, total_sgst=total_sgst, 
+            invoice_no=invoice_no,invoice_date=invoice_date,
+            party_name=party_name, party_address=party_address,
+            party_gst=party_gst, party_state=party_state, 
+            party_state_code=party_state_code, total=total, 
+            total_cgst=total_cgst, total_sgst=total_sgst, 
             purchase=purchase)
         db.add(inv)
         db.commit()

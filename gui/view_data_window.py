@@ -15,10 +15,11 @@ class InvoiceTable:
         ''' header row '''
         col = 0
         for f in fields:
-            self.e = tk.Entry(self.canvas, width=15, 
+            self.e = tk.Entry(self.canvas, width=14, 
                 justify = tk.CENTER, font = ('Arial', 8, "bold"))
-            self.e.grid(row = 0, column = col) 
             self.e.insert(tk.END, str(f).replace("_", " ").title())
+            self.e.config(state='readonly')
+            self.e.grid(row = 0, column = col)
             col += 1
 
         ''' data rows '''
@@ -26,7 +27,7 @@ class InvoiceTable:
             invoice = invoices[i].__dict__
             col = 0
             for field in fields:
-                self.e = tk.Entry(self.canvas, width=15)
+                self.e = tk.Entry(self.canvas, width=14)
                 self.e.grid(row = i + 1, column = col) 
                 self.e.insert(tk.END, str(invoice[field]))
                 col += 1
@@ -60,7 +61,7 @@ class ViewInvoiceWindow:
         self.dataframe = tk.Frame(
             self.window, width = 1000, height = 300
         )
-        self.dataframe.place(x = 40, y = 100)
+        self.dataframe.place(x = 20, y = 100)
 
         T = InvoiceTable(self.dataframe, self.invoices)
         
