@@ -1,4 +1,4 @@
-from models import Entity
+from models import Entity, GSTValues
 from tkinter import ttk
 import tkinter as tk
 from tkinter import messagebox
@@ -11,7 +11,7 @@ class AddEntityPage:
         self.window = tk.Tk()
         self.window.configure(background = "#f3f3f3")
         self.window.title("Add an Entity")
-        self.window.geometry("600x500")
+        self.window.geometry("800x800")
         self.window.resizable(True, True)
 
         
@@ -40,7 +40,22 @@ class AddEntityPage:
         ttk.Button(self.window, text = "Add Entity",
             command = self.add_entity).grid(row = 9, column = 0, padx = 30, pady = 10)
 
+        ttk.Label(self.window, text='CGST: ').grid(row = 10, column = 0, padx = 30, pady = 10)
+        ttk.Label(self.window, text='SGST: ').grid(row = 11, column = 0, padx = 30, pady = 10)
+        ttk.Label(self.window, text='IGST: ').grid(row = 12, column = 0, padx = 30, pady = 10)
+        self.cgst = ttk.Entry(self.window)
+        self.cgst.grid(row = 10, column = 1, padx = 30, pady = 10)
+        self.sgst = ttk.Entry(self.window)
+        self.cgst.grid(row = 11, column = 1, padx = 30, pady = 10)
+        self.igst = ttk.Entry(self.window)
+        self.cgst.grid(row = 12, column = 1, padx = 30, pady = 10)
+        ttk.Button(self.window, text = "Save GST values",
+        command = self.save_gst).grid(row = 13, column = 0, padx = 30, pady = 10)
+
         self.window.mainloop()
+
+    def save_gst(self):
+        pass
 
     def add_entity(self):
         data = {}

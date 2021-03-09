@@ -179,6 +179,12 @@ class ViewDataPage:
         self.entry_delete = ttk.Entry(self.delete_frame, textvariable=self.delete_id)
         self.entry_delete.grid(row = 1, column = 2)
 
+        self.btn_print = ttk.Button(
+            self.delete_frame, text = 'Print',
+            width=30, command=self.print_table_row
+        )
+        self.btn_print.grid(row=1, column = 1)
+
         self.btn_delete = ttk.Button(
             self.delete_frame, text = "Delete",
             width=30, command = self.delete_table_row
@@ -234,10 +240,19 @@ class ViewDataPage:
             ]
             print(x)
 
+    def print_table_row(self):
+        table = self.delete_id.get()
+        _id = self.delete_id.get()
+        print(table, _id)
+        print('This actually works')
+        
+
 
     def delete_table_row(self):
         table = self.delete_table.get()
         _id = self.delete_id.get()
+
+        print('delete: ', table, _id)
 
         x = models.delete_table_row(table, _id)
         if x:
