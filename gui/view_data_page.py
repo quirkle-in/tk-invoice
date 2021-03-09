@@ -194,8 +194,9 @@ class ViewDataPage:
 
     def export_data_to_pdf(self):
         if self.data:
-            return [
+            x = [
                 {
                     field: row.__dict__[field] for field in row.__dict__
                 } for row in self.data
             ]
+            print(x)
