@@ -39,6 +39,7 @@ class Details(Base):
     __tablename__ = "details"
 
     deet_id = Column(Integer, index=True, primary_key=True)
+    deet_no = Column(Integer)
     invoice_id = Column(Integer, ForeignKey(Invoice.invoice_id))
     name = Column(String(100))
     hsn = Column(Integer)
@@ -98,7 +99,8 @@ def createInvoice(
         return False
 
 
-def createDetails(invoice_id,
+def createDetails(deet_no,
+                invoice_id,
                   name,
                   hsn,
                   qty,
@@ -106,12 +108,13 @@ def createDetails(invoice_id,
                   mrp,
                   total,
                   discount,
-                  tax_value):
+                  taxable_amount):
     try:
         det = Details(
+            deet_no = deet_no,
             invoice_id=invoice_id, name=name, hsn=hsn,
             qty=qty, rate=rate, mrp=mrp, total=total,
-            discount=discount, tax_value=tax_value
+            discount=discount, taxable_amount=taxable_amount
         )
         db.add(det)
         db.commit()

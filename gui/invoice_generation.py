@@ -1,4 +1,4 @@
-from models import get_last_invoice
+from models import get_last_invoice, createDetails
 from gui.datepick import CalWindow
 from gui.goods_table import Table
 from ttkthemes import ThemedStyle
@@ -194,15 +194,28 @@ class InvoiceForm:
         return resp
 
     def insertDetails(self, inv_id):
-        dets = self.goods_table.getGoodsDetails()
-        print(dets)
+        deets = self.goods_table.getGoodsDetails()
+        for deet in deets:
+            x = createDetails(
+                deet_no = deet["deet_no"] ,
+                invoice_id = inv_id,
+                name = deet["name"],
+                hsn = deet["hsn"],
+                qty = deet["qty"],
+                rate = deet["rate"],
+                mrp = deet["mrp"],
+                total = deet["total"],
+                discount = deet["discount"],
+                taxable_amount = deet["taxable_amount"]
+            )
+        return False
 
     def performCaluclations(self):
         dets = self.goods_table.getGoodsDetails()
         j = 0
         total = 0
         for i in dets:
-            if i['deet_id'] != '':
+            if i['deet_no'] != '':
                 i['total'] = 0
                 i['total'] = int(i['qty']) * int(i['rate'])
                 i['taxable_amount'] = int(i['total'] - int(i['discount']))
@@ -222,6 +235,8 @@ class InvoiceForm:
         print('Confirmed')
         inv_id = self.insertInvoice()
         print(inv_id)
+        x = self.insertDetails(inv_id)
+        print(x)
         self.back_to_home_page()
         messagebox.showinfo(title='Invoice Status', message='Invoice has been successfully recorded')
         

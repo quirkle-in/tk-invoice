@@ -36,6 +36,7 @@ class Table:
 
         # gets the cols
         self.titles = [column.key for column in Details.__table__.columns]
+        self.titles.remove('deet_id')
         self.titles.remove('invoice_id')
         self.entries = []
 
@@ -43,7 +44,7 @@ class Table:
 
         col = 0
         for field in self.titles:
-            self.i = ttk.Entry(self.frame, width=14, font=('Arial', 9), 
+            self.i = ttk.Entry(self.frame, width=15, font=('Arial', 9), 
                 justify = tk.CENTER)
             self.i.insert(tk.END, field.replace("_", " ").upper())
             self.i.config(state='readonly')
@@ -76,8 +77,11 @@ class Table:
 
         col = 0
         for field in self.titles:
-            en = ttk.Entry(self.frame, width=14, font=('Arial', 9,),
+            en = ttk.Entry(self.frame, width=15, font=('Arial', 9),
                 textvariable=self.entries[self.total_goods_rows][field])
             en.grid(row=self.total_goods_rows + 1, column=col)
             col += 1
+        
+        ### default id
+        self.entries[self.total_goods_rows]["deet_no"].set(len(self.entries))
         self.total_goods_rows += 1
