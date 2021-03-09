@@ -12,6 +12,7 @@ fpdf = "*"
 tkcalendar = "*"
 ttkthemes = "*"
 sqlite-bro = "*"
+reportlab = "*"
 
 [dev-packages]
 

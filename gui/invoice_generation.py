@@ -30,7 +30,7 @@ class InvoiceForm:
             else:
                 self.invoice_number_default = tk.IntVar(self.window)
                 self.invoice_number_default.set(x)
-            print(self.invoice_number_default)
+            # print(self.invoice_number_default)
         except Exception as e:
             print(e)
             self.window.destroy()
@@ -197,16 +197,16 @@ class InvoiceForm:
         deets = self.goods_table.getGoodsDetails()
         for deet in deets:
             x = createDetails(
-                deet_no = deet["deet_no"] ,
-                invoice_id = inv_id,
-                name = deet["name"],
-                hsn = deet["hsn"],
-                qty = deet["qty"],
-                rate = deet["rate"],
-                mrp = deet["mrp"],
-                total = deet["total"],
-                discount = deet["discount"],
-                taxable_amount = deet["taxable_amount"]
+                deet_no=deet["deet_no"],
+                invoice_id=inv_id,
+                name=deet["name"],
+                hsn=deet["hsn"],
+                qty=deet["qty"],
+                rate=deet["rate"],
+                mrp=deet["mrp"],
+                total=deet["total"],
+                discount=deet["discount"],
+                taxable_amount=deet["taxable_amount"]
             )
         return False
 
@@ -214,6 +214,7 @@ class InvoiceForm:
         dets = self.goods_table.getGoodsDetails()
         j = 0
         total = 0
+
         for i in dets:
             if i['deet_no'] != '':
                 i['total'] = 0
