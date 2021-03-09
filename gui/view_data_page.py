@@ -10,12 +10,12 @@ class TableView:
         self.data = data
         
         self.base_frame = ttk.Frame(self.root)
-        self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=20)
+        self.base_frame.pack(side = tk.BOTTOM, padx=10, pady=20)
 
-        self.canvas = tk.Canvas(self.base_frame, width=1100, height = 300)
+        self.canvas = tk.Canvas(self.base_frame, width=1150, height = 300)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame,
             orient = tk.VERTICAL, command = self.canvas.yview)
-        self.frame = ttk.Frame(self.canvas, width=1100)
+        self.frame = ttk.Frame(self.canvas, width=1150)
 
         self.frame.bind(
             "<Configure>",
@@ -55,6 +55,57 @@ class TableView:
                 col += 1
 
 
+class InvoiceView:
+    def __init__(self, invoice, details):
+        self.root = tk.Tk()
+
+        self.invoice = invoice
+        self.details = details
+        
+        self.base_frame = ttk.Frame(self.root)
+        self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=20)
+
+        self.canvas = tk.Canvas(self.base_frame, width=1100, height = 300)
+        self.scrollbar_y = ttk.Scrollbar(self.base_frame,
+            orient = tk.VERTICAL, command = self.canvas.yview)
+        self.frame = ttk.Frame(self.canvas, width=1100)
+
+        self.frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(
+                scrollregion = self.canvas.bbox("all")
+            )
+        )
+
+        self.canvas.create_window((0, 0), window=self.frame, anchor="center")
+        self.canvas.configure(yscrollcommand=self.scrollbar_y.set)
+
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.scrollbar_y.pack(side=tk.RIGHT, fill = tk.Y)
+        
+        if not self.invoice:
+            return
+        
+        self.invoice = self.invoice.__dict__
+        
+        col = 0
+        for field in self.invoice:
+            en = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8), wrap = tk.WORD)
+            en.insert(tk.END, field)
+            en.configure(state="disabled")
+            en.grid(row = 0, column=col)
+
+            val = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8), wrap = tk.WORD)
+            val.insert(tk.END, self.invoice[field])
+            val.configure(state="disabled")
+            val.grid(row = 1, column=col)
+
+            col += 1
+        
+        self.root.mainloop()
+
+
+
 class ViewDataPage:
     def __init__(self):
 
@@ -69,6 +120,7 @@ class ViewDataPage:
         
         self.filters = {
             "table" : tk.StringVar(self.window, "Invoice"),
+            "limit": tk.StringVar(self.window, "")
         }
 
         style = ThemedStyle(self.window)
@@ -101,6 +153,12 @@ class ViewDataPage:
         )
         self.btn_execute.grid(row = 0, column = 1)        
 
+        self.btn_export = ttk.Button(
+            self.window, text = "Export View",
+            command = self.export_data_to_pdf,
+            width=30
+        )
+        self.btn_export.pack(side = tk.BOTTOM, padx=20, pady = 20)
 
         self.window.mainloop()
 
@@ -132,3 +190,12 @@ class ViewDataPage:
         except:
             pass
         self.DATA_TABLE = TableView(self.window, self.data)
+
+
+    def export_data_to_pdf(self):
+        if self.data:
+            return [
+                {
+                    field: row.__dict__[field] for field in row.__dict__
+                } for row in self.data
+            ]
