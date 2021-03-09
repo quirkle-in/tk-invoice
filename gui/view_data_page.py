@@ -1,8 +1,7 @@
-from models import get_all_invoices
 from ttkthemes import ThemedStyle
 from tkinter import ttk
 import tkinter as tk
-
+import models
 
 class TableView:
 
@@ -11,14 +10,12 @@ class TableView:
         self.data = data
         
         self.base_frame = ttk.Frame(self.root)
-        self.base_frame.pack(side = tk.BOTTOM, padx=100, pady=20, fill=tk.BOTH)
+        self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=20)
 
-        self.canvas = tk.Canvas(self.base_frame, width=1200, height = 300)
+        self.canvas = tk.Canvas(self.base_frame, width=1100, height = 300)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame,
             orient = tk.VERTICAL, command = self.canvas.yview)
-        self.scrollbar_x = ttk.Scrollbar(self.base_frame,
-            orient = tk.HORIZONTAL, command = self.canvas.xview)
-        self.frame = ttk.Frame(self.canvas, width=1200)
+        self.frame = ttk.Frame(self.canvas, width=1100)
 
         self.frame.bind(
             "<Configure>",
@@ -27,13 +24,11 @@ class TableView:
             )
         )
 
-        self.canvas.create_window((0, 0), window=self.frame, anchor="nw")
+        self.canvas.create_window((0, 0), window=self.frame, anchor="center")
         self.canvas.configure(yscrollcommand=self.scrollbar_y.set)
-        self.canvas.configure(xscrollcommand=self.scrollbar_x.set)
 
-        self.canvas.pack(side="left", fill=tk.BOTH, expand=True)
-        self.scrollbar_y.pack(side="right", fill = "y")
-        self.scrollbar_x.pack(side="bottom", fill = "x")
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.scrollbar_y.pack(side=tk.RIGHT, fill = tk.Y)
         
         if not self.data or self.data == []:
             return
@@ -68,6 +63,13 @@ class ViewDataPage:
         self.window.title("View Page")
         self.window.geometry("1200x700")
         self.window.resizable(True, True)
+        self.data = None
+        self.DATA_TABLE = None
+
+        
+        self.filters = {
+            "table" : tk.StringVar(self.window, "Invoice"),
+        }
 
         style = ThemedStyle(self.window)
         style.set_theme("vista")
@@ -83,9 +85,22 @@ class ViewDataPage:
         )
         self.back_to_home.pack(side=tk.TOP)
 
+        ''' FILTER FRAME '''
 
-        data = get_all_invoices()
-        V = TableView(self.window, data)
+        self.filter_frame = ttk.Frame(self.window)
+        self.filter_frame.pack(padx=20, pady=20)
+
+        self.filter_table = ttk.OptionMenu(
+            self.filter_frame, self.filters["table"], "Invoices", "Details", "Invoices"
+        )
+        self.filter_table.grid(row = 0, column = 0)
+        
+        self.btn_execute = ttk.Button(
+            self.filter_frame, text = "Get Data",
+            command = self.get_view
+        )
+        self.btn_execute.grid(row = 0, column = 1)        
+
 
         self.window.mainloop()
 
@@ -95,3 +110,21 @@ class ViewDataPage:
         pass
 
         self.window.destroy()
+    
+
+    def get_view(self):
+        table = self.filters["table"].get()
+        
+        data = None
+
+        if table == "Invoices":
+            data = models.get_all_invoices()
+        elif table == "Details":
+            data = models.get_all_details()
+        
+        ''' filters '''
+
+        self.data = data
+        if self.DATA_TABLE:
+            self.DATA_TABLE.destroy()
+        self.DATA_TABLE = TableView(self.window, self.data)
