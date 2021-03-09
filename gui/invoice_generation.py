@@ -8,6 +8,7 @@ from tkinter import messagebox
 from datetime import datetime
 from pathlib import Path
 from tkinter import ttk
+from tkinter import END
 import tkinter as tk
 from pathlib import Path
 from tkinter.scrolledtext import ScrolledText
@@ -246,6 +247,7 @@ class InvoiceForm:
         return
 
     def performCaluclations(self):
+        base_val = 0.0
         try:
             dets = self.goods_table.getGoodsDetails()
             j = 0
@@ -268,15 +270,32 @@ class InvoiceForm:
                     self.goods_table.entries[j]['taxable_amt'].set(
                         int(i['total']) - int(i['discount']))
                     j = j + 1
-            self.entry_total_before_tax.insert(0, (total))
-            self.entry_cgst.insert(0, (total * 0.06))
-            self.entry_igst.insert(0, total * 0.06)
-            self.entry_sgst.insert(0, (total * 0.06))
-            self.entry_total_tax_amt.insert(0, (total * 0.12))
-            self.entry_total_after_tax_amt.insert(0, (total + total * 0.12))
+            # if self.entry_total_before_tax.get()) > 0:
+            #     self.change_bottom_right()
+            self.entry_total_before_tax.delete(0, END)
+            self.entry_cgst.delete(0, END)
+            self.entry_igst.delete(0, END)
+            self.entry_sgst.delete(0, END)
+            self.entry_total_tax_amt.delete(0, END)
+            self.entry_total_after_tax_amt.delete(0, END)
+
+            self.entry_total_before_tax.insert(0, round(total, 2))
+            self.entry_cgst.insert(0, round(total * 0.06, 2))
+            self.entry_igst.insert(0, round(total * 0.06, 2))
+            self.entry_sgst.insert(0, round(total * 0.06, 2))
+            self.entry_total_tax_amt.insert(0, round(total * 0.12, 2))
+            self.entry_total_after_tax_amt.insert(0, round(total + total * 0.12, 2))
         except Exception as e:
             print(e)
             self.sendAlert("Error while calculating!")
+    
+    def change_bottom_right(self):
+        self.entry_total_before_tax.delete(0, END)
+        self.entry_cgst.delete(0, END)
+        self.entry_igst.delete(0, END)
+        self.entry_sgst.delete(0, END)
+        self.entry_total_tax_amt.delete(0, END)
+        self.entry_total_after_tax_amt.delete(0, END)
 
     def onConfirm(self):
         print('Confirmed')
@@ -295,7 +314,6 @@ class InvoiceForm:
         if not self.validateData():
             self.sendAlert("Invalid Data! Should not contain any empty fields")
 
-
     
     def onSubmit(self):
         if CAL_CLICKED >= 1:
@@ -303,6 +321,7 @@ class InvoiceForm:
                 self.sendAlert("Invalid Data! Should not contain any empty fields")
                 return False
             self.onConfirm()
+
         else:
             messagebox.showerror(
                 title='Attention', message='Please click calculate button before submission')

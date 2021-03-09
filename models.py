@@ -66,6 +66,13 @@ class Entity(Base):
     a_c_no = Column(String(100))
     ifc_code = Column(String(100))
     
+class GSTValues(Base):
+    __tablename__ = 'gstValues'
+
+    cgst = Column(Float, nullable=False, primary_key=True)
+    sgct = Column(Float, nullable=False)
+    igst = Column(Float, nullable=False)
+    
 
 
 def get_last_invoice():
