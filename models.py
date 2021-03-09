@@ -128,3 +128,6 @@ def createDetails(deet_no,
 
 def get_all_invoices():
     return db.query(Invoice).all()
+
+def get_all_details():
+    return db.query(Details).all()
