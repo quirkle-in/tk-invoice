@@ -50,7 +50,7 @@ class ViewInvoiceWindow:
         self.window.configure(background = "#f3f3f3")
         self.window.title("View Invoices")
         self.window.geometry("1000x600")
-        self.window.resizable(False, False)
+        self.window.resizable(True, True)
 
         style = ThemedStyle(self.window)
         style.set_theme("vista")
