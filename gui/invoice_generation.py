@@ -8,6 +8,7 @@ from datetime import datetime
 from pathlib import Path
 from tkinter import ttk
 import tkinter as tk
+from pathlib import Path
 
 
 class InvoiceForm:
@@ -174,9 +175,13 @@ class InvoiceForm:
 
     def date_refresh(self):
         print(self.entry_invoice_date.get())
+        if Path('gui/date.txt').is_file():
+            with open('gui/date.txt' , 'r') as file:
+                self.dating.set(file.read())
 
     def insertInvoice(self):
-
+        print(datetime.strptime(
+                self.entry_invoice_date.get(), '%d/%m/%Y'))
         resp = createInvoice(
             invoice_date=datetime.strptime(
                 self.entry_invoice_date.get(), '%d/%m/%Y'),

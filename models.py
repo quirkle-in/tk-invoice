@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.mysql import FLOAT
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-import datetime
+from datetime import datetime
 
 import os
 from dotenv import load_dotenv
@@ -22,7 +22,7 @@ class Invoice(Base):
 
     invoice_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     invoice_no = Column(Integer, unique=True, autoincrement=True)
-    invoice_date = Column(Date),
+    invoice_date = Column(Date, nullable=False)
     party_name = Column(String(100), nullable=False)
     party_address = Column(String(200), default='')
     party_gst = Column(String(200), default=0)
