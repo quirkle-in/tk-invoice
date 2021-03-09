@@ -15,7 +15,7 @@ engine = create_engine(os.getenv("SQLITE_URL"), echo=False)
 # engine
 
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(bind=engine)
 
 Base = declarative_base()
 

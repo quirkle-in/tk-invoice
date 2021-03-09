@@ -159,9 +159,9 @@ class InvoiceForm:
             self.window, text="Refresh", command=self.date_refresh)
         btn_date_refresher.place(x=390, y=98)
 
-        btn_invoice_submit = ttk.Button(
+        self.btn_invoice_submit = ttk.Button(
             self.window, text="Submit", command=self.onSubmit)
-        btn_invoice_submit.place(x=490, y=560)
+        self.btn_invoice_submit.place(x=490, y=560)
 
         ''' Window Mainloop '''
         self.window.mainloop()
@@ -227,20 +227,32 @@ class InvoiceForm:
     def performCaluclations(self):
         dets = self.goods_table.getGoodsDetails()
         j = 0
+        total = 0
         for i in dets:
             if i['deet_id'] != '':
+                i['total'] = 0
                 i['total'] = int(i['qty']) * int(i['rate'])
                 i['taxable_amount'] = int(i['total'] - int(i['discount']))
-                print(type(i['total']))
+                total = total + i['taxable_amount']
                 print(self.goods_table.entries[j])
                 print(self.goods_table.entries[j]['total'].set(i['total']))
                 self.goods_table.entries[j]['taxable_amount'].set(
-                    i['taxable_amount'])
+                    int(i['total']) - int(i['discount']))
                 j = j + 1
+        self.entry_total_before_tax.insert(0, (total))
+        self.entry_cgst.insert(0, (total * 0.06))
+        self.entry_sgst.insert(0, (total * 0.06))
+        self.entry_total_tax_amt.insert(0, (total * 0.12))
+        self.entry_total_after_tax_amt.insert(0, (total + total * 0.12))
+
+    def onConfirm(self):
+        print('Confirmed')
+        inv_id = self.insertInvoice()
+        print(inv_id)
 
     def onSubmit(self):
 
         self.performCaluclations()
-        inv_id = self.insertInvoice()
-        print(inv_id)
+        self.btn_invoice_submit.config(text='Confirm', command=self.onConfirm)
+
         # self.window.destroy()
