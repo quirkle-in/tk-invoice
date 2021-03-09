@@ -159,17 +159,18 @@ class InvoiceForm:
         self.entry_gst_reverse_charge.place(x=750, y=520)
         
         ''' Date picker button '''
-        self.btn_date_picker = ttk.Button(
-            self.window, text="Choose Date", command=self.calOpen)
-        self.btn_date_picker.place(x=390, y=98)
+        # self.btn_date_picker = ttk.Button(
+        #     self.window, command=self.calOpen)
+        # self.btn_date_picker.place(x=390, y=98)
+        self.entry_invoice_date.bind("<1>", self.calOpen)
 
         '''Generating goods details'''
         self.goods_table = Table(self.window)
 
         ''' Date refresher button '''
-        btn_date_refresher = ttk.Button(
-            self.window, text="Refresh", command=self.date_refresh)
-        btn_date_refresher.place(x=390, y=98)
+        # btn_date_refresher = ttk.Button(
+        #     self.window, text="Refresh", command=self.date_refresh)
+        # btn_date_refresher.place(x=390, y=98)
 
         ''' Calculate Button '''
         self.btn_deets_calculate = ttk.Button(
@@ -192,13 +193,13 @@ class InvoiceForm:
     def back_to_home_page(self):
         self.window.destroy()
 
-    def calOpen(self):
+    def calOpen(self, event):
         CalWindow(self.dating)
 
-    def date_refresh(self):
-        if Path('gui/date.txt').is_file():
-            with open('gui/date.txt' , 'r') as file:
-                self.dating.set(file.read())
+    # def date_refresh(self):
+    #     if Path('gui/date.txt').is_file():
+    #         with open('gui/date.txt' , 'r') as file:
+    #             self.dating.set(file.read())
 
 
     def insertInvoice(self):

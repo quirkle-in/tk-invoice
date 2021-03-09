@@ -21,7 +21,7 @@ class MainWindow:
             command=self.create_invoice_page,
             width = 30
         )
-        self.btn_create_invoice.pack(expand=True, )
+        self.btn_create_invoice.pack(expand=True)
 
         self.btn_view_invoices = ttk.Button(
             self.window, text="View Invoices",
