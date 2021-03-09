@@ -1,6 +1,5 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Date
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Date, Float
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.dialects.mysql import FLOAT
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from datetime import datetime
@@ -23,14 +22,14 @@ class Invoice(Base):
     invoice_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     invoice_no = Column(Integer, unique=True, autoincrement=True)
     invoice_date = Column(Date, nullable=False)
-    party_name = Column(String(100), nullable=False)
-    party_address = Column(String(200), default='')
-    party_gst = Column(String(200), default=0)
-    party_state = Column(String(25), default='')
-    party_state_code = Column(Integer, default=0)
-    total = Column(FLOAT, default=0)
-    total_cgst = Column(FLOAT, default=0)
-    total_sgst = Column(FLOAT, default=0)
+    name = Column(String(100), nullable=False)
+    address = Column(String(200), default='')
+    gst = Column(String(200), default=0)
+    state = Column(String(25), default='')
+    state_code = Column(Integer, default=0)
+    total = Column(Float, default=0)
+    total_cgst = Column(Float, default=0)
+    total_sgst = Column(Float, default=0)
     purchase = Column(Boolean, default=True)
     
 
@@ -45,11 +44,11 @@ class Details(Base):
     batch = Column(String(100), nullable=False)
     hsn = Column(Integer)
     qty = Column(Integer)
-    rate = Column(FLOAT)
-    mrp = Column(FLOAT)
+    rate = Column(Float)
+    mrp = Column(Float)
     total = Column(Integer)
-    discount = Column(FLOAT)
-    taxable_amt = Column(FLOAT)
+    discount = Column(Float)
+    taxable_amt = Column(Float)
 
 
 def get_last_invoice():

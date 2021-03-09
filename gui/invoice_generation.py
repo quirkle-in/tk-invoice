@@ -1,3 +1,4 @@
+from logging import exception
 from models import get_last_invoice, createDetails
 from gui.datepick import CalWindow
 from gui.goods_table import Table
@@ -235,7 +236,7 @@ class InvoiceForm:
                 mrp = deet["mrp"],
                 total = deet["total"],
                 discount = deet["discount"],
-                taxable_amount = deet["taxable_amount"]
+                taxable_amount = deet["taxable_amt"]
             )
         return False
 
@@ -244,14 +245,21 @@ class InvoiceForm:
         j = 0
         total = 0
         for i in dets:
+            ''' check for null '''
+            for field in i:
+                if i[field] == "" or not i[field]:
+                    continue
+            
+            ''' continue '''
             if i['deet_no'] != '':
                 i['total'] = 0
+                #print(i['qty'], i["rate"])
                 i['total'] = int(i['qty']) * int(i['rate'])
-                i['taxable_amount'] = int(i['total'] - int(i['discount']))
-                total = total + i['taxable_amount']
+                i['taxable_amt'] = int(i['total'] - int(i['discount']))
+                total = total + i['taxable_amt']
                 print(self.goods_table.entries[j])
                 print(self.goods_table.entries[j]['total'].set(i['total']))
-                self.goods_table.entries[j]['taxable_amount'].set(
+                self.goods_table.entries[j]['taxable_amt'].set(
                     int(i['total']) - int(i['discount']))
                 j = j + 1
         self.entry_total_before_tax.insert(0, (total))
@@ -275,7 +283,6 @@ class InvoiceForm:
         global CAL_CLICKED
         CAL_CLICKED += 1
         self.performCaluclations()
-        
 
     def onSubmit(self):
         if CAL_CLICKED >= 1:
