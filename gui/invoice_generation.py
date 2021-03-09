@@ -197,17 +197,11 @@ class InvoiceForm:
         CalWindow(self.dating)
 
 
-<< << << < HEAD
+
    def date_refresh(self):
         if Path('gui/date.txt').is_file():
             with open('gui/date.txt', 'r') as file:
                 self.dating.set(file.read())
-== == == =
-   # def date_refresh(self):
-   #     if Path('gui/date.txt').is_file():
-   #         with open('gui/date.txt' , 'r') as file:
-   #             self.dating.set(file.read())
->>>>>> > fc8a2452067ad316474b046ae351c2593bae1260
 
    def insertInvoice(self):
         print(datetime.strptime(
@@ -260,7 +254,7 @@ class InvoiceForm:
             ''' continue '''
             if i['deet_no'] != '':
                 i['total'] = 0
-                #print(i['qty'], i["rate"])
+                # print(i['qty'], i["rate"])
                 i['total'] = int(i['qty']) * int(i['rate'])
                 i['taxable_amt'] = int(i['total'] - int(i['discount']))
                 total = total + i['taxable_amt']
