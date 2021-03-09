@@ -157,9 +157,13 @@ class InvoiceForm:
         self.entry_total_after_tax_amt.place(x=750, y=500)
         self.entry_gst_reverse_charge = ttk.Entry(self.window)
         self.entry_gst_reverse_charge.place(x=750, y=520)
+        
+        ''' Date picker button '''
+        self.btn_date_picker = ttk.Button(
+            self.window, text="Choose Date", command=self.calOpen)
+        self.btn_date_picker.place(x=390, y=98)
 
         '''Generating goods details'''
-        self.entry_invoice_date.bind("<1>", self.calOpen)
         self.goods_table = Table(self.window)
 
         ''' Date refresher button '''
@@ -188,7 +192,7 @@ class InvoiceForm:
     def back_to_home_page(self):
         self.window.destroy()
 
-    def calOpen(self, event):
+    def calOpen(self):
         CalWindow(self.dating)
 
     def date_refresh(self):
