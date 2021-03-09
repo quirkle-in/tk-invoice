@@ -13,9 +13,17 @@ class Table:
 
 
         self.base_frame = ttk.Frame(self.root)
-        self.base_frame.place(x=20, y=220)
+        self.base_frame.pack(side = tk.LEFT, padx = 10)
 
-        self.canvas = tk.Canvas(self.base_frame, width=940, height = 160)
+        
+        self.btn_add_row = ttk.Button(
+            self.root, text = "Add New Row",
+            command = self.add_new_goods_row,
+            width = 20
+        )
+        self.btn_add_row.pack(side = tk.RIGHT, expand = True)
+
+        self.canvas = tk.Canvas(self.base_frame, width=940, height = 120)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame, #canvas, maybe
             orient = "vertical", command = self.canvas.yview)
         self.frame = ttk.Frame(self.canvas)
@@ -51,14 +59,8 @@ class Table:
             self.i.grid(row=0, column=col)
             col += 1
         
-        self.btn_add_row = ttk.Button(
-            self.root, text = "Add New Row",
-            command = self.add_new_goods_row,
-            width = 50
-        )
-        self.btn_add_row.place(x = 50, y = 185)
 
-        for default_row in range(1):
+        for _ in range(1):
             self.add_new_goods_row()
         
         
@@ -73,6 +75,8 @@ class Table:
 
                         valid = False
                         break
+                    txn[field] = row[field].get()
+                else:
                     txn[field] = row[field].get()
             if valid:
                 list_of_entries.append(txn)
