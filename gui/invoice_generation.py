@@ -8,6 +8,11 @@ from datetime import datetime
 from pathlib import Path
 from tkinter import ttk
 import tkinter as tk
+from pathlib import Path
+from tkinter.scrolledtext import ScrolledText
+
+
+CAL_CLICKED = 0
 
 
 class InvoiceForm:
@@ -15,7 +20,7 @@ class InvoiceForm:
 
         self.window = tk.Tk()
         self.window.configure(background="#f3f3f3")
-        self.window.title("Create an Invoice")
+        self.window.title("Create Invoice")
         self.window.geometry("1000x600")
         self.window.resizable(True, True)
 
@@ -51,27 +56,27 @@ class InvoiceForm:
         ''' TAX INVOICE FORM '''
 
         ttk.Label(self.window, text="TAX INVOICE",
-                  font=("Arial", 12, "bold")
-                  ).place(x=490, y=20)
+                  font=("Arial", 13, "bold")
+                  ).place(x=450, y=20)
 
         ttk.Label(self.window, text="Invoice Number:").place(x=100, y=80)
         ttk.Label(self.window, text="Invoice Date:").place(x=100, y=100)
         ttk.Label(self.window, text="Reverse Charges:").place(x=100, y=120)
-        ttk.Label(self.window, text="State:").place(x=100, y=140)
-        ttk.Label(self.window, text="Code:").place(x=320, y=140)
+        ttk.Label(self.window, text="State:").place(x=100, y=145)
+        ttk.Label(self.window, text="Code:").place(x=320, y=145)
 
-        ttk.Label(self.window, text="BILL TO PARTY").place(x=740, y=60)
-        ttk.Label(self.window, text="Name:").place(x=600, y=80)
+        ttk.Label(self.window, text="BILL TO PARTY").place(x=740, y=53)
+        ttk.Label(self.window, text="Name:").place(x=600, y=75)
         ttk.Label(self.window, text="Address:").place(x=600, y=100)
-        ttk.Label(self.window, text="GSTIN Unique ID:").place(x=600, y=120)
-        ttk.Label(self.window, text="State:").place(x=600, y=140)
-        ttk.Label(self.window, text="State Code:").place(x=820, y=140)
+        ttk.Label(self.window, text="GSTIN Unique ID:").place(x=600, y=140)
+        ttk.Label(self.window, text="State:").place(x=600, y=170)
+        ttk.Label(self.window, text="State Code:").place(x=820, y=170)
 
         ''' GOODS FORM / LISTBOX '''
 
         ttk.Label(self.window, text="GOODS",
-                  font=("Arial", 10, "bold")
-                  ).place(x=500, y=180)
+                  font=("Arial", 11, "bold")
+                  ).place(x=475, y=185)
 
         ''' BOTTOM '''
 
@@ -83,7 +88,8 @@ class InvoiceForm:
         ttk.Label(self.window, text="A/c No.:").place(x=100, y=500)
         ttk.Label(self.window, text="IFS Code:").place(x=100, y=520)
 
-        ttk.Label(self.window, text="Total Before Tax:").place(x=600, y=420)
+        ttk.Label(self.window, text="Total Before Tax:").place(x=600, y=400)
+        ttk.Label(self.window, text="IGST:").place(x=600, y=420)
         ttk.Label(self.window, text="CGST@ 6%:").place(x=600, y=440)
         ttk.Label(self.window, text="SGST@ 6%:").place(x=600, y=460)
         ttk.Label(self.window, text="Total Tax Amount:").place(x=600, y=480)
@@ -113,20 +119,20 @@ class InvoiceForm:
         self.entry_reverse_charges = ttk.Entry(self.window)
         self.entry_reverse_charges.place(x=250, y=120)
         self.entry_state = ttk.Entry(self.window)
-        self.entry_state.place(x=150, y=140, width=150)
+        self.entry_state.place(x=150, y=145, width=150)
         self.entry_code = ttk.Entry(self.window)
-        self.entry_code.place(x=360, y=140, width=50)
+        self.entry_code.place(x=360, y=145, width=50)
 
-        self.entry_party_name = ttk.Entry(self.window)
-        self.entry_party_name.place(x=750, y=80)
-        self.entry_party_address = ttk.Entry(self.window)
+        self.entry_party_name = ttk.Entry(self.window, width=32)
+        self.entry_party_name.place(x=750, y=77)
+        self.entry_party_address = tk.Text(self.window, height=2, width=24) # Address
         self.entry_party_address.place(x=750, y=100)
-        self.entry_party_gstin = ttk.Entry(self.window)
-        self.entry_party_gstin.place(x=750, y=120)
+        self.entry_party_gstin = ttk.Entry(self.window, width=32)
+        self.entry_party_gstin.place(x=750, y=140)
         self.entry_party_state = ttk.Entry(self.window)
-        self.entry_party_state.place(x=650, y=140, width=150)
+        self.entry_party_state.place(x=650, y=170, width=150)
         self.entry_party_code = ttk.Entry(self.window)
-        self.entry_party_code.place(x=900, y=140, width=50)
+        self.entry_party_code.place(x=900, y=170, width=50)
 
         self.entry_rs_in_words = ttk.Entry(self.window)
         self.entry_rs_in_words.place(x=250, y=420)
@@ -138,7 +144,9 @@ class InvoiceForm:
         self.entry_ifc_code.place(x=250, y=520)
 
         self.entry_total_before_tax = ttk.Entry(self.window)
-        self.entry_total_before_tax.place(x=750, y=420)
+        self.entry_total_before_tax.place(x=750, y=400)
+        self.entry_igst = ttk.Entry(self.window)
+        self.entry_igst.place(x=750, y=420)
         self.entry_cgst = ttk.Entry(self.window)
         self.entry_cgst.place(x=750, y=440)
         self.entry_sgst = ttk.Entry(self.window)
@@ -149,9 +157,13 @@ class InvoiceForm:
         self.entry_total_after_tax_amt.place(x=750, y=500)
         self.entry_gst_reverse_charge = ttk.Entry(self.window)
         self.entry_gst_reverse_charge.place(x=750, y=520)
+        
+        ''' Date picker button '''
+        self.btn_date_picker = ttk.Button(
+            self.window, text="Choose Date", command=self.calOpen)
+        self.btn_date_picker.place(x=390, y=98)
 
         '''Generating goods details'''
-        self.entry_invoice_date.bind("<1>", self.calOpen)
         self.goods_table = Table(self.window)
 
         ''' Date refresher button '''
@@ -159,9 +171,20 @@ class InvoiceForm:
             self.window, text="Refresh", command=self.date_refresh)
         btn_date_refresher.place(x=390, y=98)
 
+        ''' Calculate Button '''
+        self.btn_deets_calculate = ttk.Button(
+            self.window, text='Calculate', command=self.onCalculate,
+            width = 30
+        )
+        self.btn_deets_calculate.place(x=300, y=560)
+
+        ''' Submit Button'''
+
         self.btn_invoice_submit = ttk.Button(
-            self.window, text="Submit", command=self.onSubmit)
-        self.btn_invoice_submit.place(x=490, y=560)
+            self.window, text="Submit", command=self.onSubmit,
+            width = 30
+        )
+        self.btn_invoice_submit.place(x=500, y=560)
 
         ''' Window Mainloop '''
         self.window.mainloop()
@@ -169,20 +192,24 @@ class InvoiceForm:
     def back_to_home_page(self):
         self.window.destroy()
 
-    def calOpen(self, event):
+    def calOpen(self):
         CalWindow(self.dating)
 
     def date_refresh(self):
-        print(self.entry_invoice_date.get())
+        if Path('gui/date.txt').is_file():
+            with open('gui/date.txt' , 'r') as file:
+                self.dating.set(file.read())
+
 
     def insertInvoice(self):
-
+        print(datetime.strptime(
+                self.entry_invoice_date.get(), '%d/%m/%Y'))
         resp = createInvoice(
             invoice_date=datetime.strptime(
                 self.entry_invoice_date.get(), '%d/%m/%Y'),
             invoice_no=self.entry_invoice_no.get(),
             party_name=self.entry_party_name.get(),
-            party_address=self.entry_party_address.get(),
+            party_address=self.entry_party_address.get('1.0', 'end-1c'),
             party_gst=self.entry_party_gstin.get(),
             party_state=self.entry_party_state.get(),
             party_state_code=self.entry_party_code.get(),
@@ -197,6 +224,7 @@ class InvoiceForm:
         deets = self.goods_table.getGoodsDetails()
         for deet in deets:
             x = createDetails(
+<<<<<<< HEAD
                 deet_no=deet["deet_no"],
                 invoice_id=inv_id,
                 name=deet["name"],
@@ -207,6 +235,19 @@ class InvoiceForm:
                 total=deet["total"],
                 discount=deet["discount"],
                 taxable_amount=deet["taxable_amount"]
+=======
+                deet_no = deet["deet_no"] ,
+                invoice_id = inv_id,
+                name = deet["name"],
+                batch_no = deet['batch_no'],
+                hsn = deet["hsn"],
+                qty = deet["qty"],
+                rate = deet["rate"],
+                mrp = deet["mrp"],
+                total = deet["total"],
+                discount = deet["discount"],
+                taxable_amount = deet["taxable_amount"]
+>>>>>>> 3920267302fde94468aab15440730a9a35025018
             )
         return False
 
@@ -228,6 +269,7 @@ class InvoiceForm:
                 j = j + 1
         self.entry_total_before_tax.insert(0, (total))
         self.entry_cgst.insert(0, (total * 0.06))
+        self.entry_igst.insert(0, total * 0.06)
         self.entry_sgst.insert(0, (total * 0.06))
         self.entry_total_tax_amt.insert(0, (total * 0.12))
         self.entry_total_after_tax_amt.insert(0, (total + total * 0.12))
@@ -242,9 +284,20 @@ class InvoiceForm:
         messagebox.showinfo(title='Invoice Status',
                             message='Invoice has been successfully recorded')
 
-    def onSubmit(self):
-
+    def onCalculate(self):
+        global CAL_CLICKED
+        CAL_CLICKED += 1
         self.performCaluclations()
-        self.btn_invoice_submit.config(text='Confirm', command=self.onConfirm)
+        
+
+    def onSubmit(self):
+        if CAL_CLICKED >= 1:
+            self.onConfirm()
+        else:
+            messagebox.showerror(title='Attention', message='Please click calculate button before submission')
+
+        # self.performCaluclations()
+
+        # self.btn_invoice_submit.config(text='Confirm', command=self.onConfirm)
 
         # self.window.destroy()

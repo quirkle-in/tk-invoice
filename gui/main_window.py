@@ -1,5 +1,5 @@
-from gui.view_data_window import ViewInvoiceWindow
 from gui.invoice_generation import InvoiceForm
+from gui.view_data_page import ViewDataPage
 from ttkthemes import ThemedStyle
 from tkinter import ttk
 import tkinter as tk
@@ -17,7 +17,7 @@ class MainWindow:
         style.set_theme("vista")
 
         self.btn_create_invoice = ttk.Button(
-            self.window, text="Create an Invoice",
+            self.window, text="Create Invoice",
             command=self.create_invoice_page,
             width = 30
         )
@@ -38,4 +38,4 @@ class MainWindow:
 
     
     def view_invoice_page(self):
-        ViewInvoiceWindow()
+        ViewDataPage()
