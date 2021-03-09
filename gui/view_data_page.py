@@ -145,7 +145,7 @@ class ViewDataPage:
 
         ttk.Label(self.filter_frame, text = "Select Table: ").grid(row = 0, column = 0, padx=20)
         self.filter_table = ttk.OptionMenu(
-            self.filter_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices"
+            self.filter_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities"
         )
         self.filter_table.grid(row = 0, column = 1)
 

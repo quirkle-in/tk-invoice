@@ -165,6 +165,9 @@ def filtered_view(table, type):
 
     elif table == "Details":
         res = db.query(Details)
+    
+    elif table == "Entities":
+        res = db.query(Entity)
 
     if not res:
         return []
