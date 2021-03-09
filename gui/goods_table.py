@@ -1,13 +1,13 @@
 from models import Details
-import tkinter as tk
 from tkinter import ttk
+import tkinter as tk
+
 
 class Table:
 
     def __init__(self, root):
 
         f = tk.Frame(root)
-        # code for creating table
 
         # gets the cols
         self.titles = [column.key for column in Details.__table__.columns]
@@ -45,9 +45,7 @@ class Table:
             print(type(i['total']))
             break
         
-
-
-
+        
     def getGoodsDetails(self):
         list_of_entries = []
         for row in range(len(self.entries)):

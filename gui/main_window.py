@@ -1,8 +1,8 @@
 from gui.view_data_window import ViewInvoiceWindow
 from gui.invoice_generation import InvoiceForm
-import tkinter as tk
-from tkinter import ttk
 from ttkthemes import ThemedStyle
+from tkinter import ttk
+import tkinter as tk
 
 
 class MainWindow:

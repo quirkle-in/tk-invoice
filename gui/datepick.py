@@ -1,10 +1,8 @@
-# Import Required Library 
+from ttkthemes import ThemedStyle
 from tkcalendar import Calendar 
 from datetime import datetime
-import tkinter as tk
 from tkinter import ttk
-from ttkthemes import ThemedStyle
-import os
+import tkinter as tk
 
 
 class CalWindow:

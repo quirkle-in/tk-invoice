@@ -1,8 +1,9 @@
-import tkinter as tk
-from models import get_all_invoices, Invoice
 from pdf_generation.all_invoices_pdf import generate_invoices_pdf
-from tkinter import ttk
+from models import get_all_invoices, Invoice
 from ttkthemes import ThemedStyle
+from tkinter import ttk
+import tkinter as tk
+
 
 class InvoiceTable:
     def __init__(self, window, invoices):
@@ -78,35 +79,8 @@ class ViewInvoiceWindow:
         '''
 
         self.window.mainloop()
-    
-    
-        '''self.scrollbar_y = tk.Scrollbar(self.dataframe)
-        self.scrollbar_y.pack(side = tk.RIGHT, fill = tk.Y)
-        self.scrollbar_x = tk.Scrollbar(self.dataframe, orient = tk.HORIZONTAL)
-        self.scrollbar_x.pack(side = tk.BOTTOM, fill = tk.X)
-
-        self.invoice_listbox = tk.Listbox(
-            self.dataframe, width = 140, height = 30,
-            yscrollcommand = self.scrollbar_y.set,
-            xscrollcommand = self.scrollbar_x.set
-        )
-        
-        ### INSERT DATA 
-
-        for i in self.invoices:
-            x = i.__dict__.__str__()
-            self.invoice_listbox.insert(
-                tk.END, x
-            )
 
 
-        self.invoice_listbox.pack(side = tk.LEFT, fill = tk.BOTH)
-
-        self.scrollbar_y.config(command = self.invoice_listbox.yview)
-        self.scrollbar_x.config(command = self.invoice_listbox.xview)
-        '''
-
-        
     def back_to_home_page(self):
         ''' confirmation '''
         pass
@@ -117,3 +91,32 @@ class ViewInvoiceWindow:
     def export_to_pdf(self):
         res = generate_invoices_pdf(self.invoices)
         print(res)
+    
+
+
+    
+'''self.scrollbar_y = tk.Scrollbar(self.dataframe)
+self.scrollbar_y.pack(side = tk.RIGHT, fill = tk.Y)
+self.scrollbar_x = tk.Scrollbar(self.dataframe, orient = tk.HORIZONTAL)
+self.scrollbar_x.pack(side = tk.BOTTOM, fill = tk.X)
+
+self.invoice_listbox = tk.Listbox(
+    self.dataframe, width = 140, height = 30,
+    yscrollcommand = self.scrollbar_y.set,
+    xscrollcommand = self.scrollbar_x.set
+)
+
+### INSERT DATA 
+
+for i in self.invoices:
+    x = i.__dict__.__str__()
+    self.invoice_listbox.insert(
+        tk.END, x
+    )
+
+
+self.invoice_listbox.pack(side = tk.LEFT, fill = tk.BOTH)
+
+self.scrollbar_y.config(command = self.invoice_listbox.yview)
+self.scrollbar_x.config(command = self.invoice_listbox.xview)
+'''

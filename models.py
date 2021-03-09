@@ -1,34 +1,26 @@
-import datetime
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.dialects.mysql import FLOAT
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-
-from sqlalchemy.dialects.mysql import FLOAT
+import datetime
 
 import os
 from dotenv import load_dotenv
-from sqlalchemy.sql.sqltypes import Date
 load_dotenv()
 
-engine = create_engine(os.getenv("SQLITE_URL"), echo=False)
-# engine
 
+engine = create_engine(os.getenv("SQLITE_URL"), echo=False)
 
 SessionLocal = sessionmaker(bind=engine)
-
 Base = declarative_base()
-
-
 db = SessionLocal()
-
 
 class Invoice(Base):
 
     __tablename__ = "invoice"
 
-    invoice_id = Column(Integer, primary_key=True,
-                        index=True,  autoincrement=True)
+    invoice_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     invoice_no = Column(Integer, unique=True, autoincrement=True)
     invoice_date = Column(Date),
     party_name = Column(String(100), nullable=False)
@@ -40,7 +32,7 @@ class Invoice(Base):
     total_cgst = Column(FLOAT, default=0)
     total_sgst = Column(FLOAT, default=0)
     purchase = Column(Boolean, default=True)
-
+    
 
 class Details(Base):
 

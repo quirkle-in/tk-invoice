@@ -1,13 +1,13 @@
-from models import createInvoice, createDetails
 from models import get_last_invoice
 from gui.datepick import CalWindow
 from gui.goods_table import Table
-from datetime import datetime
-import tkinter as tk
-from tkinter import ttk
 from ttkthemes import ThemedStyle
-import os
+from models import createInvoice
+from datetime import datetime
 from pathlib import Path
+from tkinter import ttk
+import tkinter as tk
+import os
 
 
 class InvoiceForm:
@@ -214,15 +214,6 @@ class InvoiceForm:
     def insertDetails(self, inv_id):
         dets = self.goods_table.getGoodsDetails()
         print(dets)
-        # resp =createDetails(invoice_id,
-        #           name,
-        #           hsn,
-        #           qty,
-        #           rate,
-        #           mrp,
-        #           total,
-        #           discount,
-        #           tax_value)
 
     def performCaluclations(self):
         dets = self.goods_table.getGoodsDetails()
