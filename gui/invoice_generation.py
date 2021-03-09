@@ -96,13 +96,13 @@ class InvoiceForm:
 
         ''' Purchase / Sale option '''
         self.typeVar = tk.IntVar()
-        self.purchase_radio_button = tk.Radiobutton(
+        self.purchase_radio_button = ttk.Radiobutton(
             self.window, text="Purchase", variable=self.typeVar, value=0)
-        self.purchase_radio_button.place(x=250, y=20)
+        self.purchase_radio_button.place(x=250, y=390)
 
         self.sale_radio_button = ttk.Radiobutton(
             self.window, text="Sale", variable=self.typeVar, value=1)
-        self.sale_radio_button.place(x=350, y=20)
+        self.sale_radio_button.place(x=350, y=390)
 
         self.entry_invoice_no = ttk.Entry(
             self.window, text=self.invoice_number_default)
@@ -238,8 +238,8 @@ class InvoiceForm:
         x = self.insertDetails(inv_id)
         print(x)
         self.back_to_home_page()
-        messagebox.showinfo(title='Invoice Status', message='Invoice has been successfully recorded')
-        
+        messagebox.showinfo(title='Invoice Status',
+                            message='Invoice has been successfully recorded')
 
     def onSubmit(self):
 
