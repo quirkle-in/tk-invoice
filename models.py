@@ -1,3 +1,4 @@
+from enum import unique
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Date, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -49,6 +50,22 @@ class Details(Base):
     total = Column(Integer)
     discount = Column(Float)
     taxable_amt = Column(Float)
+
+
+class Entity(Base):
+
+    __tablename__ = "entity"
+
+    entity_id = Column(Integer, index = True, primary_key = True)
+    name = Column(String(100), unique = True)
+    address = Column(String(200))
+    gstin_uid = Column(String(100))
+    state = Column(String(100))
+    state_code = Column(String(100))
+    bank_name = Column(String(100))
+    a_c_no = Column(String(100))
+    ifc_code = Column(String(100))
+    
 
 
 def get_last_invoice():
@@ -154,3 +171,22 @@ def filtered_view(table, type):
     return res.all()
 
     
+def create_entity(
+        name, address, gstin_uid,
+        state, state_code, bank_name,
+        a_c_no, ifc_code):
+    E = Entity(
+        name = name, address = address, gstin_uid = gstin_uid, 
+        state = state, state_code = state_code, 
+        bank_name = bank_name, a_c_no = a_c_no, ifc_code = ifc_code
+    )
+
+    try:
+        db.add(E)
+        db.commit()
+        print('Added entity')
+        return E.entity_id
+    except Exception as e:
+        print(e)
+        db.rollback()
+        return False
