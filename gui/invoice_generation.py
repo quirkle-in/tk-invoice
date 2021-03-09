@@ -7,6 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from tkinter import ttk
 import tkinter as tk
+from tkinter import messagebox
 import os
 
 
@@ -240,6 +241,8 @@ class InvoiceForm:
         print('Confirmed')
         inv_id = self.insertInvoice()
         print(inv_id)
+        messagebox.showinfo(title='Invoice Status', message='Invoice has been successfully recorded')
+        self.back_to_home_page()
 
     def onSubmit(self):
 
