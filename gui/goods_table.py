@@ -44,7 +44,7 @@ class Table:
 
         col = 0
         for field in self.titles:
-            self.i = ttk.Entry(self.frame, width=12, font=('Arial', 8), 
+            self.i = ttk.Entry(self.frame, width=13, font=('Arial', 8), 
                 justify = tk.CENTER)
             self.i.insert(tk.END, field.replace("_", " ").upper())
             self.i.config(state='readonly')
@@ -85,7 +85,7 @@ class Table:
 
         col = 0
         for field in self.titles:
-            en = ttk.Entry(self.frame, width=12, font=('Arial', 8),
+            en = ttk.Entry(self.frame, width=13, font=('Arial', 8),
                 textvariable=self.entries[self.total_goods_rows][field])
             en.grid(row=self.total_goods_rows + 1, column=col)
             col += 1
