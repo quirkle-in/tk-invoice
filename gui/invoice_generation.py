@@ -29,13 +29,11 @@ class InvoiceForm:
 
         try:
             x = get_last_invoice()
-            # print(x)
             if not x:
                 return
             else:
                 self.invoice_number_default = tk.IntVar(self.window)
                 self.invoice_number_default.set(x)
-            # print(self.invoice_number_default)
         except Exception as e:
             print(e)
             self.window.destroy()
@@ -125,7 +123,8 @@ class InvoiceForm:
 
         self.entry_party_name = ttk.Entry(self.window, width=32)
         self.entry_party_name.place(x=750, y=77)
-        self.entry_party_address = tk.Text(self.window, height=2, width=24) # Address
+        self.entry_party_address = tk.Text(
+            self.window, height=2, width=24)  # Address
         self.entry_party_address.place(x=750, y=100)
         self.entry_party_gstin = ttk.Entry(self.window, width=32)
         self.entry_party_gstin.place(x=750, y=140)
@@ -157,7 +156,7 @@ class InvoiceForm:
         self.entry_total_after_tax_amt.place(x=750, y=500)
         self.entry_gst_reverse_charge = ttk.Entry(self.window)
         self.entry_gst_reverse_charge.place(x=750, y=520)
-        
+
         ''' Date picker button '''
         self.btn_date_picker = ttk.Button(
             self.window, text="Choose Date", command=self.calOpen)
@@ -174,7 +173,7 @@ class InvoiceForm:
         ''' Calculate Button '''
         self.btn_deets_calculate = ttk.Button(
             self.window, text='Calculate', command=self.onCalculate,
-            width = 30
+            width=30
         )
         self.btn_deets_calculate.place(x=300, y=560)
 
@@ -182,7 +181,7 @@ class InvoiceForm:
 
         self.btn_invoice_submit = ttk.Button(
             self.window, text="Submit", command=self.onSubmit,
-            width = 30
+            width=30
         )
         self.btn_invoice_submit.place(x=500, y=560)
 
@@ -197,13 +196,12 @@ class InvoiceForm:
 
     def date_refresh(self):
         if Path('gui/date.txt').is_file():
-            with open('gui/date.txt' , 'r') as file:
+            with open('gui/date.txt', 'r') as file:
                 self.dating.set(file.read())
-
 
     def insertInvoice(self):
         print(datetime.strptime(
-                self.entry_invoice_date.get(), '%d/%m/%Y'))
+            self.entry_invoice_date.get(), '%d/%m/%Y'))
         resp = createInvoice(
             invoice_date=datetime.strptime(
                 self.entry_invoice_date.get(), '%d/%m/%Y'),
@@ -224,10 +222,10 @@ class InvoiceForm:
         deets = self.goods_table.getGoodsDetails()
         for deet in deets:
             x = createDetails(
-<<<<<<< HEAD
                 deet_no=deet["deet_no"],
                 invoice_id=inv_id,
                 name=deet["name"],
+                batch_no=deet['batch_no'],
                 hsn=deet["hsn"],
                 qty=deet["qty"],
                 rate=deet["rate"],
@@ -235,19 +233,6 @@ class InvoiceForm:
                 total=deet["total"],
                 discount=deet["discount"],
                 taxable_amount=deet["taxable_amount"]
-=======
-                deet_no = deet["deet_no"] ,
-                invoice_id = inv_id,
-                name = deet["name"],
-                batch_no = deet['batch_no'],
-                hsn = deet["hsn"],
-                qty = deet["qty"],
-                rate = deet["rate"],
-                mrp = deet["mrp"],
-                total = deet["total"],
-                discount = deet["discount"],
-                taxable_amount = deet["taxable_amount"]
->>>>>>> 3920267302fde94468aab15440730a9a35025018
             )
         return False
 
@@ -288,13 +273,13 @@ class InvoiceForm:
         global CAL_CLICKED
         CAL_CLICKED += 1
         self.performCaluclations()
-        
 
     def onSubmit(self):
         if CAL_CLICKED >= 1:
             self.onConfirm()
         else:
-            messagebox.showerror(title='Attention', message='Please click calculate button before submission')
+            messagebox.showerror(
+                title='Attention', message='Please click calculate button before submission')
 
         # self.performCaluclations()
 
