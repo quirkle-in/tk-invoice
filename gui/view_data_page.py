@@ -1,5 +1,5 @@
 from ttkthemes import ThemedStyle
-from tkinter import ttk
+from tkinter import messagebox, ttk
 import tkinter as tk
 import models
 
@@ -161,6 +161,34 @@ class ViewDataPage:
         )
         self.btn_execute.grid(row = 0, column = 4, padx=20)        
 
+
+        ''' DELETE DATA '''
+
+        self.delete_frame = ttk.Frame(self.window)
+        self.delete_frame.pack(side = tk.BOTTOM, padx=20, pady = 20)
+
+        ttk.Label(self.delete_frame, text = "DELETE DATA").grid(row = 0, column = 1)
+
+        self.delete_table = tk.StringVar(self.delete_frame)
+        self.table_delete = ttk.OptionMenu(
+            self.delete_frame, self.delete_table, "None Selected", "None Selected", "Details", "Invoices", "Entities"
+        )
+        self.table_delete.grid(row = 1, column = 0)
+
+        self.delete_id = tk.IntVar(self.delete_frame)
+        self.entry_delete = ttk.Entry(self.delete_frame, textvariable=self.delete_id)
+        self.entry_delete.grid(row = 1, column = 2)
+
+        self.btn_delete = ttk.Button(
+            self.delete_frame, text = "Delete",
+            width=30, command = self.delete_table_row
+        )
+        self.btn_delete.grid(row = 2, column = 1)
+
+
+
+        ''' EXPORT DATA '''
+
         self.btn_export = ttk.Button(
             self.window, text = "Export View",
             command = self.export_data_to_pdf,
@@ -205,3 +233,14 @@ class ViewDataPage:
                 } for row in self.data
             ]
             print(x)
+
+
+    def delete_table_row(self):
+        table = self.delete_table.get()
+        _id = self.delete_id.get()
+
+        x = models.delete_table_row(table, _id)
+        if x:
+            return messagebox.showinfo("Success", "Deleted!")
+        else:
+            return messagebox.showerror("Error", "Could not delete")
