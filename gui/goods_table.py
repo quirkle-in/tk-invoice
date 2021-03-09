@@ -12,7 +12,7 @@ class Table:
 
 
         self.base_frame = tk.Frame(self.root)
-        #self.base_frame.grid(row = 1, column = 1)
+        self.base_frame.place(x=20, y=220)
 
         self.canvas = tk.Canvas(self.base_frame)
         #self.canvas.configure(scrollregion=self.canvas.bbox("all"))
