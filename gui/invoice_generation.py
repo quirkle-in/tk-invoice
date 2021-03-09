@@ -241,8 +241,9 @@ class InvoiceForm:
         print('Confirmed')
         inv_id = self.insertInvoice()
         print(inv_id)
-        messagebox.showinfo(title='Invoice Status', message='Invoice has been successfully recorded')
         self.back_to_home_page()
+        messagebox.showinfo(title='Invoice Status', message='Invoice has been successfully recorded')
+        
 
     def onSubmit(self):
 
