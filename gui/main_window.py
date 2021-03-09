@@ -1,3 +1,4 @@
+from gui.settings_page import SettingsPage
 from gui.add_entity_page import AddEntityPage
 from gui.invoice_generation import InvoiceForm
 from gui.view_data_page import ViewDataPage
@@ -40,6 +41,13 @@ class MainWindow:
         )
         self.btn_add_entity.pack(expand=True)
 
+        self.btn_settings = ttk.Button(
+            self.window, text="Settings",
+            command = self.settings_page,
+            width = 30
+        )
+        self.btn_settings.pack(expand=True)
+
 
         self.window.mainloop()
 
@@ -54,3 +62,6 @@ class MainWindow:
 
     def add_entity_page(self):
         AddEntityPage()
+    
+    def settings_page(self):
+        SettingsPage()
