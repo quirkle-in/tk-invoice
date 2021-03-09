@@ -1,3 +1,4 @@
+from enum import unique
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Date, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -51,6 +52,29 @@ class Details(Base):
     taxable_amt = Column(Float)
 
 
+class Entity(Base):
+
+    __tablename__ = "entity"
+
+    entity_id = Column(Integer, index = True, primary_key = True)
+    name = Column(String(100), unique = True)
+    address = Column(String(200))
+    gstin_uid = Column(String(100))
+    state = Column(String(100))
+    state_code = Column(String(100))
+    bank_name = Column(String(100))
+    a_c_no = Column(String(100))
+    ifc_code = Column(String(100))
+    
+class GSTValues(Base):
+    __tablename__ = 'gstValues'
+
+    cgst = Column(Float, nullable=False, primary_key=True)
+    sgct = Column(Float, nullable=False)
+    igst = Column(Float, nullable=False)
+    
+
+
 def get_last_invoice():
     x = db.query(Invoice).order_by(
         Invoice.invoice_id.desc()
@@ -71,11 +95,11 @@ def get_last_invoice():
 
 def createInvoice(
         invoice_date,
-        party_name,
-        party_address,
-        party_gst,
-        party_state,
-        party_state_code,
+        name,
+        address,
+        gst,
+        state,
+        state_code,
         total,
         total_cgst,
         total_sgst,
@@ -84,9 +108,9 @@ def createInvoice(
     try:
         inv = Invoice(
             invoice_no=invoice_no, invoice_date=invoice_date,
-            party_name=party_name, party_address=party_address,
-            party_gst=party_gst, party_state=party_state,
-            party_state_code=party_state_code, total=total,
+            name=name, address=address,
+            state=state,
+            state_code=state_code, total=total,
             total_cgst=total_cgst, total_sgst=total_sgst,
             purchase=purchase)
         db.add(inv)
@@ -104,17 +128,18 @@ def createDetails(deet_no,
                   name,
                   hsn,
                   qty,
+                  batch,
                   rate,
                   mrp,
                   total,
                   discount,
-                  taxable_amount):
+                  taxable_amt):
     try:
         det = Details(
-            deet_no = deet_no,
+            deet_no = deet_no, batch = batch,
             invoice_id=invoice_id, name=name, hsn=hsn,
             qty=qty, rate=rate, mrp=mrp, total=total,
-            discount=discount, taxable_amount=taxable_amount
+            discount=discount, taxable_amt=taxable_amt
         )
         db.add(det)
         db.commit()
@@ -129,5 +154,76 @@ def createDetails(deet_no,
 def get_all_invoices():
     return db.query(Invoice).all()
 
+
 def get_all_details():
     return db.query(Details).all()
+
+def get_all_entities():
+    return db.query(Entity).all()
+
+def get_all_entity_names():
+    return db.query(Entity).with_entities(Entity.name).all()
+
+def get_entity_by_name(name):
+    return db.query(Entity).filter_by(name = name).first()
+
+
+def filtered_view(table, type):
+    res = None
+    if table == "Invoices":
+        res = db.query(Invoice)     
+
+        if type == "Purchases": x = [1]
+        elif type == "Sales": x = [0]
+        else: x = [1, 0]
+
+        res = res.filter(Invoice.purchase.in_(x))
+
+    elif table == "Details":
+        res = db.query(Details)
+    
+    elif table == "Entities":
+        res = db.query(Entity)
+
+    if not res:
+        return []
+    return res.all()
+
+    
+def create_entity(
+        name, address, gstin_uid,
+        state, state_code, bank_name,
+        a_c_no, ifc_code):
+    E = Entity(
+        name = name, address = address, gstin_uid = gstin_uid, 
+        state = state, state_code = state_code, 
+        bank_name = bank_name, a_c_no = a_c_no, ifc_code = ifc_code
+    )
+
+    try:
+        db.add(E)
+        db.commit()
+        print('Added entity')
+        return E.entity_id
+    except Exception as e:
+        print(e)
+        db.rollback()
+        return False
+
+def delete_table_row(table, _id):
+    if table == "Invoices":
+        x = Invoice
+        res = db.query(x).filter_by(invoice_id = _id).first()
+    elif table == "Details":
+        x = Details
+        res = db.query(x).filter_by(deet_id = _id).first()
+    elif table == "Entities":
+        x = Entity
+        res = db.query(x).filter_by(entity_id = _id).first()    
+
+    try:
+        db.delete(res)
+        db.commit()
+        return True
+    except:
+        return False

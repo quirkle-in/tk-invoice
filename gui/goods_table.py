@@ -13,9 +13,17 @@ class Table:
 
 
         self.base_frame = ttk.Frame(self.root)
-        self.base_frame.place(x=20, y=220)
+        self.base_frame.pack(side = tk.LEFT, padx = 10)
 
-        self.canvas = tk.Canvas(self.base_frame, width=940, height = 160)
+        
+        self.btn_add_row = ttk.Button(
+            self.root, text = "Add New Row",
+            command = self.add_new_goods_row,
+            width = 20
+        )
+        self.btn_add_row.pack(side = tk.RIGHT, expand = True)
+
+        self.canvas = tk.Canvas(self.base_frame, width=940, height = 120)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame, #canvas, maybe
             orient = "vertical", command = self.canvas.yview)
         self.frame = ttk.Frame(self.canvas)
@@ -44,37 +52,36 @@ class Table:
 
         col = 0
         for field in self.titles:
-            self.i = ttk.Entry(self.frame, width=13, font=('Arial', 9), 
+            self.i = ttk.Entry(self.frame, width=13, font=('Arial', 8), 
                 justify = tk.CENTER)
             self.i.insert(tk.END, field.replace("_", " ").upper())
             self.i.config(state='readonly')
             self.i.grid(row=0, column=col)
             col += 1
         
-        self.btn_add_row = ttk.Button(
-            self.root, text = "Add New Row",
-            command = self.add_new_goods_row,
-            width = 50
-        )
-        self.btn_add_row.place(x = 50, y = 185)
 
-        for default_row in range(3):
+        for _ in range(1):
             self.add_new_goods_row()
         
         
     def getGoodsDetails(self):
         list_of_entries = []
-        for row in range(len(self.entries)):
-            txn = {}
+        for row in self.entries:
+            txn = {}; valid = True
             for field in self.titles:
-                txn[field] = self.entries[row][field].get()
-            for i in txn:
-                if txn[i] == "" or txn[i] == None:
-                    continue
-            list_of_entries.append(txn)
+                x = row[field].get()
+                if field not in ["total", "taxable_amt"]:
+                    if x == "" or not x:
+
+                        valid = False
+                        break
+                    txn[field] = row[field].get()
+                else:
+                    txn[field] = row[field].get()
+            if valid:
+                list_of_entries.append(txn)
         return list_of_entries
 
-        
     def add_new_goods_row(self):
         x = {}
         for field in self.titles:
@@ -84,7 +91,7 @@ class Table:
 
         col = 0
         for field in self.titles:
-            en = ttk.Entry(self.frame, width=13, font=('Arial', 9),
+            en = ttk.Entry(self.frame, width=13, font=('Arial', 8),
                 textvariable=self.entries[self.total_goods_rows][field])
             en.grid(row=self.total_goods_rows + 1, column=col)
             col += 1

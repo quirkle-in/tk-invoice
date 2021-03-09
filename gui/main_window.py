@@ -1,3 +1,4 @@
+from gui.add_entity_page import AddEntityPage
 from gui.invoice_generation import InvoiceForm
 from gui.view_data_page import ViewDataPage
 from ttkthemes import ThemedStyle
@@ -23,12 +24,22 @@ class MainWindow:
         )
         self.btn_create_invoice.pack(expand=True)
 
+
         self.btn_view_invoices = ttk.Button(
-            self.window, text="View Invoices",
+            self.window, text="View Data",
             command = self.view_invoice_page,
             width = 30
         )
         self.btn_view_invoices.pack(expand=True)
+
+
+        self.btn_add_entity = ttk.Button(
+            self.window, text="Add Entity",
+            command = self.add_entity_page,
+            width = 30
+        )
+        self.btn_add_entity.pack(expand=True)
+
 
         self.window.mainloop()
 
@@ -39,3 +50,7 @@ class MainWindow:
     
     def view_invoice_page(self):
         ViewDataPage()
+
+
+    def add_entity_page(self):
+        AddEntityPage()

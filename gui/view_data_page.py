@@ -1,5 +1,5 @@
 from ttkthemes import ThemedStyle
-from tkinter import ttk
+from tkinter import messagebox, ttk
 import tkinter as tk
 import models
 
@@ -10,12 +10,12 @@ class TableView:
         self.data = data
         
         self.base_frame = ttk.Frame(self.root)
-        self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=20)
+        self.base_frame.pack(side = tk.BOTTOM, padx=10, pady=20)
 
-        self.canvas = tk.Canvas(self.base_frame, width=1100, height = 300)
+        self.canvas = tk.Canvas(self.base_frame, width=1150, height = 300)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame,
             orient = tk.VERTICAL, command = self.canvas.yview)
-        self.frame = ttk.Frame(self.canvas, width=1100)
+        self.frame = ttk.Frame(self.canvas, width=1150)
 
         self.frame.bind(
             "<Configure>",
@@ -55,6 +55,57 @@ class TableView:
                 col += 1
 
 
+class InvoiceView:
+    def __init__(self, invoice, details):
+        self.root = tk.Tk()
+
+        self.invoice = invoice
+        self.details = details
+        
+        self.base_frame = ttk.Frame(self.root)
+        self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=20)
+
+        self.canvas = tk.Canvas(self.base_frame, width=1100, height = 300)
+        self.scrollbar_y = ttk.Scrollbar(self.base_frame,
+            orient = tk.VERTICAL, command = self.canvas.yview)
+        self.frame = ttk.Frame(self.canvas, width=1100)
+
+        self.frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(
+                scrollregion = self.canvas.bbox("all")
+            )
+        )
+
+        self.canvas.create_window((0, 0), window=self.frame, anchor="center")
+        self.canvas.configure(yscrollcommand=self.scrollbar_y.set)
+
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.scrollbar_y.pack(side=tk.RIGHT, fill = tk.Y)
+        
+        if not self.invoice:
+            return
+        
+        self.invoice = self.invoice.__dict__
+        
+        col = 0
+        for field in self.invoice:
+            en = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8), wrap = tk.WORD)
+            en.insert(tk.END, field)
+            en.configure(state="disabled")
+            en.grid(row = 0, column=col)
+
+            val = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8), wrap = tk.WORD)
+            val.insert(tk.END, self.invoice[field])
+            val.configure(state="disabled")
+            val.grid(row = 1, column=col)
+
+            col += 1
+        
+        self.root.mainloop()
+
+
+
 class ViewDataPage:
     def __init__(self):
 
@@ -68,7 +119,9 @@ class ViewDataPage:
 
         
         self.filters = {
-            "table" : tk.StringVar(self.window, "Invoice"),
+            "table" : tk.StringVar(self.window, None),
+            "limit": tk.StringVar(self.window, None),
+            "type": tk.StringVar(self.window, None),
         }
 
         style = ThemedStyle(self.window)
@@ -90,17 +143,64 @@ class ViewDataPage:
         self.filter_frame = ttk.Frame(self.window)
         self.filter_frame.pack(padx=20, pady=20)
 
+        ttk.Label(self.filter_frame, text = "Select Table: ").grid(row = 0, column = 0, padx=20)
         self.filter_table = ttk.OptionMenu(
-            self.filter_frame, self.filters["table"], "Invoices", "Details", "Invoices"
+            self.filter_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities"
         )
-        self.filter_table.grid(row = 0, column = 0)
+        self.filter_table.grid(row = 0, column = 1)
+
+        ttk.Label(self.filter_frame, text = "Type: ").grid(row = 0, column = 2, padx=20)
+        self.filter_type = ttk.OptionMenu(
+            self.filter_frame, self.filters["type"], "All", "Purchases", "Sales", "All"
+        )
+        self.filter_type.grid(row = 0, column = 3)
         
         self.btn_execute = ttk.Button(
             self.filter_frame, text = "Get Data",
             command = self.get_view
         )
-        self.btn_execute.grid(row = 0, column = 1)        
+        self.btn_execute.grid(row = 0, column = 4, padx=20)        
 
+
+        ''' DELETE DATA '''
+
+        self.delete_frame = ttk.Frame(self.window)
+        self.delete_frame.pack(side = tk.BOTTOM, padx=20, pady = 20)
+
+        ttk.Label(self.delete_frame, text = "DELETE DATA").grid(row = 0, column = 1)
+
+        self.delete_table = tk.StringVar(self.delete_frame)
+        self.table_delete = ttk.OptionMenu(
+            self.delete_frame, self.delete_table, "None Selected", "None Selected", "Details", "Invoices", "Entities"
+        )
+        self.table_delete.grid(row = 1, column = 0)
+
+        self.delete_id = tk.IntVar(self.delete_frame)
+        self.entry_delete = ttk.Entry(self.delete_frame, textvariable=self.delete_id)
+        self.entry_delete.grid(row = 1, column = 2)
+
+        self.btn_print = ttk.Button(
+            self.delete_frame, text = 'Print',
+            width=30, command=self.print_table_row
+        )
+        self.btn_print.grid(row=1, column = 1)
+
+        self.btn_delete = ttk.Button(
+            self.delete_frame, text = "Delete",
+            width=30, command = self.delete_table_row
+        )
+        self.btn_delete.grid(row = 2, column = 1)
+
+
+
+        ''' EXPORT DATA '''
+
+        self.btn_export = ttk.Button(
+            self.window, text = "Export View",
+            command = self.export_data_to_pdf,
+            width=30
+        )
+        self.btn_export.pack(side = tk.BOTTOM, padx=20, pady = 20)
 
         self.window.mainloop()
 
@@ -113,18 +213,49 @@ class ViewDataPage:
     
 
     def get_view(self):
-        table = self.filters["table"].get()
-        
+        filters = {i: self.filters[i].get() for i in self.filters}
+        print(filters)
         data = None
 
-        if table == "Invoices":
-            data = models.get_all_invoices()
-        elif table == "Details":
-            data = models.get_all_details()
-        
-        ''' filters '''
+        data = models.filtered_view(
+            filters["table"],
+            filters["type"]
+        )
 
         self.data = data
-        if self.DATA_TABLE:
-            self.DATA_TABLE.destroy()
+
+        try:
+            self.DATA_TABLE.base_frame.destroy()
+        except:
+            pass
         self.DATA_TABLE = TableView(self.window, self.data)
+
+
+    def export_data_to_pdf(self):
+        if self.data:
+            x = [
+                {
+                    field: row.__dict__[field] for field in row.__dict__
+                } for row in self.data
+            ]
+            print(x)
+
+    def print_table_row(self):
+        table = self.delete_id.get()
+        _id = self.delete_id.get()
+        print(table, _id)
+        print('This actually works')
+        
+
+
+    def delete_table_row(self):
+        table = self.delete_table.get()
+        _id = self.delete_id.get()
+
+        print('delete: ', table, _id)
+
+        x = models.delete_table_row(table, _id)
+        if x:
+            return messagebox.showinfo("Success", "Deleted!")
+        else:
+            return messagebox.showerror("Error", "Could not delete")
