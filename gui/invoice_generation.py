@@ -11,6 +11,7 @@ from tkinter import ttk
 import tkinter as tk
 from pathlib import Path
 from tkinter.scrolledtext import ScrolledText
+import models
 
 
 CAL_CLICKED = 0
@@ -164,10 +165,20 @@ class InvoiceForm:
         '''Generating goods details'''
         self.goods_table = Table(self.window)
 
-        ''' Date refresher button '''
-        # btn_date_refresher = ttk.Button(
-        #     self.window, text="Refresh", command=self.date_refresh)
-        # btn_date_refresher.place(x=390, y=98)
+        ''' AutoFill Party '''
+        self.autofill_var = tk.StringVar(self.window)
+        self.autofill_entity_options = [i[0] for i in models.get_all_entity_names()]
+        self.options_autofill = ttk.OptionMenu(
+            self.window, self.autofill_var, "None", *self.autofill_entity_options
+        )
+        self.options_autofill.place(x=700, y=20)
+
+        self.btn_autofill_party = ttk.Button(
+            self.window, text='AutoFill Entity',
+            width=30, command=self.autofill_entity_fields
+        )
+        self.btn_autofill_party.place(x=800, y=20)
+
 
         ''' Calculate Button '''
         self.btn_deets_calculate = ttk.Button(
@@ -312,3 +323,37 @@ class InvoiceForm:
     def sendAlert(self, message):
         messagebox.showerror(title='Error', message=message)
 
+
+    def autofill_entity_fields(self):
+        res = models.get_entity_by_name(self.autofill_var.get())
+        if res == None:
+            return
+        x = {field: res.__dict__[field] for field in res.__dict__}
+        #print(x)
+
+        try:
+            self.entry_party_name.delete(0, tk.END)
+            self.entry_party_name.insert(0, x["name"])
+            
+            self.entry_ifc_code.delete(0, tk.END)
+            self.entry_ifc_code.insert(0, x["ifc_code"])
+
+            self.entry_bank_name.delete(0, tk.END)
+            self.entry_bank_name.insert(0, x["bank_name"])
+
+            self.entry_party_state.delete(0, tk.END)
+            self.entry_party_state.insert(0, x["state"])
+
+            self.entry_party_address.delete("1.0", tk.END)
+            self.entry_party_address.insert("1.0", x["address"])
+
+            self.entry_ac_no.delete(0, tk.END)
+            self.entry_ac_no.insert(0, x["a_c_no"])
+            
+            self.entry_party_code.delete(0, tk.END)
+            self.entry_party_code.insert(0, x["state_code"])
+            
+            self.entry_party_gstin.delete(0, tk.END)
+            self.entry_party_gstin.insert(0, x["gstin_uid"])
+        except Exception as e:
+            print(e)

@@ -151,6 +151,15 @@ def get_all_invoices():
 def get_all_details():
     return db.query(Details).all()
 
+def get_all_entities():
+    return db.query(Entity).all()
+
+def get_all_entity_names():
+    return db.query(Entity).with_entities(Entity.name).all()
+
+def get_entity_by_name(name):
+    return db.query(Entity).filter_by(name = name).first()
+
 
 def filtered_view(table, type):
     res = None
