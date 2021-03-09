@@ -68,10 +68,12 @@ class Table:
             txn = {}; valid = True
             for field in self.titles:
                 x = row[field].get()
-                if x == "" or not x:
-                    valid = False
-                    break
-                txn[field] = row[field].get()
+                if field not in ["total", "taxable_amt"]:
+                    if x == "" or not x:
+
+                        valid = False
+                        break
+                    txn[field] = row[field].get()
             if valid:
                 list_of_entries.append(txn)
         return list_of_entries

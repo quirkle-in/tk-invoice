@@ -10,9 +10,9 @@ class AddEntityPage:
     def __init__(self):
         self.window = tk.Tk()
         self.window.configure(background = "#f3f3f3")
-        self.window.title("Select a Date")
+        self.window.title("Add an Entity")
         self.window.geometry("1200x700")
-        self.window.resizable(False, False)
+        self.window.resizable(True, True)
 
         
         style = ThemedStyle(self.window)
@@ -22,7 +22,10 @@ class AddEntityPage:
         self.titles = [column.key for column in Entity.__table__.columns]
         self.titles.remove('entity_id')
 
-        ttk.Label(self.window, text="Add Entity").grid(padx = 30, pady = 10, row = 0, column = 0)
+        ttk.Button(self.window, text = "Back",
+            command = self.back_to_home).grid(row = 0, column = 0, padx = 30, pady = 10)
+
+        ttk.Label(self.window, text="ADD ENTITY", font = ("Arial", 14, "bold")).grid(padx = 30, pady = 10, row = 0, column = 1)
         
         row = 1
         for field in self.titles:
@@ -36,6 +39,7 @@ class AddEntityPage:
 
         ttk.Button(self.window, text = "Add Entity",
             command = self.add_entity).grid(row = 9, column = 0, padx = 30, pady = 10)
+
         self.window.mainloop()
 
     def add_entity(self):
@@ -66,8 +70,12 @@ class AddEntityPage:
                 title = "Success!",
                 message = "Created entity"
             )
+            self.back_to_home()
         else:
             messagebox.showerror(
                 title = "Failed",
-                message = "Unable to create entity"
+                message = "Unable to create entity."
             )
+
+    def back_to_home(self):
+        self.window.destroy()
