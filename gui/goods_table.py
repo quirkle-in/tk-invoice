@@ -1,3 +1,4 @@
+from sys import maxsize
 from sqlalchemy.ext.declarative import base
 from models import Details
 from tkinter import ttk
@@ -11,28 +12,27 @@ class Table:
         self.total_goods_rows = 0
 
 
-        self.base_frame = tk.Frame(self.root)
+        self.base_frame = ttk.Frame(self.root)
         self.base_frame.place(x=20, y=220)
 
-        self.canvas = tk.Canvas(self.base_frame)
-        #self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-        self.canvas.pack(side = "left")
-
-        self.f = tk.Frame(self.canvas)
-        self.f.pack()
-
-        self.scrollbar_y = tk.Scrollbar(self.base_frame, #canvas, maybe
+        self.canvas = tk.Canvas(self.base_frame, width=940, height = 160)
+        self.scrollbar_y = ttk.Scrollbar(self.base_frame, #canvas, maybe
             orient = "vertical", command = self.canvas.yview)
-        self.scrollbar_y.pack(side = "right", fill = "y")
-        # so is it done?  its not scrolling, frame / canvas keeps getting big
-        # what if you just open a new window for more stuff? each row, new window?
-        # set a limit of say 10 for og wind and then new
-        # just [ut audio off, nou]
+        self.frame = ttk.Frame(self.canvas)
 
-        self.canvas.config(yscrollcommand=self.scrollbar_y.set)
+        self.frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(
+                scrollregion = self.canvas.bbox("all")
+            )
+        )
 
-# what if we add scroll on frame rather canvas O, ohh ha sry, everywhere?
-#can try that yes, can't use yview on a frame,
+        self.canvas.create_window((0, 0), window=self.frame, anchor="nw")
+        self.canvas.configure(yscrollcommand=self.scrollbar_y.set)
+
+        self.canvas.pack(side="left", fill="both", expand=True)
+        self.scrollbar_y.pack(side="right", fill = "y")
+
 
         # gets the cols
         self.titles = [column.key for column in Details.__table__.columns]
@@ -43,12 +43,13 @@ class Table:
 
         col = 0
         for field in self.titles:
-            self.i = ttk.Entry(self.f, width=14, font=('Arial', 9), 
+            self.i = ttk.Entry(self.frame, width=14, font=('Arial', 9), 
                 justify = tk.CENTER)
             self.i.insert(tk.END, field.replace("_", " ").upper())
             self.i.config(state='readonly')
             self.i.grid(row=0, column=col)
             col += 1
+        
 
         ''' create dict '''
         for row in range(0):
@@ -61,7 +62,7 @@ class Table:
             col = 0
             for field in self.titles:
 
-                en = ttk.Entry(self.f, width=14, font=(
+                en = ttk.Entry(self.frame, width=14, font=(
                     'Arial', 9,), textvariable=self.entries[self.total_goods_rows][field])
                 en.grid(row=self.total_goods_rows + 1, column=col)
                 col += 1
@@ -97,8 +98,7 @@ class Table:
 
         col = 0
         for field in self.titles:
-
-            en = ttk.Entry(self.f, width=14, font=('Arial', 9,),
+            en = ttk.Entry(self.frame, width=14, font=('Arial', 9,),
                 textvariable=self.entries[self.total_goods_rows][field])
             en.grid(row=self.total_goods_rows + 1, column=col)
             col += 1
