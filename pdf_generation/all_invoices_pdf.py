@@ -8,7 +8,7 @@ def generate_invoices_pdf(invoices):
     return False
 
 
-c = canvas.Canvas("invoice.pdf", pagesize=(200, 250), bottomup=0)
+c = canvas.Canvas("invoice.pdf", pagesize=(400, 350), bottomup=0)
 # Logo Section
 # Setting th origin to (10,40)
 c.translate(10, 40)
