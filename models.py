@@ -130,5 +130,27 @@ def createDetails(deet_no,
 def get_all_invoices():
     return db.query(Invoice).all()
 
+
 def get_all_details():
     return db.query(Details).all()
+
+
+def filtered_view(table, type):
+    res = None
+    if table == "Invoices":
+        res = db.query(Invoice)     
+
+        if type == "Purchases": x = [1]
+        elif type == "Sales": x = [0]
+        else: x = [1, 0]
+
+        res = res.filter(Invoice.purchase.in_(x))
+
+    elif table == "Details":
+        res = db.query(Details)
+
+    if not res:
+        return []
+    return res.all()
+
+    

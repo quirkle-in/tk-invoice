@@ -100,7 +100,8 @@ class InvoiceForm:
         ''' ENTRY WIDGETS '''
 
         ''' Purchase / Sale option '''
-        self.typeVar = tk.IntVar()
+        self.typeVar = tk.IntVar(self.window)
+
         self.purchase_radio_button = ttk.Radiobutton(
             self.window, text="Purchase", variable=self.typeVar, value=0)
         self.purchase_radio_button.place(x=250, y=390)
@@ -158,10 +159,6 @@ class InvoiceForm:
         self.entry_gst_reverse_charge = ttk.Entry(self.window)
         self.entry_gst_reverse_charge.place(x=750, y=520)
 
-        ''' Date picker button '''
-        # self.btn_date_picker = ttk.Button(
-        #     self.window, command=self.calOpen)
-        # self.btn_date_picker.place(x=390, y=98)
         self.entry_invoice_date.bind("<1>", self.calOpen)
 
         '''Generating goods details'''

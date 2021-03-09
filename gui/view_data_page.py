@@ -119,8 +119,9 @@ class ViewDataPage:
 
         
         self.filters = {
-            "table" : tk.StringVar(self.window, "Invoice"),
-            "limit": tk.StringVar(self.window, "")
+            "table" : tk.StringVar(self.window, None),
+            "limit": tk.StringVar(self.window, None),
+            "type": tk.StringVar(self.window, None),
         }
 
         style = ThemedStyle(self.window)
@@ -142,16 +143,23 @@ class ViewDataPage:
         self.filter_frame = ttk.Frame(self.window)
         self.filter_frame.pack(padx=20, pady=20)
 
+        ttk.Label(self.filter_frame, text = "Select Table: ").grid(row = 0, column = 0, padx=20)
         self.filter_table = ttk.OptionMenu(
-            self.filter_frame, self.filters["table"], "Invoices", "Details", "Invoices"
+            self.filter_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices"
         )
-        self.filter_table.grid(row = 0, column = 0)
+        self.filter_table.grid(row = 0, column = 1)
+
+        ttk.Label(self.filter_frame, text = "Type: ").grid(row = 0, column = 2, padx=20)
+        self.filter_type = ttk.OptionMenu(
+            self.filter_frame, self.filters["type"], "All", "Purchases", "Sales", "All"
+        )
+        self.filter_type.grid(row = 0, column = 3)
         
         self.btn_execute = ttk.Button(
             self.filter_frame, text = "Get Data",
             command = self.get_view
         )
-        self.btn_execute.grid(row = 0, column = 1)        
+        self.btn_execute.grid(row = 0, column = 4, padx=20)        
 
         self.btn_export = ttk.Button(
             self.window, text = "Export View",
@@ -171,17 +179,14 @@ class ViewDataPage:
     
 
     def get_view(self):
-        table = self.filters["table"].get()
-        
+        filters = {i: self.filters[i].get() for i in self.filters}
+        print(filters)
         data = None
-        print( "Fetching data from ", table)
 
-        if table == "Invoices":
-            data = models.get_all_invoices()
-        elif table == "Details":
-            data = models.get_all_details()
-        
-        ''' filters '''
+        data = models.filtered_view(
+            filters["table"],
+            filters["type"]
+        )
 
         self.data = data
 
