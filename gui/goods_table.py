@@ -65,9 +65,12 @@ class Table:
     def getGoodsDetails(self):
         list_of_entries = []
         for row in range(len(self.entries)):
-            txn = {key: None for key in self.titles}
-            for field in self.entries[row]:
+            txn = {}
+            for field in self.titles:
                 txn[field] = self.entries[row][field].get()
+            for i in txn:
+                if txn[i] == "" or txn[i] == None:
+                    continue
             list_of_entries.append(txn)
         return list_of_entries
 

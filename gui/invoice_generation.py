@@ -1,3 +1,4 @@
+from logging import exception
 from models import get_last_invoice, createDetails
 from gui.datepick import CalWindow
 from gui.goods_table import Table
@@ -158,17 +159,18 @@ class InvoiceForm:
         self.entry_gst_reverse_charge.place(x=750, y=520)
 
         ''' Date picker button '''
-        self.btn_date_picker = ttk.Button(
-            self.window, text="Choose Date", command=self.calOpen)
-        self.btn_date_picker.place(x=390, y=98)
+        # self.btn_date_picker = ttk.Button(
+        #     self.window, command=self.calOpen)
+        # self.btn_date_picker.place(x=390, y=98)
+        self.entry_invoice_date.bind("<1>", self.calOpen)
 
         '''Generating goods details'''
         self.goods_table = Table(self.window)
 
         ''' Date refresher button '''
-        btn_date_refresher = ttk.Button(
-            self.window, text="Refresh", command=self.date_refresh)
-        btn_date_refresher.place(x=390, y=98)
+        # btn_date_refresher = ttk.Button(
+        #     self.window, text="Refresh", command=self.date_refresh)
+        # btn_date_refresher.place(x=390, y=98)
 
         ''' Calculate Button '''
         self.btn_deets_calculate = ttk.Button(
@@ -191,15 +193,23 @@ class InvoiceForm:
     def back_to_home_page(self):
         self.window.destroy()
 
-    def calOpen(self):
+    def calOpen(self, event):
         CalWindow(self.dating)
 
-    def date_refresh(self):
+
+<< << << < HEAD
+   def date_refresh(self):
         if Path('gui/date.txt').is_file():
             with open('gui/date.txt', 'r') as file:
                 self.dating.set(file.read())
+== == == =
+   # def date_refresh(self):
+   #     if Path('gui/date.txt').is_file():
+   #         with open('gui/date.txt' , 'r') as file:
+   #             self.dating.set(file.read())
+>>>>>> > fc8a2452067ad316474b046ae351c2593bae1260
 
-    def insertInvoice(self):
+   def insertInvoice(self):
         print(datetime.strptime(
             self.entry_invoice_date.get(), '%d/%m/%Y'))
         resp = createInvoice(
@@ -222,17 +232,17 @@ class InvoiceForm:
         deets = self.goods_table.getGoodsDetails()
         for deet in deets:
             x = createDetails(
-                deet_no=deet["deet_no"],
-                invoice_id=inv_id,
-                name=deet["name"],
-                batch_no=deet['batch_no'],
-                hsn=deet["hsn"],
-                qty=deet["qty"],
-                rate=deet["rate"],
-                mrp=deet["mrp"],
-                total=deet["total"],
-                discount=deet["discount"],
-                taxable_amount=deet["taxable_amount"]
+                deet_no = deet["deet_no"],
+                invoice_id= inv_id,
+                name= deet["name"],
+                batch_no= deet['batch_no'],
+                hsn= deet["hsn"],
+                qty= deet["qty"],
+                rate= deet["rate"],
+                mrp= deet["mrp"],
+                total= deet["total"],
+                discount= deet["discount"],
+                taxable_amount= deet["taxable_amt"]
             )
         return False
 
@@ -242,14 +252,21 @@ class InvoiceForm:
         total = 0
 
         for i in dets:
+            ''' check for null '''
+            for field in i:
+                if i[field] == "" or not i[field]:
+                    continue
+
+            ''' continue '''
             if i['deet_no'] != '':
                 i['total'] = 0
+                #print(i['qty'], i["rate"])
                 i['total'] = int(i['qty']) * int(i['rate'])
-                i['taxable_amount'] = int(i['total'] - int(i['discount']))
-                total = total + i['taxable_amount']
+                i['taxable_amt'] = int(i['total'] - int(i['discount']))
+                total = total + i['taxable_amt']
                 print(self.goods_table.entries[j])
                 print(self.goods_table.entries[j]['total'].set(i['total']))
-                self.goods_table.entries[j]['taxable_amount'].set(
+                self.goods_table.entries[j]['taxable_amt'].set(
                     int(i['total']) - int(i['discount']))
                 j = j + 1
         self.entry_total_before_tax.insert(0, (total))
