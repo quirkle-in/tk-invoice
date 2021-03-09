@@ -42,13 +42,14 @@ class Details(Base):
     deet_no = Column(Integer)
     invoice_id = Column(Integer, ForeignKey(Invoice.invoice_id))
     name = Column(String(100))
+    batch = Column(String(100), nullable=False)
     hsn = Column(Integer)
     qty = Column(Integer)
     rate = Column(FLOAT)
     mrp = Column(FLOAT)
     total = Column(Integer)
     discount = Column(FLOAT)
-    taxable_amount = Column(FLOAT)
+    taxable_amt = Column(FLOAT)
 
 
 def get_last_invoice():

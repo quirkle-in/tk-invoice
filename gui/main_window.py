@@ -17,7 +17,7 @@ class MainWindow:
         style.set_theme("vista")
 
         self.btn_create_invoice = ttk.Button(
-            self.window, text="Create an Invoice",
+            self.window, text="Create Invoice",
             command=self.create_invoice_page,
             width = 30
         )

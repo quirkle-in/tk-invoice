@@ -44,7 +44,7 @@ class Table:
 
         col = 0
         for field in self.titles:
-            self.i = ttk.Entry(self.frame, width=15, font=('Arial', 9), 
+            self.i = ttk.Entry(self.frame, width=13, font=('Arial', 9), 
                 justify = tk.CENTER)
             self.i.insert(tk.END, field.replace("_", " ").upper())
             self.i.config(state='readonly')
@@ -53,9 +53,13 @@ class Table:
         
         self.btn_add_row = ttk.Button(
             self.root, text = "Add New Row",
-            command = self.add_new_goods_row
+            command = self.add_new_goods_row,
+            width = 50
         )
-        self.btn_add_row.place(x = 600, y = 180)
+        self.btn_add_row.place(x = 50, y = 185)
+
+        for default_row in range(3):
+            self.add_new_goods_row()
         
         
     def getGoodsDetails(self):
@@ -77,7 +81,7 @@ class Table:
 
         col = 0
         for field in self.titles:
-            en = ttk.Entry(self.frame, width=15, font=('Arial', 9),
+            en = ttk.Entry(self.frame, width=13, font=('Arial', 9),
                 textvariable=self.entries[self.total_goods_rows][field])
             en.grid(row=self.total_goods_rows + 1, column=col)
             col += 1
