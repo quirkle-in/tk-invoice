@@ -6,7 +6,7 @@ import tkinter as tk
 
 
 class CalWindow:
-    def __init__(self):
+    def __init__(self, date_widget):
 
         self.window = tk.Tk()
         self.window.configure(background = "#f3f3f3")
@@ -16,6 +16,7 @@ class CalWindow:
 
         style = ThemedStyle(self.window)
         style.set_theme("vista")
+        self.date_widget = date_widget
 
         self.invoice_data = {}
 
@@ -31,11 +32,3 @@ class CalWindow:
         ttk.Button(self.window, text = "Get Date", command = self.date_getter).pack() 
 
         self.window.mainloop()
-
-    
-    def date_getter(self):
-        self.val = self.cal.get_date()
-        with open('gui/date.txt', 'w') as file:
-            file.write(self.val)
-            
-        self.window.destroy()

@@ -81,5 +81,3 @@ class Table:
             en.grid(row=self.total_goods_rows + 1, column=col)
             col += 1
         self.total_goods_rows += 1
-    # if we implement scroll on base_frame itself? 
-    # hmmmmm call take, can do th

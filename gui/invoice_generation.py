@@ -3,12 +3,11 @@ from gui.datepick import CalWindow
 from gui.goods_table import Table
 from ttkthemes import ThemedStyle
 from models import createInvoice
+from tkinter import messagebox
 from datetime import datetime
 from pathlib import Path
 from tkinter import ttk
 import tkinter as tk
-from tkinter import messagebox
-import os
 
 
 class InvoiceForm:
@@ -168,31 +167,13 @@ class InvoiceForm:
         self.window.mainloop()
 
     def back_to_home_page(self):
-        ''' confirmation '''
-        try:
-            os.remove("gui/date.txt")
-        except:
-            pass
         self.window.destroy()
 
     def calOpen(self, event):
-        CalWindow()
+        CalWindow(self.dating)
 
     def date_refresh(self):
-        date_val = ''
-        if not Path('gui/date.txt').is_file():
-            with open('gui/date.txt', 'w') as file:
-                file.write(datetime.now().strftime("%d/%m/%Y"))
-
-            with open('gui/date.txt', 'r') as file:
-                date_val = file.read()
-            print(date_val)
-            self.dating.set(date_val)
-        else:
-            with open('gui/date.txt', 'r') as file:
-                date_val = file.read()
-            print(date_val)
-            self.dating.set(date_val)
+        print(self.entry_invoice_date.get())
 
     def insertInvoice(self):
 
