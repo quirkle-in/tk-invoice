@@ -1,5 +1,5 @@
-from gui.view_data_window import ViewInvoiceWindow
 from gui.invoice_generation import InvoiceForm
+from gui.view_data_page import ViewDataPage
 from ttkthemes import ThemedStyle
 from tkinter import ttk
 import tkinter as tk
@@ -38,4 +38,4 @@ class MainWindow:
 
     
     def view_invoice_page(self):
-        ViewInvoiceWindow()
+        ViewDataPage()
