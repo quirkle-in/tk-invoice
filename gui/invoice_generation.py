@@ -327,6 +327,7 @@ class InvoiceForm:
     def autofill_entity_fields(self):
         res = models.get_entity_by_name(self.autofill_var.get())
         if res == None:
+            messagebox.showerror(title='Error', message='No saved items were found.')
             return
         x = {field: res.__dict__[field] for field in res.__dict__}
         #print(x)
