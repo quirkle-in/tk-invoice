@@ -50,28 +50,6 @@ class Table:
             self.i.grid(row=0, column=col)
             col += 1
         
-
-        ''' create dict '''
-        for row in range(0):
-            x = {}
-            for field in self.titles:
-                x[field] = tk.StringVar(root)
-
-            self.entries.append(x)
-
-            col = 0
-            for field in self.titles:
-
-                en = ttk.Entry(self.frame, width=14, font=(
-                    'Arial', 9,), textvariable=self.entries[self.total_goods_rows][field])
-                en.grid(row=self.total_goods_rows + 1, column=col)
-                col += 1
-            self.total_goods_rows += 1
-
-        '''for i in self.entries:
-            print(type(i['total']))
-            break'''
-        
         self.btn_add_row = ttk.Button(
             self.root, text = "Add New Row",
             command = self.add_new_goods_row
