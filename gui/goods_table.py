@@ -44,7 +44,7 @@ class Table:
 
         col = 0
         for field in self.titles:
-            self.i = ttk.Entry(self.frame, width=13, font=('Arial', 9), 
+            self.i = ttk.Entry(self.frame, width=12, font=('Arial', 8), 
                 justify = tk.CENTER)
             self.i.insert(tk.END, field.replace("_", " ").upper())
             self.i.config(state='readonly')
@@ -58,23 +58,24 @@ class Table:
         )
         self.btn_add_row.place(x = 50, y = 185)
 
-        for default_row in range(3):
+        for default_row in range(1):
             self.add_new_goods_row()
         
         
     def getGoodsDetails(self):
         list_of_entries = []
-        for row in range(len(self.entries)):
-            txn = {}
+        for row in self.entries:
+            txn = {}; valid = True
             for field in self.titles:
-                txn[field] = self.entries[row][field].get()
-            for i in txn:
-                if txn[i] == "" or txn[i] == None:
-                    continue
-            list_of_entries.append(txn)
+                x = row[field].get()
+                if x == "" or not x:
+                    valid = False
+                    break
+                txn[field] = row[field].get()
+            if valid:
+                list_of_entries.append(txn)
         return list_of_entries
 
-        
     def add_new_goods_row(self):
         x = {}
         for field in self.titles:
@@ -84,7 +85,7 @@ class Table:
 
         col = 0
         for field in self.titles:
-            en = ttk.Entry(self.frame, width=13, font=('Arial', 9),
+            en = ttk.Entry(self.frame, width=12, font=('Arial', 8),
                 textvariable=self.entries[self.total_goods_rows][field])
             en.grid(row=self.total_goods_rows + 1, column=col)
             col += 1

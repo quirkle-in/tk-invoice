@@ -1,4 +1,4 @@
-from logging import exception
+from logging import error, exception
 from models import get_last_invoice, createDetails
 from gui.datepick import CalWindow
 from gui.goods_table import Table
@@ -210,11 +210,11 @@ class InvoiceForm:
             invoice_date=datetime.strptime(
                 self.entry_invoice_date.get(), '%d/%m/%Y'),
             invoice_no=self.entry_invoice_no.get(),
-            party_name=self.entry_party_name.get(),
-            party_address=self.entry_party_address.get('1.0', 'end-1c'),
-            party_gst=self.entry_party_gstin.get(),
-            party_state=self.entry_party_state.get(),
-            party_state_code=self.entry_party_code.get(),
+            name=self.entry_party_name.get(),
+            address=self.entry_party_address.get('1.0', 'end-1c'),
+            gst=self.entry_party_gstin.get(),
+            state=self.entry_party_state.get(),
+            state_code=self.entry_party_code.get(),
             total=self.entry_total_tax_amt.get(),
             total_cgst=self.entry_cgst.get(),
             total_sgst=self.entry_sgst.get(),
@@ -224,55 +224,63 @@ class InvoiceForm:
 
     def insertDetails(self, inv_id):
         deets = self.goods_table.getGoodsDetails()
+        errors = 0
         for deet in deets:
             x = createDetails(
                 deet_no = deet["deet_no"] ,
                 invoice_id = inv_id,
                 name = deet["name"],
-                batch_no = deet['batch_no'],
+                batch = deet['batch'],
                 hsn = deet["hsn"],
                 qty = deet["qty"],
                 rate = deet["rate"],
                 mrp = deet["mrp"],
                 total = deet["total"],
                 discount = deet["discount"],
-                taxable_amount = deet["taxable_amt"]
+                taxable_amt = deet["taxable_amt"]
             )
-        return False
+            if not x:
+                errors += 1
+        print("Errors:", errors)
+        return
 
     def performCaluclations(self):
-        dets = self.goods_table.getGoodsDetails()
-        j = 0
-        total = 0
-        for i in dets:
-            ''' check for null '''
-            for field in i:
-                if i[field] == "" or not i[field]:
-                    continue
-            
-            ''' continue '''
-            if i['deet_no'] != '':
-                i['total'] = 0
-                #print(i['qty'], i["rate"])
-                i['total'] = int(i['qty']) * int(i['rate'])
-                i['taxable_amt'] = int(i['total'] - int(i['discount']))
-                total = total + i['taxable_amt']
-                print(self.goods_table.entries[j])
-                print(self.goods_table.entries[j]['total'].set(i['total']))
-                self.goods_table.entries[j]['taxable_amt'].set(
-                    int(i['total']) - int(i['discount']))
-                j = j + 1
-        self.entry_total_before_tax.insert(0, (total))
-        self.entry_cgst.insert(0, (total * 0.06))
-        self.entry_igst.insert(0, total * 0.06)
-        self.entry_sgst.insert(0, (total * 0.06))
-        self.entry_total_tax_amt.insert(0, (total * 0.12))
-        self.entry_total_after_tax_amt.insert(0, (total + total * 0.12))
+        try:
+            dets = self.goods_table.getGoodsDetails()
+            j = 0
+            total = 0
+            for i in dets:
+                ''' check for null '''
+                for field in i:
+                    if i[field] == "" or not i[field]:
+                        continue
+                
+                ''' continue '''
+                if i['deet_no'] != '':
+                    i['total'] = 0
+                    #print(i['qty'], i["rate"])
+                    i['total'] = int(i['qty']) * int(i['rate'])
+                    i['taxable_amt'] = int(i['total'] - int(i['discount']))
+                    total = total + i['taxable_amt']
+                    print(self.goods_table.entries[j])
+                    print(self.goods_table.entries[j]['total'].set(i['total']))
+                    self.goods_table.entries[j]['taxable_amt'].set(
+                        int(i['total']) - int(i['discount']))
+                    j = j + 1
+            self.entry_total_before_tax.insert(0, (total))
+            self.entry_cgst.insert(0, (total * 0.06))
+            self.entry_igst.insert(0, total * 0.06)
+            self.entry_sgst.insert(0, (total * 0.06))
+            self.entry_total_tax_amt.insert(0, (total * 0.12))
+            self.entry_total_after_tax_amt.insert(0, (total + total * 0.12))
+        except Exception as e:
+            print(e)
+            self.sendAlert("Error while calculating!")
 
     def onConfirm(self):
         print('Confirmed')
         inv_id = self.insertInvoice()
-        print(inv_id)
+        print("Invoice id generated:", inv_id)
         x = self.insertDetails(inv_id)
         print(x)
         self.back_to_home_page()
@@ -283,9 +291,16 @@ class InvoiceForm:
         global CAL_CLICKED
         CAL_CLICKED += 1
         self.performCaluclations()
+        if not self.validateData():
+            self.sendAlert("Invalid Data! Should not contain any empty fields")
 
+
+    
     def onSubmit(self):
         if CAL_CLICKED >= 1:
+            if not self.validateData():
+                self.sendAlert("Invalid Data! Should not contain any empty fields")
+                return False
             self.onConfirm()
         else:
             messagebox.showerror(title='Attention', message='Please click calculate button before submission')
@@ -295,3 +310,14 @@ class InvoiceForm:
         # self.btn_invoice_submit.config(text='Confirm', command=self.onConfirm)
 
         # self.window.destroy()
+
+    def validateData(self):
+        goods_details = self.goods_table.getGoodsDetails()
+        if goods_details == []:
+            return False
+        return True
+    
+
+    def sendAlert(self, message):
+        messagebox.showerror(title='Error', message=message)
+

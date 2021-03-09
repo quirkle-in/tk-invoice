@@ -116,6 +116,7 @@ class ViewDataPage:
         table = self.filters["table"].get()
         
         data = None
+        print( "Fetching data from ", table)
 
         if table == "Invoices":
             data = models.get_all_invoices()
@@ -125,6 +126,9 @@ class ViewDataPage:
         ''' filters '''
 
         self.data = data
-        if self.DATA_TABLE:
-            self.DATA_TABLE.destroy()
+
+        try:
+            self.DATA_TABLE.base_frame.destroy()
+        except:
+            pass
         self.DATA_TABLE = TableView(self.window, self.data)

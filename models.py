@@ -71,11 +71,11 @@ def get_last_invoice():
 
 def createInvoice(
         invoice_date,
-        party_name,
-        party_address,
-        party_gst,
-        party_state,
-        party_state_code,
+        name,
+        address,
+        gst,
+        state,
+        state_code,
         total,
         total_cgst,
         total_sgst,
@@ -84,9 +84,9 @@ def createInvoice(
     try:
         inv = Invoice(
             invoice_no=invoice_no, invoice_date=invoice_date,
-            party_name=party_name, party_address=party_address,
-            party_gst=party_gst, party_state=party_state,
-            party_state_code=party_state_code, total=total,
+            name=name, address=address,
+            state=state,
+            state_code=state_code, total=total,
             total_cgst=total_cgst, total_sgst=total_sgst,
             purchase=purchase)
         db.add(inv)
@@ -104,17 +104,18 @@ def createDetails(deet_no,
                   name,
                   hsn,
                   qty,
+                  batch,
                   rate,
                   mrp,
                   total,
                   discount,
-                  taxable_amount):
+                  taxable_amt):
     try:
         det = Details(
-            deet_no = deet_no,
+            deet_no = deet_no, batch = batch,
             invoice_id=invoice_id, name=name, hsn=hsn,
             qty=qty, rate=rate, mrp=mrp, total=total,
-            discount=discount, taxable_amount=taxable_amount
+            discount=discount, taxable_amt=taxable_amt
         )
         db.add(det)
         db.commit()
