@@ -1,13 +1,16 @@
 from fpdf import FPDF
-
-DETAILS = {
-    'name': 'PURCHASE REPORT',
-    'dets': [{'Sr No': 1, 'name': 'kvvg', 'hsn': 25, 'qty': 1351, 'rate': 3525421.0, 'mrp': 53.0, 'total': 474201, 'discount': 3215.0, 'taxable_amt': 470986.0}, {'Sr No': 2, 'name': 'sdjlblgds', 'hsn': 254, 'qty': 52, 'rate': 54.0, 'mrp': 54.0, 'total': 2808, 'discount': 54.0, 'taxable_amt': 2754.0}, {'Sr No': 3, 'name': 'kvugu', 'hsn': 25, 'qty': 54, 'rate': 534346.0, 'mrp': 46346.0, 'total': 28854684, 'discount': 634.0, 'taxable_amt': 28854050.0},
-             {'Sr No': 4, 'name': ',jhyf,j', 'hsn': 'lkib', 'qty': 354, 'rate': 354.0, 'mrp': 354.0, 'total': 125316, 'discount': 354.0, 'taxable_amt': 124962.0}]
-}
+from datetime import datetime
+# DETAILS = {
+#     'name': 'PURCHASE REPORT',
+#     'dets': [{'Sr No': 1, 'name': 'kvvg', 'hsn': 25, 'qty': 1351, 'rate': 3525421.0, 'mrp': 53.0, 'total': 474201, 'discount': 3215.0, 'taxable_amt': 470986.0}, {'Sr No': 2, 'name': 'sdjlblgds', 'hsn': 254, 'qty': 52, 'rate': 54.0, 'mrp': 54.0, 'total': 2808, 'discount': 54.0, 'taxable_amt': 2754.0}, {'Sr No': 3, 'name': 'kvugu', 'hsn': 25, 'qty': 54, 'rate': 534346.0, 'mrp': 46346.0, 'total': 28854684, 'discount': 634.0, 'taxable_amt': 28854050.0},
+#              {'Sr No': 4, 'name': ',jhyf,j', 'hsn': 'lkib', 'qty': 354, 'rate': 354.0, 'mrp': 354.0, 'total': 125316, 'discount': 354.0, 'taxable_amt': 124962.0}]
+# }
 
 
 def purchase_report(DETAILS):
+
+    FILENAME = DETAILS['name'] + '_' + \
+        datetime.now().strftime('%d-%m-%Y_') + ".pdf"
 
     pdf = FPDF('P', 'mm', 'A4')
 
@@ -54,6 +57,7 @@ def purchase_report(DETAILS):
     pdf.ln(2)
 
     pdf.set_font('Arial', '', 9.0)
+
     for row in DETAILS['dets']:  # sets no. of rows
         pdf.ln(4)
         print(row)
@@ -63,11 +67,9 @@ def purchase_report(DETAILS):
         pdf.ln(2)
 
     try:
-        pdf.output('pur.pdf', 'F')
+        pdf.output(DETAILS['path'] + "/" + FILENAME, 'F')
         print("Created.")
+        return True
     except Exception as e:
         print(e)
-
-
-if __name__ == '__main__':
-    purchase_report(DETAILS)
+        return False
