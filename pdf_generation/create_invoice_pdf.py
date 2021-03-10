@@ -1,11 +1,9 @@
 from fpdf import FPDF
 from datetime import datetime
 
-FILENAME = "ExportedInvoice.pdf"
+FILENAME = "ExportedInvoice" + "_" + datetime.now().strftime('%d-%m-%Y_') + ".pdf"
 
 def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
-    #print(INVOICE)
-    #print(DETAILS)
 
     pdf = FPDF('P', 'mm', 'A4')
 

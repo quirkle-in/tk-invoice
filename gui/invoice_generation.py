@@ -373,9 +373,11 @@ class InvoiceForm:
             if not self.validateData():
                 self.sendAlert("Invalid Data! Should not contain any empty fields")
                 return False
-            res = self.onConfirm()
-            if not res:
-                self.sendAlert("Error while creating.")
+            msg_box = messagebox.askyesno(title = 'Attention', message = "Are you sure, you want to submit? ")
+            if msg_box:
+                res = self.onConfirm()
+                if not res:
+                    self.sendAlert("Error while creating.")
 
         else:
             messagebox.showerror(
@@ -416,11 +418,18 @@ class InvoiceForm:
         pass
         
     def onPrint(self):
-        good_deets = self.goods_table.getGoodsDetails()
-        filepath = filedialog.askdirectory(
-            initialdir = "/", title = "Select a folder to export to")
-        printing = create_invoice_pdf(self.invoice_data, good_deets, filepath)
-        print("Export to PDF response:", printing)
+        global CAL_CLICKED
+        if CAL_CLICKED >= 1:
+            good_deets = self.goods_table.getGoodsDetails()
+            filepath = filedialog.askdirectory(
+                initialdir = "/", title = "Select a folder to export to")
+            printing = create_invoice_pdf(self.invoice_data, good_deets, filepath)
+            messagebox.showinfo(title='Print Status', message='PDF Generated Successfully')
+            print("Export to PDF response:", printing)
+        else:
+            messagebox.showerror(title='Print Status', message='PDF could not be generated before calculation.')
+
+            
 
 
     def validateData(self):
