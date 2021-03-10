@@ -1,5 +1,5 @@
-from ttkthemes import ThemedStyle
 from tkinter import messagebox, ttk, filedialog
+from ttkthemes import ThemedStyle
 import tkinter as tk
 import models
 

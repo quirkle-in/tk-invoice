@@ -1,9 +1,7 @@
-import models
-from pdf_generation.create_invoice_pdf import create_invoice_pdf
-from gui.settings_page import SettingsPage
-from gui.add_entity_page import AddEntityPage
 from gui.invoice_generation import InvoiceForm
+from gui.add_entity_page import AddEntityPage
 from gui.view_data_page import ViewDataPage
+from gui.settings_page import SettingsPage
 from ttkthemes import ThemedStyle
 from tkinter import ttk
 import tkinter as tk
@@ -14,7 +12,7 @@ class MainWindow:
         self.window = tk.Tk()
         self.window.configure(background="#f3f3f3")
         self.window.title("Home")
-        self.window.geometry("1000x600")
+        self.window.geometry("1200x700")
         self.window.resizable(True, True)
 
         style = ThemedStyle(self.window)

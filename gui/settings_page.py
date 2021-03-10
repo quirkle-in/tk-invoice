@@ -1,8 +1,9 @@
-import tkinter as tk
-from tkinter import ttk
 from ttkthemes import ThemedStyle
-import os
+from tkinter import ttk
+import tkinter as tk
 import json
+import os
+
 
 file_path = "settings.json"
 

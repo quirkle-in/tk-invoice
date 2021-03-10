@@ -11,7 +11,7 @@ class AddEntityPage:
         self.window = tk.Tk()
         self.window.configure(background = "#f3f3f3")
         self.window.title("Add an Entity")
-        self.window.geometry("800x800")
+        self.window.geometry("1200x700")
         self.window.resizable(True, True)
 
         
