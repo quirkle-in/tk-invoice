@@ -13,11 +13,13 @@ class MainWindow:
         self.window = tk.Tk()
         self.window.configure(background="#f3f3f3")
         self.window.title("Home")
-        self.window.geometry("1200x700")
+        self.window.geometry("400x400")
         self.window.resizable(True, True)
 
         style = ThemedStyle(self.window)
         style.set_theme("breeze")
+  
+        self.window.iconbitmap('favicon.ico')
 
         self.btn_create_invoice = TkinterCustomButton(text="Create Invoice", command = self.create_invoice_page, width = 200, 
                                     corner_radius=15, hover_color = '#960020', fg_color='#f72c58', text_font=('Avenir',13))

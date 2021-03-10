@@ -1,13 +1,20 @@
 from tkinter import messagebox, ttk, filedialog
+from sqlalchemy.sql.base import Executable
 from ttkthemes import ThemedStyle
 import tkinter as tk
 import models
 from pdf_generation.purchase_sale_view import purchase_report
 
 
+INVOICE_COLUMNS = ["invoice_id", "invoice_no",
+                   "invoice_date", "name", "address", "gst",
+                   "purchase", "account_no", "total_tax_amt",
+                   "total_after_tax"]
+
+
 class TableView:
 
-    def __init__(self, root, data):
+    def __init__(self, root, data, filters):
         self.root = root
         self.data = data
 
@@ -35,7 +42,10 @@ class TableView:
         if not self.data or self.data == []:
             return
 
-        self.columns = [i.name for i in data[0].__table__.columns]
+        if filters["table"].get() == "Invoices":
+            self.columns = INVOICE_COLUMNS
+        else:
+            self.columns = [field for field in data[0]]
 
         col = 0
         for field in self.columns:
@@ -48,7 +58,7 @@ class TableView:
             col += 1
 
         for row in range(len(self.data)):
-            x = self.data[row].__dict__
+            x = self.data[row]
             # print(x)
             col = 0
             for field in self.columns:
@@ -131,6 +141,7 @@ class ViewDataPage:
 
         style = ThemedStyle(self.window)
         style.set_theme("breeze")
+        self.window.iconbitmap('favicon.ico')
 
         self.title = ttk.Label(
             self.window, text="VIEW & EXPORT", font=("Arial", 14, "bold")
@@ -279,13 +290,14 @@ class ViewDataPage:
             filters["type"]
         )
 
-        self.data = data
+        self.data = [{field: row.__dict__[field]
+                      for field in row.__dict__} for row in data]
 
         try:
             self.DATA_TABLE.base_frame.destroy()
-        except:
-            pass
-        self.DATA_TABLE = TableView(self.window, self.data)
+        except Exception as e:
+            print(e)
+        self.DATA_TABLE = TableView(self.window, self.data, self.filters)
 
     def print_table_row(self):
         table = self.filters["table"].get()
@@ -294,33 +306,6 @@ class ViewDataPage:
         x = models.get_table_row(table, _id)
         file_path = filedialog.askdirectory(
             initialdir="/", title="Select a folder to export to")
-        # invoice_date = {
-        #     "invoice_no" :          x.invoice,
-        #     "invoice_date" :        x.invoice_date,
-        #     "reverse_charges" :     x.reverse_charges,
-        #     "state" :               x.entry_party_state,
-        #     "state_code" :          x.entry_party_code,
-
-        #     "name" :                x.name,
-        #     "address" :             x.party_address,
-        #     "gst" :                 x.entry_party_gstin.get(),
-        #     "party_state" :         self.entry_party_state.get(),
-        #     "party_code" :          self.entry_party_code.get(),
-
-        #     "purchase" :            self.typeVar.get(),
-        #     "rupees_in_words" :     self.entry_rs_in_words.get(),
-        #     "bank_name" :           self.entry_bank_name.get(),
-        #     "account_no" :          self.entry_ac_no.get(),
-        #     "ifsc":                 self.entry_ifsc.get(),
-
-        #     "total_before_tax" :    self.entry_total_before_tax.get(),
-        #     "total_igst" :          self.entry_igst.get(),
-        #     "total_cgst" :          self.entry_cgst.get(),
-        #     "total_sgst" :          self.entry_sgst.get(),
-        #     "total_tax_amt" :       self.entry_total_tax_amt.get(),
-        #     "total_after_tax" :     self.entry_total_after_tax_amt.get(),
-        #     "gst_reverse_charge" :  self.entry_gst_reverse_charge.get(),
-        # }
 
     def delete_table_row(self):
         table = self.filters["table"].get()
@@ -333,3 +318,55 @@ class ViewDataPage:
             return messagebox.showinfo("Success", "Deleted!")
         else:
             return messagebox.showerror("Error", "Could not delete")
+
+
+'''
+
+class InvoiceView:
+    def __init__(self, invoice, details):
+        self.root = tk.Tk()
+
+        self.invoice = invoice
+        self.details = details
+        
+        self.base_frame = ttk.Frame(self.root, borderwidth=2, relief="groove")
+        self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=20)
+
+        self.canvas = tk.Canvas(self.base_frame, width=1800, height = 300)
+        self.scrollbar_y = ttk.Scrollbar(self.base_frame, orient = tk.VERTICAL, command = self.canvas.yview)
+        self.frame = ttk.Frame(self.canvas, width=1100)
+
+        self.frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(
+                scrollregion = self.canvas.bbox("all")
+            )
+        )
+
+        self.canvas.create_window((0, 0), window=self.frame, anchor="center")
+        self.canvas.configure(yscrollcommand=self.scrollbar_y.set)
+
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.scrollbar_y.pack(side=tk.RIGHT, fill = tk.Y)
+        
+        if not self.invoice:
+            return
+        
+        self.invoice = self.invoice.__dict__
+        
+        col = 0
+        for field in self.invoice:
+            en = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8), wrap = tk.WORD)
+            en.insert(tk.END, field)
+            en.configure(state="disabled")
+            en.grid(row = 0, column=col)
+
+            val = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8), wrap = tk.WORD)
+            val.insert(tk.END, self.invoice[field])
+            val.configure(state="disabled")
+            val.grid(row = 1, column=col)
+
+            col += 1
+        
+        self.root.mainloop()
+'''

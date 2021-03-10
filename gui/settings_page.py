@@ -13,12 +13,14 @@ class SettingsPage:
 
         self.window = tk.Tk()
         self.window.configure(background="#f3f3f3")
-        self.window.title("Create Invoice")
-        self.window.geometry("1200x750")
+        self.window.title("Settings")
+        self.window.geometry("900x750")
         self.window.resizable(True, True)
 
         style = ThemedStyle(self.window)
-        style.set_theme("breeze")
+        style.set_theme("vista")
+
+        self.window.iconbitmap('favicon.ico')
 
         ttk.Label(self.window, text = "SETTINGS", font = ("Arial", 10, "bold"))
 

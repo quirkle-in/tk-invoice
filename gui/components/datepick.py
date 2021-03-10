@@ -18,6 +18,8 @@ class CalWindow:
 
         style = ThemedStyle(self.window)
         style.set_theme("vista")
+
+        self.window.iconbitmap('favicon.ico')
         self.date_widget = date_widget
 
         today = datetime.now()
