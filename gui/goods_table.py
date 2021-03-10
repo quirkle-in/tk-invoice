@@ -13,7 +13,7 @@ class Table:
 
 
         self.base_frame = ttk.Frame(self.root)
-        self.base_frame.pack(side = tk.LEFT, padx = 10)
+        self.base_frame.pack(side = tk.RIGHT, padx = 10)
 
         
         self.btn_add_row = ttk.Button(
@@ -21,7 +21,7 @@ class Table:
             command = self.add_new_goods_row,
             width = 20
         )
-        self.btn_add_row.pack(side = tk.RIGHT, expand = True)
+        self.btn_add_row.pack(side = tk.LEFT, expand = True)
 
         self.canvas = tk.Canvas(self.base_frame, width=940, height = 120)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame, #canvas, maybe
