@@ -1,4 +1,3 @@
-from pdf_generation.purchase_sale_view import DETAILS
 from tkinter import messagebox, ttk, filedialog
 from sqlalchemy.sql.base import Executable
 from ttkthemes import ThemedStyle
