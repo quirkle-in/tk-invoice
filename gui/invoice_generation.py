@@ -23,7 +23,7 @@ class InvoiceForm:
         self.window.configure(background="#f3f3f3")
         self.window.title("Create Invoice")
         self.window.geometry("1200x800")
-        self.window.resizable(False, False)
+        self.window.resizable(True, True)
 
         style = ThemedStyle(self.window)
         style.set_theme("breeze")
@@ -262,7 +262,7 @@ class InvoiceForm:
         self.window.mainloop()
 
     def get_statics(self):
-        path = 'C:\\Users\\Jaisal Shah\\Desktop\\FLP\\Bill\\tk_invoice\\settings.json'
+        path = 'settings.json'
         with open(path) as f:
             data = json.load(f)
             return data['state']

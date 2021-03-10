@@ -8,3 +8,6 @@ date.txt
 
 invoice.db
 invoice.db*
+
+dist/
+build/
