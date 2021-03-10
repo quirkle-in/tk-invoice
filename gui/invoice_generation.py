@@ -23,7 +23,7 @@ class InvoiceForm:
         self.window.configure(background="#f3f3f3")
         self.window.title("Create Invoice")
         self.window.geometry("1200x800")
-        self.window.resizable(False, False)
+        self.window.resizable(True, True)
 
         style = ThemedStyle(self.window)
         style.set_theme("breeze")

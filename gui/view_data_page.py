@@ -191,16 +191,8 @@ class ViewDataPage:
         self.entry_print = ttk.Entry(self.print_frame, textvariable=self.print_id)
         self.entry_print.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
 
-        self.btn_print = ttk.Button(self.print_frame, text = "Print", width=30, command = self.delete_table_row)
+        self.btn_print = ttk.Button(self.print_frame, text = "Print", width=30, command = self.print_table_row)
         self.btn_print.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
-
-
-
-        self.btn_print = ttk.Button(
-            self.window, text = 'Print',
-            width=30, command=self.print_table_row
-        )
-        self.btn_print.grid(row=1, column = 1)
         
         ''' EXPORT DATA '''
 
