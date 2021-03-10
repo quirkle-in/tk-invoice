@@ -18,6 +18,8 @@ class MainWindow:
 
         style = ThemedStyle(self.window)
         style.set_theme("breeze")
+  
+        self.window.iconbitmap('favicon.ico')
 
         self.btn_create_invoice = TkinterCustomButton(text="Create Invoice", command = self.create_invoice_page, width = 200, 
                                     corner_radius=15, hover_color = '#960020', fg_color='#f72c58', text_font=('Avenir',13))

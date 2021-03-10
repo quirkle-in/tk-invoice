@@ -15,6 +15,7 @@ sqlite-bro = "*"
 reportlab = "*"
 num2words = "*"
 pyinstaller = "*"
+pillow = "*"
 
 [dev-packages]
 

@@ -28,6 +28,8 @@ class InvoiceForm:
         style = ThemedStyle(self.window)
         style.set_theme("breeze")
 
+        self.window.iconbitmap('favicon.ico')
+
 
         ''' TK VARIABLES '''
         self.reverse_charge_var = tk.BooleanVar(self.window, value = False)

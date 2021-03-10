@@ -18,6 +18,8 @@ class AddEntityPage:
         style = ThemedStyle(self.window)
         style.set_theme("vista")
 
+        self.window.iconbitmap('favicon.ico')
+
         self.data = {}
         self.titles = [column.key for column in Entity.__table__.columns]
         self.titles.remove('entity_id')

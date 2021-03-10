@@ -9,6 +9,7 @@ class TableView:
     def __init__(self, root, data):
         self.root = root
         self.data = data
+
         
         self.base_frame = ttk.Frame(self.root)
         self.base_frame.pack(side = tk.BOTTOM, pady=20)
@@ -61,6 +62,8 @@ class TableView:
 class InvoiceView:
     def __init__(self, invoice, details):
         self.root = tk.Tk()
+
+        self.root.iconbitmap('favicon.ico')
 
         self.invoice = invoice
         self.details = details
@@ -128,6 +131,7 @@ class ViewDataPage:
 
         style = ThemedStyle(self.window)
         style.set_theme("breeze")
+        self.window.iconbitmap('favicon.ico')
 
         self.title = ttk.Label(
             self.window, text="VIEW & EXPORT", font = ("Arial", 14, "bold")
@@ -244,33 +248,33 @@ class ViewDataPage:
 
         x = models.get_table_row(table, _id)
         file_path = filedialog.askdirectory(initialdir = "/", title = "Select a folder to export to")
-        invoice_date = {
-            "invoice_no" :          x.invoice,
-            "invoice_date" :        x.invoice_date,
-            "reverse_charges" :     x.reverse_charges,
-            "state" :               x.entry_party_state,,
-            "state_code" :          x.entry_party_code,
+        # invoice_date = {
+        #     "invoice_no" :          x.invoice,
+        #     "invoice_date" :        x.invoice_date,
+        #     "reverse_charges" :     x.reverse_charges,
+        #     "state" :               x.state,
+        #     "state_code" :          x.code,
             
-            "name" :                x.name,
-            "address" :             x.party_address,
-            "gst" :                 x.entry_party_gstin.get(),
-            "party_state" :         self.entry_party_state.get(),
-            "party_code" :          self.entry_party_code.get(),
+        #     "name" :                x.name,
+        #     "address" :             x.party_address,
+        #     "gst" :                 x.party_gstin,
+        #     "party_state" :         x.party_state,
+        #     "party_code" :          x.party_code,
             
-            "purchase" :            self.typeVar.get(),
-            "rupees_in_words" :     self.entry_rs_in_words.get(),
-            "bank_name" :           self.entry_bank_name.get(),
-            "account_no" :          self.entry_ac_no.get(),            
-            "ifsc":                 self.entry_ifsc.get(),
+        #     "purchase" :            x.typeVar,
+        #     "rupees_in_words" :     x.rupeess_in_words,
+        #     "bank_name" :           self.entry_bank_name,
+        #     "account_no" :          self.entry_ac_no,            
+        #     "ifsc":                 self.entry_ifsc,
 
-            "total_before_tax" :    self.entry_total_before_tax.get(),
-            "total_igst" :          self.entry_igst.get(),
-            "total_cgst" :          self.entry_cgst.get(),
-            "total_sgst" :          self.entry_sgst.get(),
-            "total_tax_amt" :       self.entry_total_tax_amt.get(),
-            "total_after_tax" :     self.entry_total_after_tax_amt.get(),
-            "gst_reverse_charge" :  self.entry_gst_reverse_charge.get(),
-        }
+        #     "total_before_tax" :    self.entry_total_before_tax.
+        #     "total_igst" :          self.entry_igst,
+        #     "total_cgst" :          self.entry_cgst,
+        #     "total_sgst" :          self.entry_sgst,
+        #     "total_tax_amt" :       self.entry_total_tax_amt,
+        #     "total_after_tax" :     self.entry_total_after_tax_amt,
+        #     "gst_reverse_charge" :  self.entry_gst_reverse_charge,
+        # }
 
         
 
