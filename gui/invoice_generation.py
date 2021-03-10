@@ -262,7 +262,7 @@ class InvoiceForm:
         self.window.mainloop()
 
     def get_statics(self):
-        path = 'C:\\Users\\Jaisal Shah\\Desktop\\FLP\\Bill\\tk_invoice\\settings.json'
+        path = 'settings.json'
         with open(path) as f:
             data = json.load(f)
             return data['state']
