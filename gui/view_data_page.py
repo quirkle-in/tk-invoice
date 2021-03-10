@@ -1,9 +1,9 @@
+from pdf_generation.purchase_sale_view import purchase_report
 from tkinter import messagebox, ttk, filedialog
-from sqlalchemy.sql.base import Executable
+from gui.components import datepick
 from ttkthemes import ThemedStyle
 import tkinter as tk
 import models
-from pdf_generation.purchase_sale_view import purchase_report
 
 
 INVOICE_COLUMNS = ["invoice_id", "invoice_no",
@@ -50,6 +50,7 @@ class TableView:
             self.columns = INVOICE_COLUMNS
         else:
             self.columns = DETAIL_COLUMNS
+        
 
         col = 0
         for field in self.columns:
@@ -158,8 +159,7 @@ class ViewDataPage:
             self.bottom_frame, borderwidth=2, relief="groove")
         self.print_frame.pack(side=tk.LEFT, padx=20, pady=20)
 
-        ttk.Label(self.print_frame, text="PRINT DATA").pack(
-            side=tk.TOP, expand=True, padx=10, pady=10)
+        ttk.Label(self.print_frame, text="PRINT DATA").pack(side=tk.TOP, expand=True, padx=10, pady=10)
 
         self.print_table = tk.StringVar(self.print_frame)
         self.table_print = ttk.OptionMenu(
@@ -179,16 +179,35 @@ class ViewDataPage:
             self.window, borderwidth=2, relief="groove")
         self.report_frame.pack(side=tk.BOTTOM, padx=10, pady=10)
 
+        self.var_start_date = tk.StringVar(self.window, value = "")
+        self.var_end_date = tk.StringVar(self.window, value = "")
+        
+
+        ttk.Label(self.report_frame, text="Start Date").pack(side=tk.LEFT, expand=True, padx=10, pady=10)
+        self.entry_start_date = ttk.Entry(self.report_frame, textvariable = self.var_start_date)  # date picker
+        self.entry_start_date.pack(side=tk.LEFT, expand=True, padx=10, pady=5)
+        self.entry_start_date.bind("<1>", self.calOpen_start)
+        
+        ttk.Label(self.report_frame, text="End Date").pack(side=tk.LEFT, expand=True, padx=10, pady=10)
+        self.entry_end_date = ttk.Entry(self.report_frame, textvariable = self.var_end_date)  # date picker
+        self.entry_end_date.pack(side=tk.LEFT, expand=True, padx=10, pady=5)
+        self.entry_end_date.bind("<1>", self.calOpen_end)
+
         self.btn_purchases_report = ttk.Button(
             self.report_frame, text="Generate Purchases Report", width=30, command=self.generate_purchase_report)
         self.btn_purchases_report.pack(side=tk.LEFT, padx=10, pady=10)
 
         self.btn_sales_report = ttk.Button(self.report_frame, text = "Generate Sales Report", width=30)
-        self.btn_sales_report.pack(side = tk.RIGHT, padx = 10, pady = 10)
+        self.btn_sales_report.pack(side = tk.LEFT, padx = 10, pady = 10)
         
         self.window.mainloop()
 
-        self.window.mainloop()
+    
+    def calOpen_start(self, event):
+        datepick.CalWindow(self.var_start_date)
+    
+    def calOpen_end(self, event):
+        datepick.CalWindow(self.var_end_date)
 
     def back_to_home_page(self):
         ''' confirmation '''
@@ -197,7 +216,7 @@ class ViewDataPage:
         self.window.destroy()
 
     def generate_purchase_report(self):
-        details = models.purchase_report()
+        details = models.purchase_report(self.var_start_date.get(), self.var_end_date.get())
         filepath = filedialog.askdirectory(
             initialdir='/', title='Select Folder')
         DETAILS = {
@@ -214,7 +233,7 @@ class ViewDataPage:
                 title='Error', message='Error during creation of Purchase Report')
 
     def generate_sales_report(self):
-        details = models.sales_report()
+        details = models.sales_report(self.var_start_date.get(), self.var_end_date.get())
         filepath = filedialog.askdirectory(
             initialdir='/', title='Select Folder')
         DETAILS = {
