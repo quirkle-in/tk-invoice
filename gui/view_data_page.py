@@ -65,12 +65,11 @@ class InvoiceView:
         self.invoice = invoice
         self.details = details
         
-        self.base_frame = ttk.Frame(self.root)
+        self.base_frame = ttk.Frame(self.root, borderwidth=2, relief="groove")
         self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=20)
 
-        self.canvas = tk.Canvas(self.base_frame, width=1100, height = 300)
-        self.scrollbar_y = ttk.Scrollbar(self.base_frame,
-            orient = tk.VERTICAL, command = self.canvas.yview)
+        self.canvas = tk.Canvas(self.base_frame, width=1800, height = 300)
+        self.scrollbar_y = ttk.Scrollbar(self.base_frame, orient = tk.VERTICAL, command = self.canvas.yview)
         self.frame = ttk.Frame(self.canvas, width=1100)
 
         self.frame.bind(
@@ -147,15 +146,11 @@ class ViewDataPage:
         self.filter_frame.pack(padx=20, pady=20)
 
         ttk.Label(self.filter_frame, text = "Select Table: ").grid(row = 0, column = 0, padx=20)
-        self.filter_table = ttk.OptionMenu(
-            self.filter_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities"
-        )
+        self.filter_table = ttk.OptionMenu(self.filter_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
         self.filter_table.grid(row = 0, column = 1)
 
         ttk.Label(self.filter_frame, text = "Type: ").grid(row = 0, column = 2, padx=20)
-        self.filter_type = ttk.OptionMenu(
-            self.filter_frame, self.filters["type"], "All", "Purchases", "Sales", "All"
-        )
+        self.filter_type = ttk.OptionMenu(self.filter_frame, self.filters["type"], "All", "Purchases", "Sales", "All")
         self.filter_type.grid(row = 0, column = 3)
         
         self.btn_execute = ttk.Button(
@@ -166,12 +161,11 @@ class ViewDataPage:
 
 
         ''' DELETE DATA '''
-        self.delete_frame = ttk.Frame(self.window)
+        self.delete_frame = ttk.Frame(self.window, borderwidth=2, relief="groove")
         self.delete_frame.pack(side = tk.BOTTOM, padx=20, pady = 20)
 
         ttk.Label(self.delete_frame, text = "DELETE DATA").pack(side = tk.TOP, expand = True, padx = 10, pady = 10)
 
-        self.delete_table = tk.StringVar(self.delete_frame)
         self.table_delete = ttk.OptionMenu(self.delete_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
         self.table_delete.pack(side = tk.LEFT, expand=True,  padx = 10, pady = 10)
 
@@ -184,7 +178,7 @@ class ViewDataPage:
 
 
         ''' PRINT DATA '''
-        self.print_frame = ttk.Frame(self.window)
+        self.print_frame = ttk.Frame(self.window, borderwidth=2, relief="groove")
         self.print_frame.pack(side = tk.BOTTOM, padx=20, pady = 20)
 
         ttk.Label(self.print_frame, text = "PRINT DATA").pack(side = tk.TOP, expand = True, padx = 10, pady = 10)
@@ -268,8 +262,8 @@ class ViewDataPage:
             create_invoice_pdf(invoice, details)'''
 
     def print_table_row(self):
-        table = self.delete_table.get()
-        _id = self.delete_id.get()
+        table = self.filters["table"].get()
+        _id = self.print_id.get()
 
         x = models.print_table_row(table, _id)
         save_print_path = filedialog.asksaveasfilename(defaultextension=".pdf")
@@ -277,7 +271,7 @@ class ViewDataPage:
 
         
     def delete_table_row(self):
-        table = self.delete_table.get()
+        table = self.filters["table"].get()
         _id = self.delete_id.get()
 
         print('delete: ', table, _id)

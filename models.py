@@ -82,21 +82,6 @@ class Entity(Base):
     a_c_no = Column(String(100))
     ifc_code = Column(String(100))
     
-class GSTValues(Base):
-    __tablename__ = 'gstValues'
-
-    cgst = Column(Float, nullable=False, primary_key=True)
-    sgct = Column(Float, nullable=False)
-    igst = Column(Float, nullable=False)
-    
-def set_gst(cgst, sgst, igst):
-    print(cgst, sgst, igst)
-    with open("settings.json") as f:
-        data = json.load(f)
-        data["cgst"] = cgst
-        data["sgst"] = sgst
-        data["igst"] = igst
-        json.dump(data, open("settings.json", "w"), indent = 4)
 
 def get_last_invoice():
     x = db.query(Invoice).order_by(
@@ -180,16 +165,8 @@ def filtered_view(table, type):
     return res.all()
 
     
-def create_entity(
-        name, address, gstin_uid,
-        state, state_code, bank_name,
-        a_c_no, ifc_code):
-    E = Entity(
-        name = name, address = address, gstin_uid = gstin_uid, 
-        state = state, state_code = state_code, 
-        bank_name = bank_name, a_c_no = a_c_no, ifc_code = ifc_code
-    )
-
+def create_entity(data):
+    E = Entity(**data)
     try:
         db.add(E)
         db.commit()

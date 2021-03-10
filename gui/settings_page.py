@@ -75,6 +75,7 @@ class SettingsPage:
         except Exception as e:
             print(e)
             return False
+
     
     def load_settings(self):
         with open(file_path, 'r') as json_file:
@@ -91,4 +92,14 @@ class SettingsPage:
             messagebox.showinfo("Error", "Settings not saved.")
         self.window.destroy()
 
-    
+
+def save_setting(setting, value):
+    try:
+        with open(file_path, 'rw') as json_file:
+            x = json.load(json_file)
+            x[setting] = value
+            json.dump(x, json_file)
+        return True
+    except Exception as e:
+        print(e)
+        return False    

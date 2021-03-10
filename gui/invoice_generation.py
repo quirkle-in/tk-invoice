@@ -51,33 +51,33 @@ class InvoiceForm:
         self.header_frame.pack(expand = True, padx = 10, pady = 5)
         # -
         self.top_frame = ttk.Frame(self.window)
-        self.top_frame.pack(side = tk.TOP, expand=True, anchor="n")
+        self.top_frame.pack(side = tk.TOP, expand=True, anchor="n", padx = 10)
 
         # - -
         self.top_left_frame = ttk.Frame(self.top_frame, borderwidth=2, relief="groove")
-        self.top_left_frame.pack(side = tk.LEFT, anchor="n")
+        self.top_left_frame.pack(side = tk.LEFT, anchor="n", padx = 10)
         
         # - -
         self.top_right_frame = ttk.Frame(self.top_frame, borderwidth=2, relief="groove")
-        self.top_right_frame.pack(side = tk.RIGHT, anchor="n")
+        self.top_right_frame.pack(side = tk.RIGHT, anchor="n", padx = 10)
     
         ''' FOOTER '''
     
         self.footer_frame = ttk.Frame(self.window, borderwidth=2, relief="groove")
-        self.footer_frame.pack(side = tk.BOTTOM)
+        self.footer_frame.pack(side = tk.BOTTOM, padx = 10)
 
         ''' BOTTOM '''
         # -
         self.bottom_frame = ttk.Frame(self.window)
-        self.bottom_frame.pack(side = tk.BOTTOM, expand = True, anchor="n")
+        self.bottom_frame.pack(side = tk.BOTTOM, expand = True, anchor="n", padx = 10)
 
         # - -
         self.bottom_left_frame = ttk.Frame(self.bottom_frame, borderwidth=2, relief="groove")
-        self.bottom_left_frame.pack(side = tk.LEFT, anchor="n")
+        self.bottom_left_frame.pack(side = tk.LEFT, anchor="n", padx = 10)
         
         # - -
         self.bottom_right_frame = ttk.Frame(self.bottom_frame, borderwidth=2, relief="groove")
-        self.bottom_right_frame.pack(side = tk.RIGHT, anchor="n")
+        self.bottom_right_frame.pack(side = tk.RIGHT, anchor="n", padx = 10)
 
         ''' WIDGETS '''
 
@@ -449,14 +449,14 @@ class InvoiceForm:
             messagebox.showerror(title='Error', message='No saved items were found.')
             return
         x = {field: res.__dict__[field] for field in res.__dict__}
-        #print(x)
+        print(x)
 
         try:
             self.entry_party_name.delete(0, tk.END)
             self.entry_party_name.insert(0, x["name"])
             
-            self.entry_ifc_code.delete(0, tk.END)
-            self.entry_ifc_code.insert(0, x["ifc_code"])
+            self.entry_ifsc.delete(0, tk.END)
+            self.entry_ifsc.insert(0, x["ifc_code"])
 
             self.entry_bank_name.delete(0, tk.END)
             self.entry_bank_name.insert(0, x["bank_name"])

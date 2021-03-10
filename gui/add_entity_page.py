@@ -1,8 +1,8 @@
-from models import Entity, GSTValues
+from ttkthemes import ThemedStyle
+from tkinter import messagebox
+from models import Entity
 from tkinter import ttk
 import tkinter as tk
-from tkinter import messagebox
-from ttkthemes import ThemedStyle
 import models
 
 
@@ -22,75 +22,41 @@ class AddEntityPage:
         self.titles = [column.key for column in Entity.__table__.columns]
         self.titles.remove('entity_id')
 
-        ttk.Button(self.window, text = "Back",
-            command = self.back_to_home).grid(row = 0, column = 0, padx = 30, pady = 10)
+        ttk.Button(self.window, text = "Back", command = self.back_to_home).pack(padx = 10, pady = 10)
 
-        ttk.Label(self.window, text="ADD ENTITY", font = ("Arial", 14, "bold")).grid(padx = 30, pady = 10, row = 0, column = 1)
+        ttk.Label(self.window, text="ADD ENTITY", font = ("Arial", 14, "bold")).pack(expand = True, padx = 10)
         
-        row = 1
         for field in self.titles:
             self.data[field] = tk.StringVar(self.window)
-            ttk.Label(self.window, text=field.replace("_", " ").upper()).grid(padx = 30, pady = 10, row = row, column = 0)
-        
-            en = ttk.Entry(self.window, width = 30, textvariable = self.data[field])
-            en.grid(padx = 30, row = row, column = 1, pady = 10)
 
-            row += 1
+            f = ttk.Frame(self.window)
+            ttk.Label(f, text = field.replace("_", " ").upper()).pack(side = tk.LEFT, padx = 10, pady = 5)
+            en = ttk.Entry(f, width = 30, textvariable = self.data[field])
+            en.pack(side = tk.RIGHT, padx = 10, pady = 5)
+            f.pack(expand = True)
 
-        ttk.Button(self.window, text = "Add Entity",
-            command = self.add_entity).grid(row = 9, column = 0, padx = 30, pady = 10)
-
-        ttk.Label(self.window, text='CGST: ').grid(row = 10, column = 0, padx = 30, pady = 10)
-        ttk.Label(self.window, text='SGST: ').grid(row = 11, column = 0, padx = 30, pady = 10)
-        ttk.Label(self.window, text='IGST: ').grid(row = 12, column = 0, padx = 30, pady = 10)
-        self.cgst = ttk.Entry(self.window)
-        self.cgst.grid(row = 10, column = 1, padx = 30, pady = 10)
-        self.sgst = ttk.Entry(self.window)
-        self.sgst.grid(row = 11, column = 1, padx = 30, pady = 10)
-        self.igst = ttk.Entry(self.window)
-        self.igst.grid(row = 12, column = 1, padx = 30, pady = 10)
-        ttk.Button(self.window, text = "Save GST values",
-        command = self.save_gst).grid(row = 13, column = 0, padx = 30, pady = 10)
+        ttk.Button(self.window, text = "Add Entity", command = self.add_entity).pack(expand = True, pady = 10, width = 30)
 
         self.window.mainloop()
 
-    def save_gst(self):
-        models.set_gst(cgst=int(self.cgst.get()), sgst=int(self.sgst.get()), igst=int(self.igst.get()))
 
     def add_entity(self):
         data = {}
         for field in self.data:
             x = self.data[field].get()
             if x == "":
-                messagebox.showerror(
-                    title = "Error",
-                    message = "Invalid / empty fields"
-                )
+                messagebox.showerror(title = "Error", message = "Invalid / empty fields")
                 return
             data[field] = x
         
-        res = models.create_entity(
-            data["name"],
-            data["address"],
-            data["gstin_uid"],
-            data["state"],
-            data["state_code"],
-            data["bank_name"],
-            data["a_c_no"],
-            data["ifc_code"]
-        )
+        res = models.create_entity(data)
         print(res)
         if res:
-            messagebox.showinfo(
-                title = "Success!",
-                message = "Created entity"
-            )
+            messagebox.showinfo(title = "Success!", message = "Created entity")
             self.back_to_home()
         else:
-            messagebox.showerror(
-                title = "Failed",
-                message = "Unable to create entity."
-            )
+            messagebox.showerror(title = "Failed", message = "Unable to create entity.")
+
 
     def back_to_home(self):
         self.window.destroy()

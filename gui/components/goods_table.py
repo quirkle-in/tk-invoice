@@ -13,7 +13,7 @@ class Table:
 
 
         self.base_frame = ttk.Frame(self.root)
-        self.base_frame.pack(side = tk.RIGHT, padx = 10)
+        self.base_frame.pack(padx = 10)
 
         
         self.btn_add_row = ttk.Button(
@@ -21,7 +21,7 @@ class Table:
             command = self.add_new_goods_row,
             width = 20
         )
-        self.btn_add_row.pack(side = tk.LEFT, expand = True)
+        self.btn_add_row.pack(expand = True)
 
         self.canvas = tk.Canvas(self.base_frame, width=940, height = 120)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame, #canvas, maybe
@@ -52,7 +52,7 @@ class Table:
 
         col = 0
         for field in self.titles:
-            self.i = ttk.Entry(self.frame, width=13, font=('Arial', 8), 
+            self.i = ttk.Entry(self.frame, width=14, font=('Arial', 8), 
                 justify = tk.CENTER)
             self.i.insert(tk.END, field.replace("_", " ").upper())
             self.i.config(state='readonly')
@@ -91,7 +91,7 @@ class Table:
 
         col = 0
         for field in self.titles:
-            en = ttk.Entry(self.frame, width=13, font=('Arial', 8),
+            en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
                 textvariable=self.entries[self.total_goods_rows][field])
             en.grid(row=self.total_goods_rows + 1, column=col)
             col += 1
