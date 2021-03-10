@@ -126,8 +126,18 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
 
     ''' Total tables '''
 
+<<<<<<< HEAD
     pdf.line(105, 230, 105, 290)
     right_bottom_headers = ['total_before_tax', 'total_cgst', 'total_sgst', 'total_igst', 'total_tax_amt', 'total_after_tax', 'gst_reverse_charge']
+=======
+    pdf.line(105, 245, 105, 290)
+
+    right_bottom_headers = [
+        'total_before_tax', 'total_cgst', 'total_sgst',
+        'total_igst', 'total_tax_amt', 'total_after_tax',
+        'gst_reverse_charge'
+    ]
+>>>>>>> 360dadfe7e836f51c574ae9fef89f465163ff3eb
 
     pdf.ln(3)
     for field in right_bottom_headers:
