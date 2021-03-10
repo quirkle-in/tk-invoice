@@ -1,7 +1,8 @@
 from ttkthemes import ThemedStyle
-from tkinter import messagebox, ttk
+from tkinter import messagebox, ttk, filedialog
 import tkinter as tk
 import models
+
 
 class TableView:
 
@@ -10,7 +11,7 @@ class TableView:
         self.data = data
         
         self.base_frame = ttk.Frame(self.root)
-        self.base_frame.pack(side = tk.BOTTOM, padx=10, pady=20)
+        self.base_frame.pack(side = tk.BOTTOM, pady=20)
 
         self.canvas = tk.Canvas(self.base_frame, width=1150, height = 300)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame,
@@ -33,11 +34,12 @@ class TableView:
         if not self.data or self.data == []:
             return
 
+
         self.columns = [i.name for i in data[0].__table__.columns]
         
         col = 0
         for field in self.columns:
-            i = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8, "bold"), wrap = tk.WORD)
+            i = tk.Text(self.frame, width=12, height = 2, font=('Arial', 8, "bold"), wrap = tk.WORD)
             i.tag_configure('tag-center', justify='center')
             i.insert(tk.END, field.replace("_", " ").upper(), 'tag-center')
             i.configure(state="disabled")
@@ -46,10 +48,11 @@ class TableView:
 
         for row in range(len(self.data)):
             x = self.data[row].__dict__
+            print(x)
             col = 0
             for field in self.columns:
-                en = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8), wrap = tk.WORD)
-                en.insert(tk.END, x[field])
+                en = tk.Text(self.frame, width=12, height = 2, font=('Arial', 8), wrap = tk.WORD)
+                en.insert(tk.END, str(x[field]))
                 en.configure(state="disabled")
                 en.grid(row= row + 1, column=col)
                 col += 1
@@ -167,7 +170,7 @@ class ViewDataPage:
         self.delete_frame = ttk.Frame(self.window)
         self.delete_frame.pack(side = tk.BOTTOM, padx=20, pady = 20)
 
-        ttk.Label(self.delete_frame, text = "DELETE DATA").grid(row = 0, column = 1)
+        ttk.Label(self.delete_frame, text = "PRINT / DELETE DATA").grid(row = 0, column = 1)
 
         self.delete_table = tk.StringVar(self.delete_frame)
         self.table_delete = ttk.OptionMenu(
@@ -240,13 +243,28 @@ class ViewDataPage:
             ]
             print(x)
 
+
+        print(self.data)
+        '''invoice, details = models.get_invoice_by_id(1)
+        print(invoice, details)'''
+        '''if invoice and details:
+            invoice = {field : invoice.__dict__[field] for field in invoice.__dict__ }
+            details = [{
+                field : detail.__dict__[field] for field in detail.__dict__ 
+            } for detail in details]
+        
+            create_invoice_pdf(invoice, details)'''
+
     def print_table_row(self):
-        table = self.delete_id.get()
+        table = self.delete_table.get()
         _id = self.delete_id.get()
-        print(table, _id)
-        print('This actually works')
+
+        x = models.print_table_row(table, _id)
+        save_print_path = filedialog.asksaveasfilename(defaultextension=".pdf")
         
 
+        
+        
 
     def delete_table_row(self):
         table = self.delete_table.get()

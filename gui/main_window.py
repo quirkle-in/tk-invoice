@@ -49,14 +49,6 @@ class MainWindow:
             width = 30
         )
         self.btn_settings.pack(expand=True)
-        
-        self.btn_pdf = ttk.Button(
-            self.window, text="PDF",
-            command = self.temp_create_pdf,
-            width = 30
-        )
-        self.btn_pdf.pack(expand=True)
-
 
         self.window.mainloop()
 
@@ -74,14 +66,3 @@ class MainWindow:
     
     def settings_page(self):
         SettingsPage()
-    
-    def temp_create_pdf(self):
-        invoice, details = models.get_invoice_by_id(1)
-        print(invoice, details)
-        if invoice and details:
-            invoice = {field : invoice.__dict__[field] for field in invoice.__dict__ }
-            details = [{
-                field : detail.__dict__[field] for field in detail.__dict__ 
-            } for detail in details]
-        
-            create_invoice_pdf(invoice, details)

@@ -32,7 +32,18 @@ class Invoice(Base):
     total_cgst = Column(Float, default=0)
     total_sgst = Column(Float, default=0)
     purchase = Column(Boolean, default=True)
+    rupees_in_words = Column(String(100))
+    bank_name = Column(String(100))
+    account_no = Column(String(100))
+    ifsc_code = Column(String(100))
     reverse_charges = Column(Boolean, default = False)
+    total_before_tax = Column(Float, default = 0.00)
+    total_igst = Column(Float, default = 0.00)
+    total_tax_amt = Column(Float, default = 0.00)
+    total_after_tax = Column(Float, default = 0.00)
+    gst_reverse_charge = Column(String(100))
+
+
 
 class Details(Base):
 
@@ -94,26 +105,24 @@ def get_last_invoice():
 
 
 def createInvoice(
-        invoice_date,
-        name,
-        address,
-        gst,
-        state,
-        state_code,
-        total,
-        total_cgst,
-        total_sgst,
-        purchase,
-        invoice_no,
-        reverse_charges):
+        invoice_date, name, address, gst, state,
+        state_code, total, total_cgst, total_sgst,
+        purchase, invoice_no, rupees_in_words,
+        reverse_charges, total_before_tax,
+        total_igst, total_tax_amt, bank_name,
+        total_after_tax, gst_reverse_charge):
     try:
         inv = Invoice(
             invoice_no=invoice_no, invoice_date=invoice_date,
             name=name, address=address,
-            state=state,
+            state=state, gst = gst, rupees_in_words = rupees_in_words,
             state_code=state_code, total=total,
             total_cgst=total_cgst, total_sgst=total_sgst,
-            purchase=purchase, reverse_charges = reverse_charges)
+            purchase=purchase, reverse_charges = reverse_charges,
+            total_before_tax = total_before_tax, bank_name = bank_name,
+            total_igst = total_igst, total_tax_amt = total_tax_amt,
+            total_after_tax = total_after_tax, gst_reverse_charge = gst_reverse_charge
+            )
         db.add(inv)
         db.commit()
         # print(inv)
@@ -210,6 +219,21 @@ def create_entity(
         print(e)
         db.rollback()
         return False
+
+def print_table_row(table, _id):
+    if table == "Invoices":
+        x = Invoice
+        res = db.query(x).filter_by(invoice_id = _id).first()
+        print(res.name)
+    elif table == "Details":
+        x = Details
+        res = db.query(x).filter_by(deet_id = _id).first()
+        print(res)
+    elif table == "Entities":
+        x = Entity
+        res = db.query(x).filter_by(entity_id = _id).first()    
+    
+    return res
 
 def delete_table_row(table, _id):
     if table == "Invoices":

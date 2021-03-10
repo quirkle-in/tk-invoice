@@ -14,8 +14,10 @@ import tkinter as tk
 from pathlib import Path
 from tkinter.scrolledtext import ScrolledText
 import models
-
+from tkinter import filedialog
 from num2words import num2words
+
+from pdf_generation.create_invoice_pdf import create_invoice_pdf
 
 
 CAL_CLICKED = 0
@@ -274,6 +276,12 @@ class InvoiceForm:
         )
         self.btn_invoice_submit.grid(row = 0, column = 1, padx = 10, pady = 10)
 
+        self.btn_invoice_print = ttk.Button(
+            self.footer_frame, text='Print', command=self.onPrint,
+            width=30
+        )
+        self.btn_invoice_print.grid(row=0, column=2, padx=10, pady=10)
+
         ''' Window Mainloop '''
         self.window.mainloop()
 
@@ -299,7 +307,14 @@ class InvoiceForm:
             total_cgst=self.entry_cgst.get(),
             total_sgst=self.entry_sgst.get(),
             purchase=self.typeVar.get(),
-            reverse_charges=self.reverse_charge_var.get()
+            rupees_in_words=self.entry_rs_in_words.get(),
+            reverse_charges=self.reverse_charge_var.get(),
+            bank_name=self.entry_bank_name.get(),
+            gst_reverse_charge=self.entry_gst_reverse_charge.get(),
+            total_before_tax=self.entry_total_before_tax.get(),
+            total_after_tax=self.entry_total_after_tax_amt.get(),
+            total_igst=self.entry_igst.get(),
+            total_tax_amt=self.entry_total_tax_amt.get()
         )
         print(resp)
         return resp
@@ -372,13 +387,6 @@ class InvoiceForm:
             print(e)
             self.sendAlert("Error while calculating!")
     
-    def change_bottom_right(self):
-        self.entry_total_before_tax.delete(0, END)
-        self.entry_cgst.delete(0, END)
-        self.entry_igst.delete(0, END)
-        self.entry_sgst.delete(0, END)
-        self.entry_total_tax_amt.delete(0, END)
-        self.entry_total_after_tax_amt.delete(0, END)
 
     def onConfirm(self):
         print('Confirmed')
@@ -412,11 +420,41 @@ class InvoiceForm:
             messagebox.showerror(
                 title='Attention', message='Please click calculate button before submission')
 
-        # self.performCaluclations()
+        
+    def onPrint(self):
+        good_deets = self.goods_table.getGoodsDetails()
+        filename_with_Abspath = filedialog.asksaveasfilename(defaultextension='.pdf', title='Save Invoice') 
 
-        # self.btn_invoice_submit.config(text='Confirm', command=self.onConfirm)
+        complete_invoice_details = {
+            'invoice_details': {
+                'invoice_date'    : datetime.strptime(self.entry_invoice_date.get(), '%d/%m/%Y'),
+                'invoice_no'      : self.entry_invoice_no.get(),
+                'name'            : self.entry_party_name.get(),
+                'address'         : self.entry_party_address.get('1.0', 'end-1c'),
+                'gst'             : self.entry_party_gstin.get(),
+                'state'           : self.entry_party_state.get(),
+                'state_code'      : self.entry_party_code.get(),
+                'total'           : self.entry_total_tax_amt.get(),
+                'total_cgst'      : self.entry_cgst.get(),
+                'total_sgst'      : self.entry_sgst.get(),
+                'purchase'        : self.typeVar.get(),
+                'reverse_charges' : self.reverse_charge_var.get(),
+                'rupees_in_words' : self.entry_rs_in_words.get(),
+                'bank_name'       : self.entry_bank_name.get(),
+                'account_no'    : self.entry_ac_no.get(),
+                'ifsc_code'       : self.entry_ifc_code.get()
+            },
 
-        # self.window.destroy()
+            'goods_details'       : good_deets,
+            'filepath_with_name'  : filename_with_Abspath
+        }
+
+        print(complete_invoice_details)
+        printing = create_invoice_pdf(complete_invoice_details['invoice_details'], 
+                                    complete_invoice_details['goods_details'],
+                                    complete_invoice_details['filepath_with_name']
+                                    )
+
 
     def validateData(self):
         goods_details = self.goods_table.getGoodsDetails()
