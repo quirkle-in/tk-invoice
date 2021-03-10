@@ -172,7 +172,7 @@ def create_invoice_pdf(INVOICE, DETAILS):
     Total tables
     '''
 
-    pdf.line(105, 220, 105, 290)
+    pdf.line(105, 230, 105, 290)
 
     right_bottom_headers = {'Total Before tax': 16,
                             'CGST': 16, 'SGST': 16, 'IGST': 16, 'Total Tax Amount': 16, 'Total After Tax': 16, 'GST Reverse Charge': 16}
@@ -209,7 +209,6 @@ def create_invoice_pdf(INVOICE, DETAILS):
         print("Created.")
     except Exception as e:
         print(e)
-
 
 if __name__ == '__main__':
     create_invoice_pdf()
