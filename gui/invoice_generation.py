@@ -22,11 +22,11 @@ class InvoiceForm:
         self.window = tk.Tk()
         self.window.configure(background="#f3f3f3")
         self.window.title("Create Invoice")
-        self.window.geometry("1200x700")
-        self.window.resizable(True, True)
+        self.window.geometry("1200x800")
+        self.window.resizable(False, False)
 
         style = ThemedStyle(self.window)
-        style.set_theme("vista")
+        style.set_theme("breeze")
 
 
         ''' TK VARIABLES '''

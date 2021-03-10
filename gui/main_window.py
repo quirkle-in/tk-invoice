@@ -5,6 +5,7 @@ from gui.settings_page import SettingsPage
 from ttkthemes import ThemedStyle
 from tkinter import ttk
 import tkinter as tk
+from gui.components.tkinter_custom_button import TkinterCustomButton
 
 
 class MainWindow:
@@ -12,23 +13,33 @@ class MainWindow:
         self.window = tk.Tk()
         self.window.configure(background="#f3f3f3")
         self.window.title("Home")
-        self.window.geometry("1200x700")
+        self.window.geometry("500x300")
         self.window.resizable(True, True)
 
         style = ThemedStyle(self.window)
-        style.set_theme("vista")
+        style.set_theme("breeze")
 
-        self.btn_create_invoice = ttk.Button(self.window, text="Create Invoice", command=self.create_invoice_page, width = 30)
+        self.btn_create_invoice = TkinterCustomButton(text="Create Invoice", command = self.create_invoice_page, width = 200, 
+                                    corner_radius=15, hover_color = '#fffe89', fg_color='#ffcd38', text_font=('Avenir',13))
         self.btn_create_invoice.pack(expand=True)
 
-        self.btn_add_entity = ttk.Button(self.window, text="Add Entity", command = self.add_entity_page, width = 30)
+        self.btn_add_entity = TkinterCustomButton(text="Add Entity", command = self.add_entity_page, width = 200, 
+                                    corner_radius=15, hover_color = '#7EEEFF', text_font=('Avenir',13))
+        
         self.btn_add_entity.pack(expand=True)
 
-        self.btn_view_invoices = ttk.Button(self.window, text="View & Export Data", command = self.view_invoice_page, width = 30)
+        self.btn_view_invoices = TkinterCustomButton(text="View & Export Data", command = self.view_invoice_page, width = 200, 
+                                    corner_radius=15, hover_color = '#90EE90', fg_color='#52eb00', text_font=('Avenir',13))
         self.btn_view_invoices.pack(expand=True)
 
-        self.btn_settings = ttk.Button(self.window, text="Settings", command = self.settings_page, width = 30)
+        # self.btn_settings = ttk.Button(self.window, text="Settings", command = self.settings_page, width = 30)
+        # self.btn_settings.pack(expand=True)
+        self.btn_settings = TkinterCustomButton(text="Settings", command = self.settings_page, width = 200, 
+                                    corner_radius=15, hover_color = '#FFCCBB', fg_color='grey', text_font=('Avenir',13))
         self.btn_settings.pack(expand=True)
+
+  
+        
 
         self.window.mainloop()
 

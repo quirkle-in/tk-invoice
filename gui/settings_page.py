@@ -14,14 +14,14 @@ class SettingsPage:
         self.window = tk.Tk()
         self.window.configure(background="#f3f3f3")
         self.window.title("Create Invoice")
-        self.window.geometry("1200x700")
+        self.window.geometry("1200x750")
         self.window.resizable(True, True)
 
         style = ThemedStyle(self.window)
         style.set_theme("vista")
 
         self.base_frame = ttk.Frame(self.window)
-        self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=20)
+        self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=40)
 
         self.load_settings()
         self.setting_variables = {}

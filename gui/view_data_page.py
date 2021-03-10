@@ -127,7 +127,7 @@ class ViewDataPage:
         }
 
         style = ThemedStyle(self.window)
-        style.set_theme("vista")
+        style.set_theme("breeze")
 
         self.title = ttk.Label(
             self.window, text="VIEW & EXPORT", font = ("Arial", 14, "bold")
