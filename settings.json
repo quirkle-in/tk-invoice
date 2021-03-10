@@ -1,1 +1,5 @@
-{"name": "John Doe", "age": 29}
+{
+    "cgst": 8,
+    "sgst": 8,
+    "igst": 8
+}

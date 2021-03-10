@@ -46,16 +46,16 @@ class AddEntityPage:
         self.cgst = ttk.Entry(self.window)
         self.cgst.grid(row = 10, column = 1, padx = 30, pady = 10)
         self.sgst = ttk.Entry(self.window)
-        self.cgst.grid(row = 11, column = 1, padx = 30, pady = 10)
+        self.sgst.grid(row = 11, column = 1, padx = 30, pady = 10)
         self.igst = ttk.Entry(self.window)
-        self.cgst.grid(row = 12, column = 1, padx = 30, pady = 10)
+        self.igst.grid(row = 12, column = 1, padx = 30, pady = 10)
         ttk.Button(self.window, text = "Save GST values",
         command = self.save_gst).grid(row = 13, column = 0, padx = 30, pady = 10)
 
         self.window.mainloop()
 
     def save_gst(self):
-        pass
+        models.set_gst(cgst=int(self.cgst.get()), sgst=int(self.sgst.get()), igst=int(self.igst.get()))
 
     def add_entity(self):
         data = {}

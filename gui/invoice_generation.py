@@ -11,6 +11,7 @@ from tkinter import ttk
 from tkinter import END
 import tkinter as tk
 import models
+import json
 
 
 CAL_CLICKED = 0
@@ -285,8 +286,20 @@ class InvoiceForm:
         print("Errors:", errors)
         return True
 
+    def get_gst_vals(self):
+        path = 'C:\\Users\\Jaisal Shah\\Desktop\\FLP\\Bill\\tk_invoice\\settings.json'
+        with open(path) as f:
+            data = json.load(f)
+            return {
+                'cgst': data['cgst'],
+                'sgst': data['sgst'],
+                'igst': data['igst']
+            }
+
     def performCaluclations(self):
         try:
+            gst_vals = self.get_gst_vals()
+            print('GST Vals: ', gst_vals)
             self.goods_details = self.goods_table.getGoodsDetails()
             #print(self.goods_details)
             j = 0; total = 0
@@ -319,11 +332,11 @@ class InvoiceForm:
             self.entry_total_after_tax_amt.delete(0, END)
             
             self.entry_total_before_tax.insert(0, round(total, 2))
-            self.entry_cgst.insert(0, round(total * 0.06, 2))
-            self.entry_igst.insert(0, round(total * 0.06, 2))
-            self.entry_sgst.insert(0, round(total * 0.06, 2))
-            self.entry_total_tax_amt.insert(0, round(total * 0.12, 2))
-            self.entry_total_after_tax_amt.insert(0, round(total + total * 0.12, 2))
+            self.entry_cgst.insert(0, round(total * gst_vals['cgst'] / 100, 2))
+            self.entry_igst.insert(0, round(total * gst_vals['sgst'] / 100, 2))
+            self.entry_sgst.insert(0, round(total * gst_vals['igst'] /100, 2))
+            self.entry_total_tax_amt.insert(0, round((total * gst_vals['cgst'] / 100) + (total * gst_vals['cgst'] / 100) + (total * gst_vals['cgst'] / 100), 2))
+            self.entry_total_after_tax_amt.insert(0, round(total + (total * gst_vals['cgst'] / 100) + (total * gst_vals['cgst'] / 100) + (total * gst_vals['cgst'] / 100), 2))
             self.entry_rs_in_words.insert(0, num2words(self.entry_total_after_tax_amt.get()).title())
 
         except Exception as e:

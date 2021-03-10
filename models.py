@@ -4,6 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from datetime import datetime
+import json
 
 import os
 from dotenv import load_dotenv
@@ -88,7 +89,14 @@ class GSTValues(Base):
     sgct = Column(Float, nullable=False)
     igst = Column(Float, nullable=False)
     
-
+def set_gst(cgst, sgst, igst):
+    print(cgst, sgst, igst)
+    with open("settings.json") as f:
+        data = json.load(f)
+        data["cgst"] = cgst
+        data["sgst"] = sgst
+        data["igst"] = igst
+        json.dump(data, open("settings.json", "w"), indent = 4)
 
 def get_last_invoice():
     x = db.query(Invoice).order_by(
