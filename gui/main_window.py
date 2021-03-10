@@ -1,3 +1,4 @@
+from pdf_generation.create_invoice_pdf import create_invoice_pdf
 from gui.invoice_generation import InvoiceForm
 from gui.add_entity_page import AddEntityPage
 from gui.view_data_page import ViewDataPage
@@ -5,6 +6,7 @@ from gui.settings_page import SettingsPage
 from ttkthemes import ThemedStyle
 from tkinter import ttk
 import tkinter as tk
+import models
 
 
 class MainWindow:
@@ -48,6 +50,13 @@ class MainWindow:
         )
         self.btn_settings.pack(expand=True)
 
+        self.btn_pdf = ttk.Button(
+            self.window, text="PDF TEST",
+            command = self.testpdf,
+            width = 30
+        )
+        self.btn_pdf.pack(expand=True)
+
         self.window.mainloop()
 
 
@@ -64,3 +73,10 @@ class MainWindow:
     
     def settings_page(self):
         SettingsPage()
+
+    def testpdf(self):
+        invoice, details = models.get_invoice_by_id(5)
+        invoice = { field: invoice.__dict__[field] for field in invoice.__dict__ }
+        details = [{ field: detail.__dict__[field] for field in detail.__dict__ } for detail in details]
+        #print(invoice, details)
+        create_invoice_pdf(invoice, details, "C:/Users/keane/Desktop")
