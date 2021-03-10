@@ -244,3 +244,41 @@ def get_invoice_by_id(_id):
         if details != None:
             return invoice, details
     return None, None
+
+def purchase_report():
+    details = []
+    data = db.query(Invoice).filter_by(purchase = True).all()
+    s_no = 1
+    for x in data:
+        detail_data = db.query(Details).filter_by(invoice_id = x.invoice_id).all()
+        for y in detail_data:
+            details_dict = {'Sr No': s_no,
+               'name': y.name,
+               'hsn': y.hsn,
+               'qty': y.qty,
+               'rate': y.rate,
+               'mrp': y.mrp,
+               'total': y.total,
+               'discount': y.discount,
+               'taxable_amt': y.taxable_amt}
+            details.append(details_dict)
+    return (details)   
+
+def sales_report():
+    details = []
+    data = db.query(Invoice).filter_by(purchase = False).all()
+    s_no = 1
+    for x in data:
+        detail_data = db.query(Details).filter_by(invoice_id = x.invoice_id).all()
+        for y in detail_data:
+            details_dict = {'Sr No': s_no,
+               'name': y.name,
+               'hsn': y.hsn,
+               'qty': y.qty,
+               'rate': y.rate,
+               'mrp': y.mrp,
+               'total': y.total,
+               'discount': y.discount,
+               'taxable_amt': y.taxable_amt}
+            details.append(details_dict)
+    return (details)   
