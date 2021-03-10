@@ -17,7 +17,7 @@ import models
 from tkinter import filedialog
 from num2words import num2words
 
-from pdf_generation import create_invoice_pdf
+from pdf_generation.create_invoice_pdf import create_invoice_pdf
 
 
 CAL_CLICKED = 0
@@ -425,7 +425,7 @@ class InvoiceForm:
         good_deets = self.goods_table.getGoodsDetails()
         filename_with_Abspath = filedialog.asksaveasfilename(defaultextension='.pdf', title='Save Invoice') 
 
-        compete_invoice_details = {
+        complete_invoice_details = {
             'invoice_details': {
                 'invoice_date'    : datetime.strptime(self.entry_invoice_date.get(), '%d/%m/%Y'),
                 'invoice_no'      : self.entry_invoice_no.get(),
@@ -439,9 +439,9 @@ class InvoiceForm:
                 'total_sgst'      : self.entry_sgst.get(),
                 'purchase'        : self.typeVar.get(),
                 'reverse_charges' : self.reverse_charge_var.get(),
-                'rupess_in_words' : self.entry_rs_in_words.get(),
+                'rupees_in_words' : self.entry_rs_in_words.get(),
                 'bank_name'       : self.entry_bank_name.get(),
-                'bank_account'    : self.entry_ac_no.get(),
+                'account_no'    : self.entry_ac_no.get(),
                 'ifsc_code'       : self.entry_ifc_code.get()
             },
 
@@ -449,8 +449,11 @@ class InvoiceForm:
             'filepath_with_name'  : filename_with_Abspath
         }
 
-        print(compete_invoice_details)
-        printing = create_invoice_pdf(compete_invoice_details['invoice_details'], compete_invoice_details['goods_details'])
+        print(complete_invoice_details)
+        printing = create_invoice_pdf(complete_invoice_details['invoice_details'], 
+                                    complete_invoice_details['goods_details'],
+                                    complete_invoice_details['filepath_with_name']
+                                    )
 
 
     def validateData(self):

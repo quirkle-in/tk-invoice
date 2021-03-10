@@ -2,7 +2,7 @@ from fpdf import FPDF
 from datetime import datetime
 
 
-def create_invoice_pdf(INVOICE, DETAILS):
+def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
     print(INVOICE)
     print(DETAILS)
 
@@ -50,12 +50,12 @@ def create_invoice_pdf(INVOICE, DETAILS):
     pdf.text(x=60, y=80, txt=str(reverse_charges))
 
     pdf.set_font('Arial', 'B', 9.0)
-    state = 'Goa'
+    state = INVOICE['state']
     pdf.text(x=15, y=88, txt='State: ')
     pdf.text(x=30, y=88, txt=str(state))
 
     pdf.set_font('Arial', 'B', 9.0)
-    code = '487'
+    code = INVOICE['state_code']
     pdf.text(x=60, y=88, txt='Code: ')
     pdf.text(x=75, y=88, txt=str(code))
 
@@ -75,7 +75,7 @@ def create_invoice_pdf(INVOICE, DETAILS):
     pdf.text(x=160, y=64, txt=str(INVOICE["name"]))
 
     pdf.set_font('Arial', 'B', 9.0)
-    date = '21/03/2021'
+    # date = '21/03/2021'
     pdf.text(x=115, y=70, txt='Address:')  # Address
 
     pdf.line(130, 70, 200, 70)
@@ -204,7 +204,7 @@ def create_invoice_pdf(INVOICE, DETAILS):
     pdf.line(10, 290, 200, 290)
 
     try:
-        pdf.output('dummy.pdf', 'F')
+        pdf.output(FILEPATH, 'F')
         print("Created.")
     except Exception as e:
         print(e)
