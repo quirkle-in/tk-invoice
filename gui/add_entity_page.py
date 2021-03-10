@@ -22,9 +22,9 @@ class AddEntityPage:
         self.titles = [column.key for column in Entity.__table__.columns]
         self.titles.remove('entity_id')
 
-        ttk.Button(self.window, text = "Back", command = self.back_to_home).pack(padx = 10, pady = 10)
+        ttk.Button(self.window, text = "Back", command = self.back_to_home).pack(padx = 10, pady = 5)
 
-        ttk.Label(self.window, text="ADD ENTITY", font = ("Arial", 14, "bold")).pack(expand = True, padx = 10)
+        ttk.Label(self.window, text="ADD ENTITY", font = ("Arial", 14, "bold")).pack(expand = True, padx = 15)
         
         for field in self.titles:
             self.data[field] = tk.StringVar(self.window)
@@ -35,7 +35,7 @@ class AddEntityPage:
             en.pack(side = tk.RIGHT, padx = 10, pady = 5)
             f.pack(expand = True)
 
-        ttk.Button(self.window, text = "Add Entity", command = self.add_entity).pack(expand = True, pady = 10, width = 30)
+        ttk.Button(self.window, text = "Add Entity", command = self.add_entity, width = 30).pack(expand = True, pady = 10)
 
         self.window.mainloop()
 

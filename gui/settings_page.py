@@ -18,18 +18,16 @@ class SettingsPage:
         self.window.resizable(True, True)
 
         style = ThemedStyle(self.window)
-        style.set_theme("vista")
+        style.set_theme("breeze")
+
+        ttk.Label(self.window, text = "SETTINGS", font = ("Arial", 10, "bold"))
 
         self.base_frame = ttk.Frame(self.window)
         self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=40)
 
         self.load_settings()
         self.setting_variables = {}
-
-
-        self.base_frame = ttk.Frame(self.window)
-        self.base_frame.pack(padx = 10)
-
+    
         self.canvas = tk.Canvas(self.base_frame, width=500, height = 600)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame, #canvas, maybe
             orient = "vertical", command = self.canvas.yview)
@@ -59,10 +57,8 @@ class SettingsPage:
             f.pack()
 
 
-
         self.btn_save = ttk.Button(self.window, text = "Save & Exit", command = self.save_and_exit)
         self.btn_save.pack(expand = True, padx = 20, pady = 10)
-
 
         self.window.mainloop()
     

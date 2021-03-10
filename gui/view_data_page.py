@@ -160,9 +160,12 @@ class ViewDataPage:
         self.btn_execute.grid(row = 0, column = 4, padx=20)     
 
 
+        self.bottom_frame = ttk.Frame(self.window, borderwidth=2, relief="groove")
+        self.bottom_frame.pack(side = tk.BOTTOM, expand = True, padx = 10, pady = 10)
+
         ''' DELETE DATA '''
-        self.delete_frame = ttk.Frame(self.window, borderwidth=2, relief="groove")
-        self.delete_frame.pack(side = tk.BOTTOM, padx=20, pady = 20)
+        self.delete_frame = ttk.Frame(self.bottom_frame, borderwidth=2, relief="groove")
+        self.delete_frame.pack(side = tk.RIGHT, padx=20, pady = 20)
 
         ttk.Label(self.delete_frame, text = "DELETE DATA").pack(side = tk.TOP, expand = True, padx = 10, pady = 10)
 
@@ -176,10 +179,9 @@ class ViewDataPage:
         self.btn_delete = ttk.Button(self.delete_frame, text = "Delete", width=30, command = self.delete_table_row)
         self.btn_delete.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
 
-
         ''' PRINT DATA '''
-        self.print_frame = ttk.Frame(self.window, borderwidth=2, relief="groove")
-        self.print_frame.pack(side = tk.BOTTOM, padx=20, pady = 20)
+        self.print_frame = ttk.Frame(self.bottom_frame, borderwidth=2, relief="groove")
+        self.print_frame.pack(side=  tk.LEFT, padx=20, pady = 20)
 
         ttk.Label(self.print_frame, text = "PRINT DATA").pack(side = tk.TOP, expand = True, padx = 10, pady = 10)
 
@@ -194,15 +196,19 @@ class ViewDataPage:
         self.btn_print = ttk.Button(self.print_frame, text = "Print", width=30, command = self.print_table_row)
         self.btn_print.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
         
-        ''' EXPORT DATA '''
 
-        self.btn_export = ttk.Button(
-            self.window, text = "Export View",
-            command = self.export_data_to_pdf,
-            width=30
-        )
-        self.btn_export.pack(side = tk.BOTTOM, padx=20, pady = 20)
+        self.report_frame = ttk.Frame(self.window, borderwidth=2, relief="groove")
+        self.report_frame.pack(side = tk.BOTTOM, padx = 10, pady = 10)
 
+
+        self.btn_purchases_report = ttk.Button(self.report_frame, text = "Generate Purchases Report", width=30)
+        self.btn_purchases_report.pack(side = tk.LEFT, padx = 10, pady = 10)
+
+        self.btn_sales_report = ttk.Button(self.report_frame, text = "Generate Sales Report", width=30)
+        self.btn_sales_report.pack(side = tk.RIGHT, padx = 10, pady = 10)
+
+        self.DATA_TABLE = TableView(self.window, self.data)
+        
         self.window.mainloop()
 
 
@@ -231,27 +237,6 @@ class ViewDataPage:
             pass
         self.DATA_TABLE = TableView(self.window, self.data)
 
-
-    def export_data_to_pdf(self):
-        if self.data:
-            x = [
-                {
-                    field: row.__dict__[field] for field in row.__dict__
-                } for row in self.data
-            ]
-            #print(x)
-
-
-        print(self.data)
-        '''invoice, details = models.get_invoice_by_id(1)
-        print(invoice, details)'''
-        '''if invoice and details:
-            invoice = {field : invoice.__dict__[field] for field in invoice.__dict__ }
-            details = [{
-                field : detail.__dict__[field] for field in detail.__dict__ 
-            } for detail in details]
-        
-            create_invoice_pdf(invoice, details)'''
 
     def print_table_row(self):
         table = self.filters["table"].get()
