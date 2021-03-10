@@ -123,6 +123,7 @@ class InvoiceForm:
         x = ttk.Frame(self.top_left_frame)
         ttk.Label(x, text="State:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_state = ttk.Entry(x)
+        self.entry_state.insert(0, self.get_statics())
         self.entry_state.pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         
         self.entry_code = ttk.Entry(x)
@@ -209,19 +210,19 @@ class InvoiceForm:
         x.pack()
         
         x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="IGST:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        ttk.Label(x, text="CGST @" + str(self.get_gst_vals()['igst']) +"%:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_igst = ttk.Entry(x)
         self.entry_igst.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
         x.pack()
         
         x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="CGST@ 6%:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        ttk.Label(x, text="CGST @" + str(self.get_gst_vals()['cgst']) +"%:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_cgst = ttk.Entry(x)
         self.entry_cgst.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
         x.pack()
         
         x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="SGST@ 6%:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        ttk.Label(x, text="CGST @" + str(self.get_gst_vals()['sgst']) +"%:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_sgst = ttk.Entry(x)
         self.entry_sgst.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
         x.pack()
@@ -260,6 +261,11 @@ class InvoiceForm:
         ''' Window Mainloop '''
         self.window.mainloop()
 
+    def get_statics(self):
+        path = 'C:\\Users\\Jaisal Shah\\Desktop\\FLP\\Bill\\tk_invoice\\settings.json'
+        with open(path) as f:
+            data = json.load(f)
+            return data['state']
 
     def back_to_home_page(self):
         self.window.destroy()
@@ -287,7 +293,7 @@ class InvoiceForm:
         return True
 
     def get_gst_vals(self):
-        path = 'C:\\Users\\Jaisal Shah\\Desktop\\FLP\\Bill\\tk_invoice\\settings.json'
+        path = 'settings.json'
         with open(path) as f:
             data = json.load(f)
             return {
