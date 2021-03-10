@@ -53,7 +53,7 @@ class InvoiceForm:
 
 
         self.header_frame = ttk.Frame(self.window)
-        self.header_frame.pack(expand = True, padx = 10, pady = 10)
+        self.header_frame.pack(expand = True, padx = 10, pady = 5)
         # -
         self.top_frame = ttk.Frame(self.window)
         self.top_frame.pack(side = tk.TOP, expand=True, anchor="n")
@@ -80,61 +80,45 @@ class InvoiceForm:
         self.bottom_left_frame = ttk.Frame(self.bottom_frame, borderwidth=2, relief="groove")
         self.bottom_left_frame.pack(side = tk.LEFT, anchor="n")
         
-        # - - -
-        self.bottom_left_subleft_frame = ttk.Frame(self.bottom_left_frame)
-        self.bottom_left_subleft_frame.pack(side = tk.LEFT, anchor="n")
-        
-        # - - -
-        self.bottom_left_subright_frame = ttk.Frame(self.bottom_left_frame)
-        self.bottom_left_subright_frame.pack(side = tk.RIGHT, anchor="n")
-        
         # - -
         self.bottom_right_frame = ttk.Frame(self.bottom_frame, borderwidth=2, relief="groove")
         self.bottom_right_frame.pack(side = tk.RIGHT, anchor="n")
-        
-        # - - -
-        self.bottom_right_subleft_frame = ttk.Frame(self.bottom_right_frame)
-        self.bottom_right_subleft_frame.pack(side = tk.LEFT, anchor="n")
-        
-        # - - -
-        self.bottom_right_subright_frame = ttk.Frame(self.bottom_right_frame)
-        self.bottom_right_subright_frame.pack(side = tk.RIGHT, anchor="n")
 
         ''' WIDGETS '''
 
         ''' HEADER '''
 
         self.back_to_home = ttk.Button(self.header_frame, text="Back", command=self.back_to_home_page)
-        self.back_to_home.grid(row = 0, column = 0, padx = 90, pady = 10)
+        self.back_to_home.grid(row = 0, column = 0, padx = 90, pady = 5)
 
-        ttk.Label(self.header_frame, text="TAX INVOICE", font=("Arial", 16, "bold")).grid(row = 0, column = 1, padx = 200, pady = 10)
+        ttk.Label(self.header_frame, text="TAX INVOICE", font=("Arial", 16, "bold")).grid(row = 0, column = 1, padx = 200, pady = 5)
 
         ''' AutoFill Party '''
         self.autofill_entity_options = [i[0] for i in models.get_all_entity_names()]
         self.options_autofill = ttk.OptionMenu(self.header_frame, self.autofill_var, "None", *self.autofill_entity_options)
-        self.options_autofill.grid(row = 0, column = 3, padx = 10, pady = 10)
+        self.options_autofill.grid(row = 0, column = 3, padx = 10, pady = 5)
         self.btn_autofill_party = ttk.Button(self.header_frame, text='AutoFill Entity',width=20, command=self.autofill_entity_fields)
         self.btn_autofill_party.grid(row = 0, column = 4)
 
         ''' TOP '''
         
         x = ttk.Frame(self.top_left_frame)
-        ttk.Label(x, text="Invoice Number:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+        ttk.Label(x, text="Invoice Number:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_invoice_no = ttk.Entry(x, text=self.invoice_number_default)
-        self.entry_invoice_no.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 10)
+        self.entry_invoice_no.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
         x.pack()
         
         x = ttk.Frame(self.top_left_frame)
-        ttk.Label(x, text="Invoice Date:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+        ttk.Label(x, text="Invoice Date:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_invoice_date = ttk.Entry(x, textvariable=self.dating)  # date picker
-        self.entry_invoice_date.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 10)
+        self.entry_invoice_date.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
         x.pack()
         
         
         x = ttk.Frame(self.top_left_frame)
-        ttk.Label(x, text="Reverse Charges:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+        ttk.Label(x, text="Reverse Charges:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.reverse_frame = ttk.Frame(x)
-        self.reverse_frame.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 10)
+        self.reverse_frame.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
         self.reverse_true_radio_button = ttk.Radiobutton(self.reverse_frame, text="Yes", variable=self.reverse_charge_var, value=True)
         self.reverse_true_radio_button.pack(side = tk.LEFT, expand = True)
         self.reverse_false_radio_button = ttk.Radiobutton(self.reverse_frame, text="No", variable=self.reverse_charge_var, value=False)
@@ -142,45 +126,45 @@ class InvoiceForm:
         x.pack()
         
         x = ttk.Frame(self.top_left_frame)
-        ttk.Label(x, text="State:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+        ttk.Label(x, text="State:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_state = ttk.Entry(x)
-        self.entry_state.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+        self.entry_state.pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         
         self.entry_code = ttk.Entry(x)
-        self.entry_code.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 10)
-        ttk.Label(x, text="Code:").pack(side = tk.RIGHT, expand = True, padx = 10, pady = 10)
+        self.entry_code.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        ttk.Label(x, text="Code:").pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
         x.pack()
 
         x = ttk.Frame(self.top_right_frame)
-        ttk.Label(x, text="BILL TO PARTY").pack(expand = True, padx = 10, pady = 10)
+        ttk.Label(x, text="BILL TO PARTY").pack(expand = True, padx = 10, pady = 5)
         x.pack()
         
         x = ttk.Frame(self.top_right_frame)
-        ttk.Label(x, text="Name:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+        ttk.Label(x, text="Name:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_party_name = ttk.Entry(x, width=32)
-        self.entry_party_name.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 10)
+        self.entry_party_name.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
         x.pack()
         
         x = ttk.Frame(self.top_right_frame)
-        ttk.Label(x, text="Address:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+        ttk.Label(x, text="Address:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_party_address = tk.Text(x, height=2, width=24)  # Address
-        self.entry_party_address.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 10)
+        self.entry_party_address.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
         x.pack()
         
         x = ttk.Frame(self.top_right_frame)
-        ttk.Label(x, text="GSTIN Unique ID:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+        ttk.Label(x, text="GSTIN Unique ID:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_party_gstin = ttk.Entry(x, width=32)
-        self.entry_party_gstin.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 10)
+        self.entry_party_gstin.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
         x.pack()
         
         x = ttk.Frame(self.top_right_frame)
-        ttk.Label(x, text="State:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+        ttk.Label(x, text="State:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_party_state = ttk.Entry(x)
-        self.entry_party_state.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+        self.entry_party_state.pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
 
         self.entry_party_code = ttk.Entry(x)
-        self.entry_party_code.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 10)
-        ttk.Label(x, text="State Code:").pack(side = tk.RIGHT, expand = True, padx = 10, pady = 10)
+        self.entry_party_code.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        ttk.Label(x, text="State Code:").pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
         x.pack()
 
         ''' GOODS FORM / LISTBOX '''
@@ -189,66 +173,91 @@ class InvoiceForm:
         self.goods_table = goods_table.Table(self.window)
 
         ''' Purchase / Sale option '''
-        self.purchase_radio_button = ttk.Radiobutton(self.bottom_left_subleft_frame, text="Purchase", variable=self.typeVar, value=0)
-        self.purchase_radio_button.grid(row = 0, column = 0, padx = 10, pady = 10)
+        x = ttk.Frame(self.bottom_left_frame)
+        self.purchase_radio_button = ttk.Radiobutton(x, text="Purchase", variable=self.typeVar, value=0)
+        self.purchase_radio_button.pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
 
-        self.sale_radio_button = ttk.Radiobutton(self.bottom_left_subright_frame, text="Sale", variable=self.typeVar, value=1)
-        self.sale_radio_button.grid(row = 0, column = 1, padx = 10, pady = 10)
+        self.sale_radio_button = ttk.Radiobutton(x, text="Sale", variable=self.typeVar, value=1)
+        self.sale_radio_button.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        x.pack()
 
-        ttk.Label(self.bottom_left_subleft_frame, text="Rs. in Words:").grid(row = 1, column = 0, padx = 10, pady = 10)
-        self.entry_rs_in_words = ttk.Entry(self.bottom_left_subright_frame)
-        self.entry_rs_in_words.grid(row = 1, column = 1, padx = 10, pady = 10)
-        
-        #ttk.Label(self.bottom_left_subleft_frame, text="AYURVEDIC PROP MEDICINE").grid(row = 2, column = 0, padx = 10, pady = 10)
-        ttk.Label(self.bottom_left_subleft_frame, text="Bank Name:").grid(row = 3, column = 0, padx = 10, pady = 10)
-        self.entry_bank_name = ttk.Entry(self.bottom_left_subright_frame)
-        self.entry_bank_name.grid(row = 2, column = 1, padx = 10, pady = 10)
-        
-        ttk.Label(self.bottom_left_subleft_frame, text="A/c No.:").grid(row = 4, column = 0, padx = 10, pady = 10)
-        self.entry_ac_no = ttk.Entry(self.bottom_left_subright_frame)
-        self.entry_ac_no.grid(row = 3, column = 1, padx = 10, pady = 10)
-        
-        ttk.Label(self.bottom_left_subleft_frame, text="IFS Code:").grid(row = 5, column = 0, padx = 10, pady = 10)
-        self.entry_ifc_code = ttk.Entry(self.bottom_left_subright_frame)
-        self.entry_ifc_code.grid(row = 5, column = 1, padx = 10, pady = 10)
+        x = ttk.Frame(self.bottom_left_frame)
+        ttk.Label(x, text="Rs. in Words:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        self.entry_rs_in_words = ttk.Entry(x)
+        self.entry_rs_in_words.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        x.pack()
 
-        ttk.Label(self.bottom_right_subleft_frame, text="Total Before Tax:").grid(row = 0, column = 0, padx = 10, pady = 10)
-        self.entry_total_before_tax = ttk.Entry(self.bottom_right_subright_frame)
-        self.entry_total_before_tax.grid(row = 0, column = 1, padx = 10, pady = 10)
+        #ttk.Label(self.bottom_left_subleft_frame, text="AYURVEDIC PROP MEDICINE").grid(row = 2, column = 0, padx = 10, pady = 5)
         
-        ttk.Label(self.bottom_right_subleft_frame, text="IGST:").grid(row = 1, column = 0, padx = 10, pady = 10)
-        self.entry_igst = ttk.Entry(self.bottom_right_subright_frame)
-        self.entry_igst.grid(row = 1, column = 1, padx = 10, pady = 10)
+        x = ttk.Frame(self.bottom_left_frame)
+        ttk.Label(x, text="Bank Name:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        self.entry_bank_name = ttk.Entry(x)
+        self.entry_bank_name.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        x.pack()
+
+        x = ttk.Frame(self.bottom_left_frame)
+        ttk.Label(x, text="A/c No.:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        self.entry_ac_no = ttk.Entry(x)
+        self.entry_ac_no.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        x.pack()
+
+        x = ttk.Frame(self.bottom_left_frame)
+        ttk.Label(x, text="IFS Code:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        self.entry_ifc_code = ttk.Entry(x)
+        self.entry_ifc_code.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        x.pack()
         
-        ttk.Label(self.bottom_right_subleft_frame, text="CGST@ 6%:").grid(row = 2, column = 0, padx = 10, pady = 10)
-        self.entry_cgst = ttk.Entry(self.bottom_right_subright_frame)
-        self.entry_cgst.grid(row = 2, column = 1, padx = 10, pady = 10)
+        x = ttk.Frame(self.bottom_right_frame)
+        ttk.Label(x, text="Total Before Tax:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        self.entry_total_before_tax = ttk.Entry(x)
+        self.entry_total_before_tax.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        x.pack()
         
-        ttk.Label(self.bottom_right_subleft_frame, text="SGST@ 6%:").grid(row = 3, column = 0, padx = 10, pady = 10)
-        self.entry_sgst = ttk.Entry(self.bottom_right_subright_frame)
-        self.entry_sgst.grid(row = 3, column = 1, padx = 10, pady = 10)
+        x = ttk.Frame(self.bottom_right_frame)
+        ttk.Label(x, text="IGST:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        self.entry_igst = ttk.Entry(x)
+        self.entry_igst.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        x.pack()
         
-        ttk.Label(self.bottom_right_subleft_frame, text="Total Tax Amount:").grid(row = 4, column = 0, padx = 10, pady = 10)
-        self.entry_total_tax_amt = ttk.Entry(self.bottom_right_subright_frame)
-        self.entry_total_tax_amt.grid(row = 4, column = 1, padx = 10, pady = 10)
+        x = ttk.Frame(self.bottom_right_frame)
+        ttk.Label(x, text="CGST@ 6%:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        self.entry_cgst = ttk.Entry(x)
+        self.entry_cgst.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        x.pack()
         
-        ttk.Label(self.bottom_right_subleft_frame, text="Total After Tax Amount:").grid(row = 5, column = 0, padx = 10, pady = 10)
-        self.entry_total_after_tax_amt = ttk.Entry(self.bottom_right_subright_frame)
-        self.entry_total_after_tax_amt.grid(row = 5, column = 1, padx = 10, pady = 10)
+        x = ttk.Frame(self.bottom_right_frame)
+        ttk.Label(x, text="SGST@ 6%:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        self.entry_sgst = ttk.Entry(x)
+        self.entry_sgst.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        x.pack()
         
-        ttk.Label(self.bottom_right_subleft_frame, text="GST on Reverse Charges:").grid(row = 6, column = 0, padx = 10, pady = 10)
-        self.entry_gst_reverse_charge = ttk.Entry(self.bottom_right_subright_frame)
-        self.entry_gst_reverse_charge.grid(row = 6, column = 1, padx = 10, pady = 10)
+        x = ttk.Frame(self.bottom_right_frame)
+        ttk.Label(x, text="Total Tax Amount:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        self.entry_total_tax_amt = ttk.Entry(x)
+        self.entry_total_tax_amt.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        x.pack()
+        
+        x = ttk.Frame(self.bottom_right_frame)
+        ttk.Label(x, text="Total After Tax Amount:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        self.entry_total_after_tax_amt = ttk.Entry(x)
+        self.entry_total_after_tax_amt.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        x.pack()
+        
+        x = ttk.Frame(self.bottom_right_frame)
+        ttk.Label(x, text="GST on Reverse Charges:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        self.entry_gst_reverse_charge = ttk.Entry(x)
+        self.entry_gst_reverse_charge.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        x.pack()
 
         self.entry_invoice_date.bind("<1>", self.calOpen)
 
         ''' Calculate Button '''
         self.btn_deets_calculate = ttk.Button(self.footer_frame, text='Calculate', command=self.onCalculate,width=30)
-        self.btn_deets_calculate.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.btn_deets_calculate.grid(row = 0, column = 0, padx = 10, pady = 5)
 
         ''' Submit Button'''
         self.btn_invoice_submit = ttk.Button(self.footer_frame, text="Submit", command=self.onSubmit,width=30)
-        self.btn_invoice_submit.grid(row = 0, column = 1, padx = 10, pady = 10)
+        self.btn_invoice_submit.grid(row = 0, column = 1, padx = 10, pady = 5)
 
         self.btn_invoice_print = ttk.Button(self.footer_frame, text='Print', command=self.onPrint,width=30)
         self.btn_invoice_print.grid(row=0, column=2, padx=10, pady=10)
