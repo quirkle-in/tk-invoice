@@ -104,25 +104,9 @@ def get_last_invoice():
     return x.invoice_no + 1
 
 
-def createInvoice(
-        invoice_date, name, address, gst, state,
-        state_code, total, total_cgst, total_sgst,
-        purchase, invoice_no, rupees_in_words,
-        reverse_charges, total_before_tax,
-        total_igst, total_tax_amt, bank_name,
-        total_after_tax, gst_reverse_charge):
+def createInvoice(invoice_data):
     try:
-        inv = Invoice(
-            invoice_no=invoice_no, invoice_date=invoice_date,
-            name=name, address=address,
-            state=state, gst = gst, rupees_in_words = rupees_in_words,
-            state_code=state_code, total=total,
-            total_cgst=total_cgst, total_sgst=total_sgst,
-            purchase=purchase, reverse_charges = reverse_charges,
-            total_before_tax = total_before_tax, bank_name = bank_name,
-            total_igst = total_igst, total_tax_amt = total_tax_amt,
-            total_after_tax = total_after_tax, gst_reverse_charge = gst_reverse_charge
-            )
+        inv = Invoice(**invoice_data)
         db.add(inv)
         db.commit()
         # print(inv)

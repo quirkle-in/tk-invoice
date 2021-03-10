@@ -276,31 +276,8 @@ class InvoiceForm:
 
 
     def insertInvoice(self):
-        print(datetime.strptime(
-            self.entry_invoice_date.get(), '%d/%m/%Y'))
-        resp = createInvoice(
-            invoice_date=datetime.strptime(
-                self.entry_invoice_date.get(), '%d/%m/%Y'),
-            invoice_no=self.entry_invoice_no.get(),
-            name=self.entry_party_name.get(),
-            address=self.entry_party_address.get('1.0', 'end-1c'),
-            gst=self.entry_party_gstin.get(),
-            state=self.entry_party_state.get(),
-            state_code=self.entry_party_code.get(),
-            total=self.entry_total_tax_amt.get(),
-            total_cgst=self.entry_cgst.get(),
-            total_sgst=self.entry_sgst.get(),
-            purchase=self.typeVar.get(),
-            rupees_in_words=self.entry_rs_in_words.get(),
-            reverse_charges=self.reverse_charge_var.get(),
-            bank_name=self.entry_bank_name.get(),
-            gst_reverse_charge=self.entry_gst_reverse_charge.get(),
-            total_before_tax=self.entry_total_before_tax.get(),
-            total_after_tax=self.entry_total_after_tax_amt.get(),
-            total_igst=self.entry_igst.get(),
-            total_tax_amt=self.entry_total_tax_amt.get()
-        )
-        print(resp)
+        resp = createInvoice(self.invoice_data)
+        print("Create invoice response:", resp)
         return resp
 
     def insertDetails(self, inv_id):
@@ -326,12 +303,11 @@ class InvoiceForm:
         return
 
     def performCaluclations(self):
-        base_val = 0.0
         try:
             dets = self.goods_table.getGoodsDetails()
-            j = 0
-            total = 0
+            j = 0; total = 0
             for i in dets:
+
                 ''' check for null '''
                 for field in i:
                     if i[field] == "" or not i[field]:
@@ -339,19 +315,17 @@ class InvoiceForm:
                 
                 ''' continue '''
                 if i['deet_no'] != '':
-                    i['total'] = 0
-                    #print(i['qty'], i["rate"])
                     i['total'] = int(i['qty']) * int(i['rate'])
                     i['taxable_amt'] = int(i['total'] - int(i['discount']))
                     total = total + i['taxable_amt']
+
                     print(self.goods_table.entries[j])
                     print(self.goods_table.entries[j]['total'].set(i['total']))
-                    self.goods_table.entries[j]['taxable_amt'].set(
-                        int(i['total']) - int(i['discount']))
+
+                    self.goods_table.entries[j]['taxable_amt'].set(int(i['total']) - int(i['discount']))
                     j = j + 1
-            # if self.entry_total_before_tax.get()) > 0:
-            #     self.change_bottom_right()
-            
+
+            ''' clear fields before inserting '''
             self.entry_rs_in_words.delete(0, END)
             self.entry_total_before_tax.delete(0, END)
             self.entry_cgst.delete(0, END)
@@ -367,23 +341,27 @@ class InvoiceForm:
             self.entry_total_tax_amt.insert(0, round(total * 0.12, 2))
             self.entry_total_after_tax_amt.insert(0, round(total + total * 0.12, 2))
             self.entry_rs_in_words.insert(0, num2words(self.entry_total_after_tax_amt.get()).title())
+
         except Exception as e:
             print(e)
             self.sendAlert("Error while calculating!")
-    
+
 
     def onConfirm(self):
-        print('Confirmed')
+        print('Confirming...')
+
+        ''' collect data '''
+        self.collect_field_data()
+
+        ''' insert '''
         inv_id = self.insertInvoice()
-        print("Invoice id generated:", inv_id)
         if inv_id:
+            print("Invoice created.")
             x = self.insertDetails(inv_id)
-            print(x)
             if x:
-                messagebox.showinfo(title='Invoice Status',
-                                    message='Invoice and details have been successfully recorded')
-                
-                self.back_to_home_page()
+                print("Details recorded.")
+                messagebox.showinfo(title='Invoice Status', message='Invoice and details have been successfully recorded')
+                return True
 
     def onCalculate(self):
         global CAL_CLICKED
@@ -398,12 +376,39 @@ class InvoiceForm:
             if not self.validateData():
                 self.sendAlert("Invalid Data! Should not contain any empty fields")
                 return False
-            self.onConfirm()
+            res = self.onConfirm()
+            if not res:
+                self.sendAlert("Error while creating.")
 
         else:
             messagebox.showerror(
                 title='Attention', message='Please click calculate button before submission')
+    
+    def collect_field_data(self):
+        self.invoice_data = {
+            "invoice_date" :        datetime.strptime(self.entry_invoice_date.get(), '%d/%m/%Y'),
+            "invoice_no" :          self.entry_invoice_no.get(),
+            "name" :                self.entry_party_name.get(),
+            "address" :             self.entry_party_address.get('1.0', 'end-1c'),
+            "gst" :                 self.entry_party_gstin.get(),
+            "state" :               self.entry_party_state.get(),
+            "state_code" :          self.entry_party_code.get(),
+            "total" :               self.entry_total_tax_amt.get(),
+            "total_cgst" :          self.entry_cgst.get(),
+            "total_sgst" :          self.entry_sgst.get(),
+            "purchase" :            self.typeVar.get(),
+            "rupees_in_words" :     self.entry_rs_in_words.get(),
+            "reverse_charges" :     self.reverse_charge_var.get(),
+            "bank_name" :           self.entry_bank_name.get(),
+            "gst_reverse_charge" :  self.entry_gst_reverse_charge.get(),
+            "total_before_tax" :    self.entry_total_before_tax.get(),
+            "total_after_tax" :     self.entry_total_after_tax_amt.get(),
+            "total_igst" :          self.entry_igst.get(),
+            "total_tax_amt" :       self.entry_total_tax_amt.get()
+        }
 
+    def collect_goods_details_data(self):
+        pass
         
     def onPrint(self):
         good_deets = self.goods_table.getGoodsDetails()
