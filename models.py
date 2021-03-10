@@ -188,7 +188,7 @@ def filtered_view(table, type):
     return res.all()
 
 
-def print_table_row(table, _id):
+def get_table_row(table, _id):
     if table == "Invoices":
         x = Invoice
         res = db.query(x).filter_by(invoice_id = _id).first()

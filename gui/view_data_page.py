@@ -201,8 +201,36 @@ class ViewDataPage:
         table = self.filters["table"].get()
         _id = self.print_id.get()
 
-        x = models.print_table_row(table, _id)
-        save_print_path = filedialog.asksaveasfilename(defaultextension=".pdf")
+        x = models.get_table_row(table, _id)
+        file_path = filedialog.askdirectory(initialdir = "/", title = "Select a folder to export to")
+        invoice_date = {
+            "invoice_no" :          x.invoice,
+            "invoice_date" :        x.invoice_date,
+            "reverse_charges" :     x.reverse_charges,
+            "state" :               x.entry_party_state,,
+            "state_code" :          x.entry_party_code,
+            
+            "name" :                x.name,
+            "address" :             x.party_address,
+            "gst" :                 x.entry_party_gstin.get(),
+            "party_state" :         self.entry_party_state.get(),
+            "party_code" :          self.entry_party_code.get(),
+            
+            "purchase" :            self.typeVar.get(),
+            "rupees_in_words" :     self.entry_rs_in_words.get(),
+            "bank_name" :           self.entry_bank_name.get(),
+            "account_no" :          self.entry_ac_no.get(),            
+            "ifsc":                 self.entry_ifsc.get(),
+
+            "total_before_tax" :    self.entry_total_before_tax.get(),
+            "total_igst" :          self.entry_igst.get(),
+            "total_cgst" :          self.entry_cgst.get(),
+            "total_sgst" :          self.entry_sgst.get(),
+            "total_tax_amt" :       self.entry_total_tax_amt.get(),
+            "total_after_tax" :     self.entry_total_after_tax_amt.get(),
+            "gst_reverse_charge" :  self.entry_gst_reverse_charge.get(),
+        }
+
         
 
         
