@@ -72,12 +72,12 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
     pdf.set_font('Arial', 'B', 9.0)
     number = '27'
     pdf.text(x=115, y=64, txt='Name: ')
-    pdf.text(x=160, y=64, txt=str(INVOICE["name"]))
+    pdf.text(x=130, y=64, txt=str(INVOICE["name"]))
 
     pdf.set_font('Arial', 'B', 9.0)
     # date = '21/03/2021'
     pdf.text(x=115, y=70, txt='Address:')  # Address
-
+    pdf.text(x = 130, y = 69, txt = INVOICE['address'])
     pdf.line(130, 70, 200, 70)
     pdf.line(115, 76, 200, 76)
     pdf.set_font('Arial', 'B', 9.0)

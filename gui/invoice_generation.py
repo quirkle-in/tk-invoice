@@ -123,6 +123,7 @@ class InvoiceForm:
         ttk.Label(x, text="State:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_state = ttk.Entry(x)
         self.entry_state.pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        self.entry_state.insert(0, 'Maharashtra')
         
         self.entry_code = ttk.Entry(x)
         self.entry_code.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
