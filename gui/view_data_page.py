@@ -207,7 +207,7 @@ class ViewDataPage:
             "invoice_no" :          x.invoice,
             "invoice_date" :        x.invoice_date,
             "reverse_charges" :     x.reverse_charges,
-            "state" :               x.entry_party_state,,
+            "state" :               x.entry_party_state,
             "state_code" :          x.entry_party_code,
             
             "name" :                x.name,
