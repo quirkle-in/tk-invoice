@@ -39,17 +39,11 @@ class InvoiceForm:
 
 
         ''' GET DATA '''
-        try:
-            x = models.get_last_invoice()
-            if not x: return
-            else: self.invoice_number_default.set(x)
-        except Exception as e:
-            print(e)
-            self.window.destroy()
-            return
+        self.set_invoice_id()
 
-        ''' INVOICE DICT '''
+        ''' INVOICE DATA '''
         self.invoice_data = {}
+        self.goods_details = []
 
 
         self.header_frame = ttk.Frame(self.window)
@@ -281,22 +275,12 @@ class InvoiceForm:
         return resp
 
     def insertDetails(self, inv_id):
-        deets = self.goods_table.getGoodsDetails()
+        self.goods_details = self.goods_table.getGoodsDetails()
+
         errors = 0
-        for deet in deets:
-            x = models.createDetails(
-                deet_no = deet["deet_no"] ,
-                invoice_id = inv_id,
-                name = deet["name"],
-                batch = deet['batch'],
-                hsn = deet["hsn"],
-                qty = deet["qty"],
-                rate = deet["rate"],
-                mrp = deet["mrp"],
-                total = deet["total"],
-                discount = deet["discount"],
-                taxable_amt = deet["taxable_amt"]
-            )
+        for deet in self.goods_details:
+            deet["invoice_id"] = inv_id
+            x = models.createDetails(deet)
             if not x:
                 errors += 1
         print("Errors:", errors)
@@ -304,9 +288,10 @@ class InvoiceForm:
 
     def performCaluclations(self):
         try:
-            dets = self.goods_table.getGoodsDetails()
+            self.goods_details = self.goods_table.getGoodsDetails()
+            #print(self.goods_details)
             j = 0; total = 0
-            for i in dets:
+            for i in self.goods_details:
 
                 ''' check for null '''
                 for field in i:
@@ -381,8 +366,11 @@ class InvoiceForm:
                 self.sendAlert("Error while creating.")
 
         else:
-            messagebox.showerror(title='Attention', message='Please click calculate button before submission')
-    
+            messagebox.showerror(
+                title='Attention', message='Please click calculate button before submission')
+        self.set_invoice_id()
+
+
     def collect_field_data(self):
         self.invoice_data = {
             "invoice_date" :        datetime.strptime(self.entry_invoice_date.get(), '%d/%m/%Y'),
@@ -411,42 +399,9 @@ class InvoiceForm:
         
     def onPrint(self):
         good_deets = self.goods_table.getGoodsDetails()
-        filename_with_Abspath = filedialog.asksaveasfilename(defaultextension='.pdf', title='Save Invoice') 
-
-        complete_invoice_details = {
-            'invoice_details': {
-                'invoice_date'    : datetime.strptime(self.entry_invoice_date.get(), '%d/%m/%Y'),
-                'invoice_no'      : self.entry_invoice_no.get(),
-                'name'            : self.entry_party_name.get(),
-                'address'         : self.entry_party_address.get('1.0', 'end-1c'),
-                'gst'             : self.entry_party_gstin.get(),
-                'state'           : self.entry_party_state.get(),
-                'state_code'      : self.entry_party_code.get(),
-                'total'           : self.entry_total_tax_amt.get(),
-                'total_before_tax': self.entry_total_before_tax.get(),
-                'total_igst'      : self.entry_igst.get(),
-                'total_tax_amt'   : self.entry_total_tax_amt.get(),
-                'total_after_tax' : self.entry_total_after_tax_amt.get(),
-                'gst_reverse_charge' : self.entry_gst_reverse_charge.get(),
-                'total_cgst'      : self.entry_cgst.get(),
-                'total_sgst'      : self.entry_sgst.get(),
-                'purchase'        : self.typeVar.get(),
-                'reverse_charges' : self.reverse_charge_var.get(),
-                'rupees_in_words' : self.entry_rs_in_words.get(),
-                'bank_name'       : self.entry_bank_name.get(),
-                'account_no'    : self.entry_ac_no.get(),
-                'ifsc_code'       : self.entry_ifc_code.get(),
-            },
-
-            'goods_details'       : good_deets,
-            'filepath_with_name'  : filename_with_Abspath
-        }
-
-        print(complete_invoice_details)
-        printing = create_invoice_pdf(complete_invoice_details['invoice_details'], 
-                                    complete_invoice_details['goods_details'],
-                                    complete_invoice_details['filepath_with_name']
-                                    )
+        filename_with_Abspath = filedialog.asksaveasfilename(defaultextension='.pdf', title='SaveInvoice') 
+        printing = create_invoice_pdf(self.invoice_data, good_deets, filename_with_Abspath)
+        print("Export to PDF response:", printing)
 
 
     def validateData(self):
@@ -494,3 +449,13 @@ class InvoiceForm:
             self.entry_party_gstin.insert(0, x["gstin_uid"])
         except Exception as e:
             print(e)
+
+    def set_invoice_id(self):
+        try:
+            x = models.get_last_invoice()
+            if not x: return
+            else: self.invoice_number_default.set(x)
+        except Exception as e:
+            print(e)
+            self.window.destroy()
+            return

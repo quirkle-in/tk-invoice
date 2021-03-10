@@ -109,7 +109,6 @@ def createInvoice(invoice_data):
         inv = Invoice(**invoice_data)
         db.add(inv)
         db.commit()
-        # print(inv)
         return inv.invoice_id
     except Exception as e:
         print(e)
@@ -117,24 +116,9 @@ def createInvoice(invoice_data):
         return False
 
 
-def createDetails(deet_no,
-                invoice_id,
-                  name,
-                  hsn,
-                  qty,
-                  batch,
-                  rate,
-                  mrp,
-                  total,
-                  discount,
-                  taxable_amt):
+def createDetails(detail_data):
     try:
-        det = Details(
-            deet_no = deet_no, batch = batch,
-            invoice_id=invoice_id, name=name, hsn=hsn,
-            qty=qty, rate=rate, mrp=mrp, total=total,
-            discount=discount, taxable_amt=taxable_amt
-        )
+        det = Details(**detail_data)
         db.add(det)
         db.commit()
         print('Goods Details inserted')
