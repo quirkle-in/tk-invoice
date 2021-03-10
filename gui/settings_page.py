@@ -59,7 +59,7 @@ class SettingsPage:
             f.pack()
 
 
-        
+
         self.btn_save = ttk.Button(self.window, text = "Save & Exit", command = self.save_and_exit)
         self.btn_save.pack(expand = True, padx = 20, pady = 10)
 
