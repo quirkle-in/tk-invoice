@@ -15,6 +15,8 @@ from pathlib import Path
 from tkinter.scrolledtext import ScrolledText
 import models
 
+from num2words import num2words
+
 
 CAL_CLICKED = 0
 
@@ -350,19 +352,22 @@ class InvoiceForm:
                     j = j + 1
             # if self.entry_total_before_tax.get()) > 0:
             #     self.change_bottom_right()
+            
+            self.entry_rs_in_words.delete(0, END)
             self.entry_total_before_tax.delete(0, END)
             self.entry_cgst.delete(0, END)
             self.entry_igst.delete(0, END)
             self.entry_sgst.delete(0, END)
             self.entry_total_tax_amt.delete(0, END)
             self.entry_total_after_tax_amt.delete(0, END)
-
+            
             self.entry_total_before_tax.insert(0, round(total, 2))
             self.entry_cgst.insert(0, round(total * 0.06, 2))
             self.entry_igst.insert(0, round(total * 0.06, 2))
             self.entry_sgst.insert(0, round(total * 0.06, 2))
             self.entry_total_tax_amt.insert(0, round(total * 0.12, 2))
             self.entry_total_after_tax_amt.insert(0, round(total + total * 0.12, 2))
+            self.entry_rs_in_words.insert(0, num2words(self.entry_total_after_tax_amt.get()).title())
         except Exception as e:
             print(e)
             self.sendAlert("Error while calculating!")

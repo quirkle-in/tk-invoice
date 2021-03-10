@@ -13,6 +13,7 @@ tkcalendar = "*"
 ttkthemes = "*"
 sqlite-bro = "*"
 reportlab = "*"
+num2words = "*"
 
 [dev-packages]
 
