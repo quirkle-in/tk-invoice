@@ -275,8 +275,3 @@ def sales_report():
             details.append(details_dict)
             s_no += 1
     return (details)   
-
-
-print(purchase_report())
-
-print(sales_report())
