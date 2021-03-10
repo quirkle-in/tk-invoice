@@ -8,7 +8,6 @@ import tkinter as tk
 class CalWindow:
     def __init__(self, date_widget):
 
-        
 
         self.window = tk.Tk()
         self.window.configure(background = "#f3f3f3")

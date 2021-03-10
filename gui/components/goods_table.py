@@ -23,7 +23,7 @@ class Table:
         )
         self.btn_add_row.pack(expand = True)
 
-        self.canvas = tk.Canvas(self.base_frame, width=940, height = 120)
+        self.canvas = tk.Canvas(self.base_frame, width=960, height = 120)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame, #canvas, maybe
             orient = "vertical", command = self.canvas.yview)
         self.frame = ttk.Frame(self.canvas)

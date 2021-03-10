@@ -81,12 +81,12 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
     pdf.text(x=160, y=88, txt='Code: ')
     pdf.text(x=175, y=88, txt=str(INVOICE["party_code"]))
 
-    pdf.line(10, 93, 200, 93)
+    #pdf.line(10, 93, 200, 93)
 
     ''' Table '''
 
     deets_w = {'Sr No': 5.5, 'name': 20, 'hsn': 10, 'qty': 9.5, 'rate': 7, 'mrp': 7, 'total': 10, 'discount': 10, 'taxable_amt': 16}
-    pdf.ln(24)
+    pdf.ln(30)
     pdf.set_font('Times', 'IB', 9.0)
     for ii in deets_w:
         pdf.cell(deets_w[ii] * 2, 6, str(ii).replace("_", " ").title(), border=1, align='C', fill=False)
