@@ -6,7 +6,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
 
     pdf = FPDF('P', 'mm', 'A4')
     FILENAME = "Invoice" + "_" + \
-        INVOICE['name'] + '_' + INVOICE['invoice_no'] + \
+        INVOICE['name'] + '_' + str(INVOICE['invoice_no']) + \
         datetime.now().strftime('%d-%m-%Y_') + ".pdf"
 
     # Add new page. Without this you cannot create the document.
@@ -85,13 +85,13 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
     pdf.text(x=160, y=88, txt='Code: ')
     pdf.text(x=175, y=88, txt=str(INVOICE["party_code"]))
 
-    pdf.line(10, 93, 200, 93)
+    #pdf.line(10, 93, 200, 93)
 
     ''' Table '''
 
     deets_w = {'deet_no': 5.5, 'name': 20, 'hsn': 10, 'qty': 9.5,
                'rate': 7, 'mrp': 7, 'total': 10, 'discount': 10, 'taxable_amt': 16}
-    pdf.ln(27)
+    pdf.ln(30)
     pdf.set_font('Times', 'IB', 9.0)
     for ii in deets_w:
         pdf.cell(deets_w[ii] * 2, 6, str(ii).replace("_",
@@ -201,5 +201,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
     try:
         pdf.output(FILEPATH + "/" + FILENAME, 'F')
         print("Created PDF.")
+        return True
     except Exception as e:
         print(e)
+        return False

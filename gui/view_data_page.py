@@ -1,15 +1,21 @@
+from pdf_generation.purchase_sale_view import purchase_report
 from tkinter import messagebox, ttk, filedialog
-from sqlalchemy.sql.base import Executable
+from gui.components import datepick
 from ttkthemes import ThemedStyle
 import tkinter as tk
 import models
-from pdf_generation.purchase_sale_view import purchase_report
+from pdf_generation.create_invoice_pdf import create_invoice_pdf
 
 
 INVOICE_COLUMNS = ["invoice_id", "invoice_no",
                    "invoice_date", "name", "address", "gst",
                    "purchase", "account_no", "total_tax_amt",
                    "total_after_tax"]
+
+
+DETAIL_COLUMNS = ["deet_id", "deet_no", "invoice_id",
+                  "name", "batch", "hsn", "qty", "rate", "mrp", "total",
+                  "discount", "taxable_amt"]
 
 
 class TableView:
@@ -21,10 +27,10 @@ class TableView:
         self.base_frame = ttk.Frame(self.root)
         self.base_frame.pack(side=tk.BOTTOM, pady=20)
 
-        self.canvas = tk.Canvas(self.base_frame, width=1150, height=300)
+        self.canvas = tk.Canvas(self.base_frame, width=920, height=300)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame,
                                          orient=tk.VERTICAL, command=self.canvas.yview)
-        self.frame = ttk.Frame(self.canvas, width=1150)
+        self.frame = ttk.Frame(self.canvas)
 
         self.frame.bind(
             "<Configure>",
@@ -45,7 +51,7 @@ class TableView:
         if filters["table"].get() == "Invoices":
             self.columns = INVOICE_COLUMNS
         else:
-            self.columns = [field for field in data[0]]
+            self.columns = DETAIL_COLUMNS
 
         col = 0
         for field in self.columns:
@@ -68,58 +74,6 @@ class TableView:
                 en.configure(state="disabled")
                 en.grid(row=row + 1, column=col)
                 col += 1
-
-
-class InvoiceView:
-    def __init__(self, invoice, details):
-        self.root = tk.Tk()
-
-        self.invoice = invoice
-        self.details = details
-
-        self.base_frame = ttk.Frame(self.root, borderwidth=2, relief="groove")
-        self.base_frame.pack(side=tk.BOTTOM, padx=20, pady=20)
-
-        self.canvas = tk.Canvas(self.base_frame, width=1800, height=300)
-        self.scrollbar_y = ttk.Scrollbar(
-            self.base_frame, orient=tk.VERTICAL, command=self.canvas.yview)
-        self.frame = ttk.Frame(self.canvas, width=1100)
-
-        self.frame.bind(
-            "<Configure>",
-            lambda e: self.canvas.configure(
-                scrollregion=self.canvas.bbox("all")
-            )
-        )
-
-        self.canvas.create_window((0, 0), window=self.frame, anchor="center")
-        self.canvas.configure(yscrollcommand=self.scrollbar_y.set)
-
-        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        self.scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
-
-        if not self.invoice:
-            return
-
-        self.invoice = self.invoice.__dict__
-
-        col = 0
-        for field in self.invoice:
-            en = tk.Text(self.frame, width=14, height=2,
-                         font=('Arial', 8), wrap=tk.WORD)
-            en.insert(tk.END, field)
-            en.configure(state="disabled")
-            en.grid(row=0, column=col)
-
-            val = tk.Text(self.frame, width=14, height=2,
-                          font=('Arial', 8), wrap=tk.WORD)
-            val.insert(tk.END, self.invoice[field])
-            val.configure(state="disabled")
-            val.grid(row=1, column=col)
-
-            col += 1
-
-        self.root.mainloop()
 
 
 class ViewDataPage:
@@ -211,8 +165,9 @@ class ViewDataPage:
             side=tk.TOP, expand=True, padx=10, pady=10)
 
         self.print_table = tk.StringVar(self.print_frame)
-        self.table_print = ttk.OptionMenu(
-            self.print_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
+        self.table_print = ttk.Label(self.print_frame, text='Invoice ID:')
+        # ttk.OptionMenu(
+        #     self.print_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
         self.table_print.pack(side=tk.LEFT, expand=True,  padx=10, pady=10)
 
         self.print_id = tk.IntVar(self.print_frame)
@@ -228,17 +183,38 @@ class ViewDataPage:
             self.window, borderwidth=2, relief="groove")
         self.report_frame.pack(side=tk.BOTTOM, padx=10, pady=10)
 
+        self.var_start_date = tk.StringVar(self.window, value="")
+        self.var_end_date = tk.StringVar(self.window, value="")
+
+        ttk.Label(self.report_frame, text="Start Date").pack(
+            side=tk.LEFT, expand=True, padx=10, pady=10)
+        self.entry_start_date = ttk.Entry(
+            self.report_frame, textvariable=self.var_start_date)  # date picker
+        self.entry_start_date.pack(side=tk.LEFT, expand=True, padx=10, pady=5)
+        self.entry_start_date.bind("<1>", self.calOpen_start)
+
+        ttk.Label(self.report_frame, text="End Date").pack(
+            side=tk.LEFT, expand=True, padx=10, pady=10)
+        self.entry_end_date = ttk.Entry(
+            self.report_frame, textvariable=self.var_end_date)  # date picker
+        self.entry_end_date.pack(side=tk.LEFT, expand=True, padx=10, pady=5)
+        self.entry_end_date.bind("<1>", self.calOpen_end)
+
         self.btn_purchases_report = ttk.Button(
             self.report_frame, text="Generate Purchases Report", width=30, command=self.generate_purchase_report)
         self.btn_purchases_report.pack(side=tk.LEFT, padx=10, pady=10)
 
         self.btn_sales_report = ttk.Button(
-            self.report_frame, text="Generate Sales Report", width=30, command=self.generate_sales_report)
-        self.btn_sales_report.pack(side=tk.RIGHT, padx=10, pady=10)
-
-        self.DATA_TABLE = TableView(self.window, self.data)
+            self.report_frame, text="Generate Sales Report", width=30)
+        self.btn_sales_report.pack(side=tk.LEFT, padx=10, pady=10)
 
         self.window.mainloop()
+
+    def calOpen_start(self, event):
+        datepick.CalWindow(self.var_start_date)
+
+    def calOpen_end(self, event):
+        datepick.CalWindow(self.var_end_date)
 
     def back_to_home_page(self):
         ''' confirmation '''
@@ -247,7 +223,8 @@ class ViewDataPage:
         self.window.destroy()
 
     def generate_purchase_report(self):
-        details = models.purchase_report()
+        details = models.purchase_report(
+            self.var_start_date.get(), self.var_end_date.get())
         filepath = filedialog.askdirectory(
             initialdir='/', title='Select Folder')
         DETAILS = {
@@ -264,7 +241,8 @@ class ViewDataPage:
                 title='Error', message='Error during creation of Purchase Report')
 
     def generate_sales_report(self):
-        details = models.sales_report()
+        details = models.sales_report(
+            self.var_start_date.get(), self.var_end_date.get())
         filepath = filedialog.askdirectory(
             initialdir='/', title='Select Folder')
         DETAILS = {
@@ -303,8 +281,7 @@ class ViewDataPage:
         _id = self.print_id.get()
 
         x = models.get_table_row(_id)
-        # file_path = filedialog.askdirectory(
-        #     initialdir="/", title="Select a folder to export to")
+
         single_invoice = {
             "invoice_no":          x[0].invoice_no,
             "invoice_date":        x[0].invoice_date,
@@ -335,7 +312,7 @@ class ViewDataPage:
         details = []
         s_no = 0
         for y in x[1]:
-            details_dict = {'Sr No': s_no,
+            details_dict = {'deet_no': s_no,
                             'name': y.name,
                             'hsn': y.hsn,
                             'qty': y.qty,
@@ -349,6 +326,19 @@ class ViewDataPage:
 
         print('Invoice Dets: ', single_invoice)
         print('Details in inv: ', details)
+
+        file_path = filedialog.askdirectory(
+            initialdir="/", title="Select a folder to export to")
+
+        status = create_invoice_pdf(
+            INVOICE=single_invoice, DETAILS=details, FILEPATH=file_path)
+
+        if status:
+            messagebox.showinfo(
+                title='Status', message='PDF Generated')
+        else:
+            messagebox.showerror(
+                title='Error', message='Couldn\'t generate PDF')
 
     def delete_table_row(self):
         table = self.filters["table"].get()

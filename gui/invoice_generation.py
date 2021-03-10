@@ -31,7 +31,6 @@ class InvoiceForm:
 
         self.window.iconbitmap('favicon.ico')
 
-
         ''' TK VARIABLES '''
         self.reverse_charge_var = tk.BooleanVar(self.window, value=False)
         self.typeVar = tk.IntVar(self.window)
@@ -480,6 +479,7 @@ class InvoiceForm:
     def onPrint(self):
         global CAL_CLICKED
         if CAL_CLICKED >= 1:
+            self.collect_field_data()
             good_deets = self.goods_table.getGoodsDetails()
             print(good_deets)
             filepath = filedialog.askdirectory(
