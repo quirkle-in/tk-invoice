@@ -1,10 +1,7 @@
-from enum import unique
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Date, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from datetime import datetime
-import json
 
 import os
 from dotenv import load_dotenv
@@ -83,6 +80,13 @@ class Entity(Base):
     ifc_code = Column(String(100))
     
 
+''' INVOICE FUNTIONS '''
+
+
+def get_all_invoices():
+    return db.query(Invoice).all()
+
+
 def get_last_invoice():
     x = db.query(Invoice).order_by(
         Invoice.invoice_id.desc()
@@ -113,6 +117,12 @@ def createInvoice(invoice_data):
         return False
 
 
+''' DETAILS FUNCTIONS '''
+
+def get_all_details():
+    return db.query(Details).all()
+
+
 def createDetails(detail_data):
     try:
         det = Details(**detail_data)
@@ -126,21 +136,34 @@ def createDetails(detail_data):
         return False
 
 
-def get_all_invoices():
-    return db.query(Invoice).all()
-
-
-def get_all_details():
-    return db.query(Details).all()
+''' ENTITY FUNCTIONS '''
 
 def get_all_entities():
     return db.query(Entity).all()
 
+
 def get_all_entity_names():
     return db.query(Entity).with_entities(Entity.name).all()
 
+
 def get_entity_by_name(name):
     return db.query(Entity).filter_by(name = name).first()
+
+
+def create_entity(data):
+    E = Entity(**data)
+    try:
+        db.add(E)
+        db.commit()
+        print('Added entity')
+        return E.entity_id
+    except Exception as e:
+        print(e)
+        db.rollback()
+        return False
+
+
+''' EXTRAS '''
 
 
 def filtered_view(table, type):
@@ -164,18 +187,6 @@ def filtered_view(table, type):
         return []
     return res.all()
 
-    
-def create_entity(data):
-    E = Entity(**data)
-    try:
-        db.add(E)
-        db.commit()
-        print('Added entity')
-        return E.entity_id
-    except Exception as e:
-        print(e)
-        db.rollback()
-        return False
 
 def print_table_row(table, _id):
     if table == "Invoices":
@@ -189,8 +200,8 @@ def print_table_row(table, _id):
     elif table == "Entities":
         x = Entity
         res = db.query(x).filter_by(entity_id = _id).first()    
-    
     return res
+
 
 def delete_table_row(table, _id):
     if table == "Invoices":
@@ -222,6 +233,7 @@ def get_invoice_by_id(_id):
             return invoice, details
     return None, None
 
+
 def purchase_report():
     details = []
     data = db.query(Invoice).filter_by(purchase = True).all()
@@ -241,6 +253,7 @@ def purchase_report():
             details.append(details_dict)
     return (details)   
 
+
 def sales_report():
     details = []
     data = db.query(Invoice).filter_by(purchase = False).all()
@@ -248,7 +261,8 @@ def sales_report():
     for x in data:
         detail_data = db.query(Details).filter_by(invoice_id = x.invoice_id).all()
         for y in detail_data:
-            details_dict = {'Sr No': s_no,
+            details_dict = {
+                'Sr No': s_no,
                'name': y.name,
                'hsn': y.hsn,
                'qty': y.qty,
