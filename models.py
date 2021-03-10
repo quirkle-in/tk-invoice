@@ -251,6 +251,7 @@ def purchase_report():
                'discount': y.discount,
                'taxable_amt': y.taxable_amt}
             details.append(details_dict)
+            s_no += 1
     return (details)   
 
 
@@ -272,4 +273,10 @@ def sales_report():
                'discount': y.discount,
                'taxable_amt': y.taxable_amt}
             details.append(details_dict)
+            s_no += 1
     return (details)   
+
+
+print(purchase_report())
+
+print(sales_report())
