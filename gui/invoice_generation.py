@@ -352,13 +352,6 @@ class InvoiceForm:
             print(e)
             self.sendAlert("Error while calculating!")
     
-    def change_bottom_right(self):
-        self.entry_total_before_tax.delete(0, END)
-        self.entry_cgst.delete(0, END)
-        self.entry_igst.delete(0, END)
-        self.entry_sgst.delete(0, END)
-        self.entry_total_tax_amt.delete(0, END)
-        self.entry_total_after_tax_amt.delete(0, END)
 
     def onConfirm(self):
         print('Confirmed')

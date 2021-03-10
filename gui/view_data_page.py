@@ -1,7 +1,8 @@
 from ttkthemes import ThemedStyle
-from tkinter import messagebox, ttk
+from tkinter import messagebox, ttk, filedialog
 import tkinter as tk
 import models
+
 
 class TableView:
 
@@ -167,7 +168,7 @@ class ViewDataPage:
         self.delete_frame = ttk.Frame(self.window)
         self.delete_frame.pack(side = tk.BOTTOM, padx=20, pady = 20)
 
-        ttk.Label(self.delete_frame, text = "DELETE DATA").grid(row = 0, column = 1)
+        ttk.Label(self.delete_frame, text = "PRINT / DELETE DATA").grid(row = 0, column = 1)
 
         self.delete_table = tk.StringVar(self.delete_frame)
         self.table_delete = ttk.OptionMenu(
@@ -241,12 +242,16 @@ class ViewDataPage:
             print(x)
 
     def print_table_row(self):
-        table = self.delete_id.get()
+        table = self.delete_table.get()
         _id = self.delete_id.get()
-        print(table, _id)
-        print('This actually works')
-        
 
+        x = models.print_table_row(table, _id)
+        save_print_path = filedialog.asksaveasfilename(defaultextension=".pdf")
+        
+        get_it_printed = 
+
+        
+        
 
     def delete_table_row(self):
         table = self.delete_table.get()

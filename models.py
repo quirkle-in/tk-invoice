@@ -210,6 +210,21 @@ def create_entity(
         db.rollback()
         return False
 
+def print_table_row(table, _id):
+    if table == "Invoices":
+        x = Invoice
+        res = db.query(x).filter_by(invoice_id = _id).first()
+        print(res.name)
+    elif table == "Details":
+        x = Details
+        res = db.query(x).filter_by(deet_id = _id).first()
+        print(res)
+    elif table == "Entities":
+        x = Entity
+        res = db.query(x).filter_by(entity_id = _id).first()    
+    
+    return res
+
 def delete_table_row(table, _id):
     if table == "Invoices":
         x = Invoice
