@@ -48,7 +48,7 @@ class TableView:
 
         for row in range(len(self.data)):
             x = self.data[row].__dict__
-            print(x)
+            #print(x)
             col = 0
             for field in self.columns:
                 en = tk.Text(self.frame, width=12, height = 2, font=('Arial', 8), wrap = tk.WORD)
@@ -217,7 +217,7 @@ class ViewDataPage:
 
     def get_view(self):
         filters = {i: self.filters[i].get() for i in self.filters}
-        print(filters)
+        #print(filters)
         data = None
 
         data = models.filtered_view(
@@ -241,7 +241,7 @@ class ViewDataPage:
                     field: row.__dict__[field] for field in row.__dict__
                 } for row in self.data
             ]
-            print(x)
+            #print(x)
 
 
         print(self.data)
@@ -264,8 +264,6 @@ class ViewDataPage:
         
 
         
-        
-
     def delete_table_row(self):
         table = self.delete_table.get()
         _id = self.delete_id.get()

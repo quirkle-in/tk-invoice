@@ -123,7 +123,6 @@ class InvoiceForm:
         ttk.Label(x, text="State:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_state = ttk.Entry(x)
         self.entry_state.pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
-        self.entry_state.insert(0, 'Maharashtra')
         
         self.entry_code = ttk.Entry(x)
         self.entry_code.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
@@ -198,8 +197,8 @@ class InvoiceForm:
 
         x = ttk.Frame(self.bottom_left_frame)
         ttk.Label(x, text="IFS Code:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
-        self.entry_ifc_code = ttk.Entry(x)
-        self.entry_ifc_code.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
+        self.entry_ifsc = ttk.Entry(x)
+        self.entry_ifsc.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
         x.pack()
         
         x = ttk.Frame(self.bottom_right_frame)
@@ -373,25 +372,31 @@ class InvoiceForm:
 
     def collect_field_data(self):
         self.invoice_data = {
-            "invoice_date" :        datetime.strptime(self.entry_invoice_date.get(), '%d/%m/%Y'),
             "invoice_no" :          self.entry_invoice_no.get(),
+            "invoice_date" :        datetime.strptime(self.entry_invoice_date.get(), '%d/%m/%Y'),
+            "reverse_charges" :     self.reverse_charge_var.get(),
+            "state" :               self.entry_party_state.get(),
+            "state_code" :          self.entry_party_code.get(),
+            
             "name" :                self.entry_party_name.get(),
             "address" :             self.entry_party_address.get('1.0', 'end-1c'),
             "gst" :                 self.entry_party_gstin.get(),
-            "state" :               self.entry_party_state.get(),
-            "state_code" :          self.entry_party_code.get(),
-            "total" :               self.entry_total_tax_amt.get(),
-            "total_cgst" :          self.entry_cgst.get(),
-            "total_sgst" :          self.entry_sgst.get(),
+            "party_state" :         self.entry_party_state.get(),
+            "party_code" :          self.entry_party_code.get(),
+            
             "purchase" :            self.typeVar.get(),
             "rupees_in_words" :     self.entry_rs_in_words.get(),
-            "reverse_charges" :     self.reverse_charge_var.get(),
             "bank_name" :           self.entry_bank_name.get(),
-            "gst_reverse_charge" :  self.entry_gst_reverse_charge.get(),
+            "account_no" :          self.entry_ac_no.get(),            
+            "ifsc":                 self.entry_ifsc.get(),
+
             "total_before_tax" :    self.entry_total_before_tax.get(),
-            "total_after_tax" :     self.entry_total_after_tax_amt.get(),
             "total_igst" :          self.entry_igst.get(),
-            "total_tax_amt" :       self.entry_total_tax_amt.get()
+            "total_cgst" :          self.entry_cgst.get(),
+            "total_sgst" :          self.entry_sgst.get(),
+            "total_tax_amt" :       self.entry_total_tax_amt.get(),
+            "total_after_tax" :     self.entry_total_after_tax_amt.get(),
+            "gst_reverse_charge" :  self.entry_gst_reverse_charge.get(),
         }
 
     def collect_goods_details_data(self):
@@ -399,8 +404,9 @@ class InvoiceForm:
         
     def onPrint(self):
         good_deets = self.goods_table.getGoodsDetails()
-        filename_with_Abspath = filedialog.asksaveasfilename(defaultextension='.pdf', title='SaveInvoice') 
-        printing = create_invoice_pdf(self.invoice_data, good_deets, filename_with_Abspath)
+        filepath = filedialog.askdirectory(
+            initialdir = "/", title = "Select a folder to export to")
+        printing = create_invoice_pdf(self.invoice_data, good_deets, filepath)
         print("Export to PDF response:", printing)
 
 
