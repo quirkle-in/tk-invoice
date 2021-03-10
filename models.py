@@ -14,17 +14,19 @@ SessionLocal = sessionmaker(bind=engine)
 Base = declarative_base()
 db = SessionLocal()
 
+
 class Invoice(Base):
 
     __tablename__ = "invoice"
 
-    invoice_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    invoice_id = Column(Integer, primary_key=True,
+                        index=True, autoincrement=True)
     invoice_no = Column(Integer, unique=True, autoincrement=True)
     invoice_date = Column(Date, nullable=False)
-    reverse_charges = Column(Boolean, default = False)
+    reverse_charges = Column(Boolean, default=False)
     state = Column(String(100), default='')
     state_code = Column(Integer, default=0)
-    
+
     name = Column(String(100), nullable=False)
     address = Column(String(200), default='')
     gst = Column(String(200), default=0)
@@ -36,15 +38,14 @@ class Invoice(Base):
     bank_name = Column(String(100))
     account_no = Column(String(100))
     ifsc = Column(String(100))
-    
-    total_before_tax = Column(Float, default = 0.00)
-    total_igst = Column(Float, default = 0.00)
+
+    total_before_tax = Column(Float, default=0.00)
+    total_igst = Column(Float, default=0.00)
     total_cgst = Column(Float, default=0)
     total_sgst = Column(Float, default=0)
-    total_tax_amt = Column(Float, default = 0.00)
-    total_after_tax = Column(Float, default = 0.00)
+    total_tax_amt = Column(Float, default=0.00)
+    total_after_tax = Column(Float, default=0.00)
     gst_reverse_charge = Column(String(100))
-
 
 
 class Details(Base):
@@ -69,8 +70,8 @@ class Entity(Base):
 
     __tablename__ = "entity"
 
-    entity_id = Column(Integer, index = True, primary_key = True)
-    name = Column(String(100), unique = True)
+    entity_id = Column(Integer, index=True, primary_key=True)
+    name = Column(String(100), unique=True)
     address = Column(String(200))
     gstin_uid = Column(String(100))
     state = Column(String(100))
@@ -78,7 +79,7 @@ class Entity(Base):
     bank_name = Column(String(100))
     a_c_no = Column(String(100))
     ifc_code = Column(String(100))
-    
+
 
 ''' INVOICE FUNTIONS '''
 
@@ -119,6 +120,7 @@ def createInvoice(invoice_data):
 
 ''' DETAILS FUNCTIONS '''
 
+
 def get_all_details():
     return db.query(Details).all()
 
@@ -138,6 +140,7 @@ def createDetails(detail_data):
 
 ''' ENTITY FUNCTIONS '''
 
+
 def get_all_entities():
     return db.query(Entity).all()
 
@@ -147,7 +150,7 @@ def get_all_entity_names():
 
 
 def get_entity_by_name(name):
-    return db.query(Entity).filter_by(name = name).first()
+    return db.query(Entity).filter_by(name=name).first()
 
 
 def create_entity(data):
@@ -169,17 +172,20 @@ def create_entity(data):
 def filtered_view(table, type):
     res = None
     if table == "Invoices":
-        res = db.query(Invoice)     
+        res = db.query(Invoice)
 
-        if type == "Purchases": x = [1]
-        elif type == "Sales": x = [0]
-        else: x = [1, 0]
+        if type == "Purchases":
+            x = [1]
+        elif type == "Sales":
+            x = [0]
+        else:
+            x = [1, 0]
 
         res = res.filter(Invoice.purchase.in_(x))
 
     elif table == "Details":
         res = db.query(Details)
-    
+
     elif table == "Entities":
         res = db.query(Entity)
 
@@ -188,31 +194,24 @@ def filtered_view(table, type):
     return res.all()
 
 
-def get_table_row(table, _id):
-    if table == "Invoices":
-        x = Invoice
-        res = db.query(x).filter_by(invoice_id = _id).first()
-        print(res.name)
-    elif table == "Details":
-        x = Details
-        res = db.query(x).filter_by(deet_id = _id).first()
-        print(res)
-    elif table == "Entities":
-        x = Entity
-        res = db.query(x).filter_by(entity_id = _id).first()    
-    return res
+def get_table_row(_id):
+    inv_det = db.query(Invoice).filter_by(invoice_id=_id).first()
+    goods_det = db.query(Details).filter_by(
+        invoice_id=inv_det.invoice_id).all()
+
+    return [inv_det, goods_det]
 
 
 def delete_table_row(table, _id):
     if table == "Invoices":
         x = Invoice
-        res = db.query(x).filter_by(invoice_id = _id).first()
+        res = db.query(x).filter_by(invoice_id=_id).first()
     elif table == "Details":
         x = Details
-        res = db.query(x).filter_by(deet_id = _id).first()
+        res = db.query(x).filter_by(deet_id=_id).first()
     elif table == "Entities":
         x = Entity
-        res = db.query(x).filter_by(entity_id = _id).first()    
+        res = db.query(x).filter_by(entity_id=_id).first()
 
     try:
         db.delete(res)
@@ -224,10 +223,10 @@ def delete_table_row(table, _id):
 
 def get_invoice_by_id(_id):
     details = None
-    invoice = db.query(Invoice).filter_by(invoice_id = _id).first()
+    invoice = db.query(Invoice).filter_by(invoice_id=_id).first()
     if invoice:
         details = db.query(Details).filter_by(
-            invoice_id = invoice.invoice_id
+            invoice_id=invoice.invoice_id
         ).all()
         if details != None:
             return invoice, details
@@ -236,42 +235,44 @@ def get_invoice_by_id(_id):
 
 def purchase_report():
     details = []
-    data = db.query(Invoice).filter_by(purchase = True).all()
+    data = db.query(Invoice).filter_by(purchase=True).all()
     s_no = 1
     for x in data:
-        detail_data = db.query(Details).filter_by(invoice_id = x.invoice_id).all()
+        detail_data = db.query(Details).filter_by(
+            invoice_id=x.invoice_id).all()
         for y in detail_data:
             details_dict = {'Sr No': s_no,
-               'name': y.name,
-               'hsn': y.hsn,
-               'qty': y.qty,
-               'rate': y.rate,
-               'mrp': y.mrp,
-               'total': y.total,
-               'discount': y.discount,
-               'taxable_amt': y.taxable_amt}
+                            'name': y.name,
+                            'hsn': y.hsn,
+                            'qty': y.qty,
+                            'rate': y.rate,
+                            'mrp': y.mrp,
+                            'total': y.total,
+                            'discount': y.discount,
+                            'taxable_amt': y.taxable_amt}
             details.append(details_dict)
             s_no += 1
-    return (details)   
+    return (details)
 
 
 def sales_report():
     details = []
-    data = db.query(Invoice).filter_by(purchase = False).all()
+    data = db.query(Invoice).filter_by(purchase=False).all()
     s_no = 1
     for x in data:
-        detail_data = db.query(Details).filter_by(invoice_id = x.invoice_id).all()
+        detail_data = db.query(Details).filter_by(
+            invoice_id=x.invoice_id).all()
         for y in detail_data:
             details_dict = {
                 'Sr No': s_no,
-               'name': y.name,
-               'hsn': y.hsn,
-               'qty': y.qty,
-               'rate': y.rate,
-               'mrp': y.mrp,
-               'total': y.total,
-               'discount': y.discount,
-               'taxable_amt': y.taxable_amt}
+                'name': y.name,
+                'hsn': y.hsn,
+                'qty': y.qty,
+                'rate': y.rate,
+                'mrp': y.mrp,
+                'total': y.total,
+                'discount': y.discount,
+                'taxable_amt': y.taxable_amt}
             details.append(details_dict)
             s_no += 1
-    return (details)   
+    return (details)

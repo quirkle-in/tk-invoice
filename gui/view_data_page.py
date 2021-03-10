@@ -300,12 +300,55 @@ class ViewDataPage:
         self.DATA_TABLE = TableView(self.window, self.data, self.filters)
 
     def print_table_row(self):
-        table = self.filters["table"].get()
         _id = self.print_id.get()
 
-        x = models.get_table_row(table, _id)
-        file_path = filedialog.askdirectory(
-            initialdir="/", title="Select a folder to export to")
+        x = models.get_table_row(_id)
+        # file_path = filedialog.askdirectory(
+        #     initialdir="/", title="Select a folder to export to")
+        single_invoice = {
+            "invoice_no":          x[0].invoice_no,
+            "invoice_date":        x[0].invoice_date,
+            "reverse_charges":     x[0].reverse_charges,
+            "state":               x[0].state,
+            "state_code":          x[0].state_code,
+
+            "name":                x[0].name,
+            "address":             x[0].address,
+            "gst":                 x[0].gst,
+            "party_state":         x[0].party_state,
+            "party_code":          x[0].party_code,
+
+            "purchase":            x[0].purchase,
+            "rupees_in_words":     x[0].rupees_in_words,
+            "bank_name":           x[0].bank_name,
+            "account_no":          x[0].account_no,
+            "ifsc":                x[0].ifsc,
+
+            "total_before_tax":    x[0].total_before_tax,
+            "total_igst":          x[0].total_igst,
+            "total_cgst":          x[0].total_cgst,
+            "total_sgst":          x[0].total_sgst,
+            "total_tax_amt":       x[0].total_tax_amt,
+            "total_after_tax":     x[0].total_after_tax,
+            "gst_reverse_charge":  x[0].gst_reverse_charge
+        }
+        details = []
+        s_no = 0
+        for y in x[1]:
+            details_dict = {'Sr No': s_no,
+                            'name': y.name,
+                            'hsn': y.hsn,
+                            'qty': y.qty,
+                            'rate': y.rate,
+                            'mrp': y.mrp,
+                            'total': y.total,
+                            'discount': y.discount,
+                            'taxable_amt': y.taxable_amt}
+            details.append(details_dict)
+            s_no += 1
+
+        print('Invoice Dets: ', single_invoice)
+        print('Details in inv: ', details)
 
     def delete_table_row(self):
         table = self.filters["table"].get()
