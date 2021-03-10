@@ -129,6 +129,7 @@ class InvoiceForm:
         ttk.Label(x, text="State:").pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
         self.entry_state = ttk.Entry(x)
         self.entry_state.pack(side = tk.LEFT, expand = True, padx = 10, pady = 5)
+        self.entry_state.insert(0, 'Maharashtra')
         
         self.entry_code = ttk.Entry(x)
         self.entry_code.pack(side = tk.RIGHT, expand = True, padx = 10, pady = 5)
@@ -418,6 +419,11 @@ class InvoiceForm:
                 'state'           : self.entry_party_state.get(),
                 'state_code'      : self.entry_party_code.get(),
                 'total'           : self.entry_total_tax_amt.get(),
+                'total_before_tax': self.entry_total_before_tax.get(),
+                'total_igst'      : self.entry_igst.get(),
+                'total_tax_amt'   : self.entry_total_tax_amt.get(),
+                'total_after_tax' : self.entry_total_after_tax_amt.get(),
+                'gst_reverse_charge' : self.entry_gst_reverse_charge.get(),
                 'total_cgst'      : self.entry_cgst.get(),
                 'total_sgst'      : self.entry_sgst.get(),
                 'purchase'        : self.typeVar.get(),
@@ -425,7 +431,7 @@ class InvoiceForm:
                 'rupees_in_words' : self.entry_rs_in_words.get(),
                 'bank_name'       : self.entry_bank_name.get(),
                 'account_no'    : self.entry_ac_no.get(),
-                'ifsc_code'       : self.entry_ifc_code.get()
+                'ifsc_code'       : self.entry_ifc_code.get(),
             },
 
             'goods_details'       : good_deets,
