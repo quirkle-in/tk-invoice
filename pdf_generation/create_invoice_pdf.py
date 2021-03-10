@@ -1,11 +1,10 @@
 from fpdf import FPDF
 from datetime import datetime
 
-FILENAME = "ExportedInvoice" + "_" + datetime.now().strftime('%d-%m-%Y_') + ".pdf"
-
 def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
 
     pdf = FPDF('P', 'mm', 'A4')
+    FILENAME = "Invoice" + "_" + INVOICE['name'] + '_' + INVOICE['invoice_no'] + datetime.now().strftime('%d-%m-%Y_') + ".pdf"
 
     # Add new page. Without this you cannot create the document.
     pdf.add_page()
@@ -86,7 +85,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
 
     ''' Table '''
 
-    deets_w = {'deet_no': 5.5, 'name': 20, 'hsn': 10, 'qty': 9.5, 'rate': 7, 'mrp': 7, 'total': 10, 'discount': 10, 'taxable_amt': 16}
+    deets_w = {'Sr No': 5.5, 'name': 20, 'hsn': 10, 'qty': 9.5, 'rate': 7, 'mrp': 7, 'total': 10, 'discount': 10, 'taxable_amt': 16}
     pdf.ln(24)
     pdf.set_font('Times', 'IB', 9.0)
     for ii in deets_w:
@@ -102,11 +101,11 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
     
     pdf.ln(10)
     
-    pdf.cell(90, 6, 'Rs. in words: ' + str(INVOICE["rupees_in_words"]), border=0, align='L', fill=False)
+    pdf.set_font('Times', 'IB', 9.0)
+    pdf.multi_cell(90, 6, 'Rs. in words: ' + str(INVOICE["rupees_in_words"]), border=0, align='L', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
-    pdf.cell(40, 6, 'Total before Tax:', border=1, align='L', fill=False)
-    pdf.cell(40, 6, str(INVOICE["total_before_tax"]), border=1, align='C', fill=False)
     
+    pdf.set_font('Times', '', 9.0)
     pdf.ln(6)
 
     pdf.cell(90, 6, 'AYURVEDIC PROP. MEDICINE', border="BT", align='C', fill=False)
@@ -118,21 +117,21 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
 
     pdf.cell(90, 6, "Bank Name: " + str(INVOICE["bank_name"]), border=0, align='L', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
-    pdf.cell(40, 6, 'CGST @ 6%', border=1, align='L', fill=False)
+    pdf.cell(40, 6, 'CGST', border=1, align='L', fill=False)
     pdf.cell(40, 6, str(INVOICE["total_cgst"]), border=1, align='C', fill=False)
     
     pdf.ln(6)
     
     pdf.cell(90, 6, "Account No.:: " + str(INVOICE["account_no"]), border=0, align='L', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
-    pdf.cell(40, 6, 'SGST @ 6%', border=1, align='L', fill=False)
+    pdf.cell(40, 6, 'SGST', border=1, align='L', fill=False)
     pdf.cell(40, 6, str(INVOICE["total_sgst"]), border=1, align='C', fill=False)
     
     pdf.ln(6)
     
     pdf.cell(90, 6, "IFSC Code:" + str(INVOICE["ifsc"]), border=0, align='L', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
-    pdf.cell(40, 6, 'IGST @ 6%', border=1, align='L', fill=False)
+    pdf.cell(40, 6, 'IGST', border=1, align='L', fill=False)
     pdf.cell(40, 6, str(INVOICE["total_igst"]), border=1, align='C', fill=False)
     
     pdf.ln(6)
