@@ -287,7 +287,7 @@ class InvoiceForm:
         return True
 
     def get_gst_vals(self):
-        path = 'C:\\Users\\Jaisal Shah\\Desktop\\FLP\\Bill\\tk_invoice\\settings.json'
+        path = 'settings.json'
         with open(path) as f:
             data = json.load(f)
             return {
