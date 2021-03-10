@@ -299,7 +299,14 @@ class InvoiceForm:
             total_cgst=self.entry_cgst.get(),
             total_sgst=self.entry_sgst.get(),
             purchase=self.typeVar.get(),
-            reverse_charges=self.reverse_charge_var.get()
+            rupees_in_words=self.entry_rs_in_words.get(),
+            reverse_charges=self.reverse_charge_var.get(),
+            bank_name=self.entry_bank_name.get(),
+            gst_reverse_charge=self.entry_gst_reverse_charge.get(),
+            total_before_tax=self.entry_total_before_tax.get(),
+            total_after_tax=self.entry_total_after_tax_amt.get(),
+            total_igst=self.entry_igst.get(),
+            total_tax_amt=self.entry_total_tax_amt.get()
         )
         print(resp)
         return resp

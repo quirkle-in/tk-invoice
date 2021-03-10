@@ -4,7 +4,7 @@ from datetime import datetime
 
 def create_invoice_pdf(INVOICE, DETAILS):
     print(INVOICE)
-    #print(DETAILS)
+    print(DETAILS)
 
     pdf = FPDF('P', 'mm', 'A4')
 
@@ -42,22 +42,22 @@ def create_invoice_pdf(INVOICE, DETAILS):
     pdf.set_font('Arial', 'B', 9.0)
     date = '21/03/2021'
     pdf.text(x=15, y=72, txt='Invoice Date:')
-    pdf.text(x=60, y=72, txt = INVOICE["invoice_date"].strftime("%d/%m/%Y"))
+    pdf.text(x=60, y=72, txt = str(INVOICE["invoice_date"].strftime("%d/%m/%Y")))
 
     pdf.set_font('Arial', 'B', 9.0)
-    reverse_charges = 'Yes'
+    reverse_charges = 'Yes' if INVOICE["reverse_charges"] else "No"
     pdf.text(x=15, y=80, txt='Reverse Charges (Y/N): ')
-    pdf.text(x=60, y=80, txt=reverse_charges)
+    pdf.text(x=60, y=80, txt=str(reverse_charges))
 
     pdf.set_font('Arial', 'B', 9.0)
     state = 'Goa'
     pdf.text(x=15, y=88, txt='State: ')
-    pdf.text(x=30, y=88, txt=state)
+    pdf.text(x=30, y=88, txt=str(state))
 
     pdf.set_font('Arial', 'B', 9.0)
     code = '487'
     pdf.text(x=60, y=88, txt='Code: ')
-    pdf.text(x=75, y=88, txt=code)
+    pdf.text(x=75, y=88, txt=str(code))
 
     # Vertical Line
     pdf.line(105, 48, 105, 93)
@@ -72,7 +72,7 @@ def create_invoice_pdf(INVOICE, DETAILS):
     pdf.set_font('Arial', 'B', 9.0)
     number = '27'
     pdf.text(x=115, y=64, txt='Name: ')
-    pdf.text(x=160, y=64, txt=INVOICE["name"])
+    pdf.text(x=160, y=64, txt=str(INVOICE["name"]))
 
     pdf.set_font('Arial', 'B', 9.0)
     date = '21/03/2021'
@@ -83,17 +83,17 @@ def create_invoice_pdf(INVOICE, DETAILS):
     pdf.set_font('Arial', 'B', 9.0)
     gst_in = '27AADCB2230M1ZT'
     pdf.text(x=115, y=82, txt='GSTIN No: ')
-    pdf.text(x=160, y=82, txt=gst_in)
+    pdf.text(x=160, y=82, txt=str(INVOICE["gst"]))
 
     pdf.set_font('Arial', 'B', 9.0)
     state = 'Goa'
     pdf.text(x=115, y=88, txt='State: ')
-    pdf.text(x=130, y=88, txt=state)
+    pdf.text(x=130, y=88, txt=str(INVOICE["state"]))
 
     pdf.set_font('Arial', 'B', 9.0)
     code = '487'
     pdf.text(x=160, y=88, txt='Code: ')
-    pdf.text(x=175, y=88, txt=code)
+    pdf.text(x=175, y=88, txt=str(INVOICE["state_code"]))
 
     pdf.line(10, 93, 200, 93)
 
@@ -101,34 +101,30 @@ def create_invoice_pdf(INVOICE, DETAILS):
     Table
     '''
 
-    deets_w = {'Sr. No.': 5.5,
-               'Name': 20,
-               'HSN': 10,
-               'Qty': 9.5,
-               'Rate': 7,
-               'MRP': 7,
-               'Total': 10,
-               'Discount': 10,
-               'Taxable Amount': 16}
+    deets_w = {'deet_no': 5.5,
+               'name': 20,
+               'hsn': 10,
+               'qty': 9.5,
+               'rate': 7,
+               'mrp': 7,
+               'total': 10,
+               'discount': 10,
+               'taxable_amt': 16}
     pdf.ln(88)
 
     pdf.set_font('Times', 'IB', 9.0)
 
-    for gg in [deets_w]:
-        i = 0
-        for ii in gg.keys():
-            pdf.cell(deets_w[ii] * 2, 6, str(ii),
-                     border=1, align='C', fill=False)
-            i+1
-        pdf.ln(2)
+    for ii in deets_w:
+        pdf.cell(deets_w[ii] * 2, 6, str(ii).replace("_", " ").title(),
+                    border=1, align='C', fill=False)
+    pdf.ln(2)
 
     pdf.set_font('Arial', '', 9.0)
-    for i in range(19):  # sets no. of rows
+    for row in DETAILS:  # sets no. of rows
         pdf.ln(4)
-        for gg in [deets_w]:  # sets no. of cols
-            for ii in gg.keys():
-                pdf.cell(deets_w[ii] * 2, 6, str(ii),
-                         border=1, align='C', fill=False)
+        for field in deets_w:  # sets no. of cols
+            pdf.cell(deets_w[field] * 2, 6, str(row[field]),
+                border=1, align='C', fill=False)
         pdf.ln(2)
 
     '''
@@ -141,7 +137,7 @@ def create_invoice_pdf(INVOICE, DETAILS):
 
     rs = 'Twenty Ruppees only /-'
     pdf.text(x=10, y=230, txt='Rs. in words: ')
-    pdf.text(x=30, y=230, txt=rs)
+    pdf.text(x=30, y=230, txt=str(INVOICE["rupees_in_words"]))
 
     pdf.line(10, 235, 100, 235)
 
@@ -152,15 +148,15 @@ def create_invoice_pdf(INVOICE, DETAILS):
 
     bank_name = 'Bank Of Baroda'
     pdf.text(x=10, y=250, txt='Bank Name: ')
-    pdf.text(x=55, y=250, txt=bank_name)
+    pdf.text(x=55, y=250, txt=str(INVOICE["bank_name"]))
 
     ac_no = '1234567897932XX'
     pdf.text(x=10, y=255, txt='Account Number: ')
-    pdf.text(x=55, y=255, txt=ac_no)
+    pdf.text(x=55, y=255, txt=str(INVOICE["account_no"]))
 
     ifsc_code = 'GSGS5425425454'
     pdf.text(x=10, y=260, txt='IFSC Code: ')
-    pdf.text(x=55, y=260, txt=ifsc_code)
+    pdf.text(x=55, y=260, txt=str(INVOICE["ifsc_code"]))
 
     pdf.line(10, 265, 100, 265)
 
@@ -174,18 +170,21 @@ def create_invoice_pdf(INVOICE, DETAILS):
 
     pdf.line(105, 220, 105, 290)
 
-    right_bottom_headers = {'Total Before tax': 16,
-                            'CGST': 16, 'SGST': 16, 'IGST': 16, 'Total Tax Amount': 16, 'Total After Tax': 16, 'GST Reverse Charge': 16}
+    right_bottom_headers = [
+        'total_before_tax', 'total_cgst', 'total_sgst',
+        'total_igst', 'total_tax_amt', 'total_after_tax',
+        'gst_reverse_charge'
+    ]
 
     pdf.ln(3)
-    for i in right_bottom_headers.keys():
+    for field in right_bottom_headers:
         pdf.ln(4)
         pdf.set_font('Times', 'IB', 9.0)
         pdf.cell(118)
-        pdf.cell(18 * 2, 6, i,
+        pdf.cell(18 * 2, 6, field.replace("_", " ").title(),
                  border=1, align='R', fill=False)
         pdf.set_font('Arial', '', 9.0)
-        pdf.cell(18 * 2, 6, i,
+        pdf.cell(18 * 2, 6, str(INVOICE[field]),
                  border=1, align='C', fill=False)
         pdf.ln(2)
 
