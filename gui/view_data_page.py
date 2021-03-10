@@ -1,12 +1,18 @@
 from tkinter import messagebox, ttk, filedialog
+from sqlalchemy.sql.base import Executable
 from ttkthemes import ThemedStyle
 import tkinter as tk
 import models
 
 
+INVOICE_COLUMNS = ["invoice_id", "invoice_no",
+    "invoice_date", "name", "address", "gst",
+    "purchase", "account_no", "total_tax_amt",
+    "total_after_tax"]
+
 class TableView:
 
-    def __init__(self, root, data):
+    def __init__(self, root, data, filters):
         self.root = root
         self.data = data
         
@@ -35,8 +41,11 @@ class TableView:
             return
 
 
-        self.columns = [i.name for i in data[0].__table__.columns]
-        
+        if filters["table"].get() == "Invoices":
+            self.columns = INVOICE_COLUMNS
+        else:
+            self.columns = [field for field in data[0]]
+
         col = 0
         for field in self.columns:
             i = tk.Text(self.frame, width=12, height = 2, font=('Arial', 8, "bold"), wrap = tk.WORD)
@@ -47,7 +56,7 @@ class TableView:
             col += 1
 
         for row in range(len(self.data)):
-            x = self.data[row].__dict__
+            x = self.data[row]
             #print(x)
             col = 0
             for field in self.columns:
@@ -56,56 +65,6 @@ class TableView:
                 en.configure(state="disabled")
                 en.grid(row= row + 1, column=col)
                 col += 1
-
-
-class InvoiceView:
-    def __init__(self, invoice, details):
-        self.root = tk.Tk()
-
-        self.invoice = invoice
-        self.details = details
-        
-        self.base_frame = ttk.Frame(self.root, borderwidth=2, relief="groove")
-        self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=20)
-
-        self.canvas = tk.Canvas(self.base_frame, width=1800, height = 300)
-        self.scrollbar_y = ttk.Scrollbar(self.base_frame, orient = tk.VERTICAL, command = self.canvas.yview)
-        self.frame = ttk.Frame(self.canvas, width=1100)
-
-        self.frame.bind(
-            "<Configure>",
-            lambda e: self.canvas.configure(
-                scrollregion = self.canvas.bbox("all")
-            )
-        )
-
-        self.canvas.create_window((0, 0), window=self.frame, anchor="center")
-        self.canvas.configure(yscrollcommand=self.scrollbar_y.set)
-
-        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        self.scrollbar_y.pack(side=tk.RIGHT, fill = tk.Y)
-        
-        if not self.invoice:
-            return
-        
-        self.invoice = self.invoice.__dict__
-        
-        col = 0
-        for field in self.invoice:
-            en = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8), wrap = tk.WORD)
-            en.insert(tk.END, field)
-            en.configure(state="disabled")
-            en.grid(row = 0, column=col)
-
-            val = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8), wrap = tk.WORD)
-            val.insert(tk.END, self.invoice[field])
-            val.configure(state="disabled")
-            val.grid(row = 1, column=col)
-
-            col += 1
-        
-        self.root.mainloop()
-
 
 
 class ViewDataPage:
@@ -229,13 +188,13 @@ class ViewDataPage:
             filters["type"]
         )
 
-        self.data = data
+        self.data = [{field: row.__dict__[field] for field in row.__dict__} for row in data]
 
         try:
             self.DATA_TABLE.base_frame.destroy()
-        except:
-            pass
-        self.DATA_TABLE = TableView(self.window, self.data)
+        except Exception as e:
+            print(e)
+        self.DATA_TABLE = TableView(self.window, self.data, self.filters)
 
 
     def print_table_row(self):
@@ -258,3 +217,54 @@ class ViewDataPage:
             return messagebox.showinfo("Success", "Deleted!")
         else:
             return messagebox.showerror("Error", "Could not delete")
+
+'''
+
+class InvoiceView:
+    def __init__(self, invoice, details):
+        self.root = tk.Tk()
+
+        self.invoice = invoice
+        self.details = details
+        
+        self.base_frame = ttk.Frame(self.root, borderwidth=2, relief="groove")
+        self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=20)
+
+        self.canvas = tk.Canvas(self.base_frame, width=1800, height = 300)
+        self.scrollbar_y = ttk.Scrollbar(self.base_frame, orient = tk.VERTICAL, command = self.canvas.yview)
+        self.frame = ttk.Frame(self.canvas, width=1100)
+
+        self.frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(
+                scrollregion = self.canvas.bbox("all")
+            )
+        )
+
+        self.canvas.create_window((0, 0), window=self.frame, anchor="center")
+        self.canvas.configure(yscrollcommand=self.scrollbar_y.set)
+
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.scrollbar_y.pack(side=tk.RIGHT, fill = tk.Y)
+        
+        if not self.invoice:
+            return
+        
+        self.invoice = self.invoice.__dict__
+        
+        col = 0
+        for field in self.invoice:
+            en = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8), wrap = tk.WORD)
+            en.insert(tk.END, field)
+            en.configure(state="disabled")
+            en.grid(row = 0, column=col)
+
+            val = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8), wrap = tk.WORD)
+            val.insert(tk.END, self.invoice[field])
+            val.configure(state="disabled")
+            val.grid(row = 1, column=col)
+
+            col += 1
+        
+        self.root.mainloop()
+'''

@@ -55,7 +55,7 @@ class Table:
             self.i = ttk.Entry(self.frame, width=14, font=('Arial', 8), 
                 justify = tk.CENTER)
             self.i.insert(tk.END, field.replace("_", " ").upper())
-            self.i.config(state='readonly')
+            self.i.configure(state="disabled", foreground="#000000")
             self.i.grid(row=0, column=col)
             col += 1
         
