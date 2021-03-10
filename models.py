@@ -32,7 +32,7 @@ class Invoice(Base):
     total_cgst = Column(Float, default=0)
     total_sgst = Column(Float, default=0)
     purchase = Column(Boolean, default=True)
-    
+    reverse_charges = Column(Boolean, default = False)
 
 class Details(Base):
 
@@ -104,7 +104,8 @@ def createInvoice(
         total_cgst,
         total_sgst,
         purchase,
-        invoice_no):
+        invoice_no,
+        reverse_charges):
     try:
         inv = Invoice(
             invoice_no=invoice_no, invoice_date=invoice_date,
@@ -112,7 +113,7 @@ def createInvoice(
             state=state,
             state_code=state_code, total=total,
             total_cgst=total_cgst, total_sgst=total_sgst,
-            purchase=purchase)
+            purchase=purchase, reverse_charges = reverse_charges)
         db.add(inv)
         db.commit()
         # print(inv)
@@ -143,7 +144,7 @@ def createDetails(deet_no,
         )
         db.add(det)
         db.commit()
-        print('commited deets')
+        print('Goods Details inserted')
         return det.deet_id
     except Exception as e:
         print(e)
@@ -227,3 +228,15 @@ def delete_table_row(table, _id):
         return True
     except:
         return False
+
+
+def get_invoice_by_id(_id):
+    details = None
+    invoice = db.query(Invoice).filter_by(invoice_id = _id).first()
+    if invoice:
+        details = db.query(Details).filter_by(
+            invoice_id = invoice.invoice_id
+        ).all()
+        if details != None:
+            return invoice, details
+    return None, None

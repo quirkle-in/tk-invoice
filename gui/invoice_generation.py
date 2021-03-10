@@ -76,11 +76,11 @@ class InvoiceForm:
 
         # - - -
         self.top_left_subleft_frame = ttk.Frame(self.top_left_frame)
-        self.top_left_subleft_frame.pack(side = tk.LEFT, anchor="n")
+        self.top_left_subleft_frame.pack(side = tk.LEFT, anchor="s")
         
         # - - -
         self.top_left_subright_frame = ttk.Frame(self.top_left_frame)
-        self.top_left_subright_frame.pack(side = tk.RIGHT, anchor="n")
+        self.top_left_subright_frame.pack(side = tk.RIGHT, anchor="s")
 
         # - -
         self.top_right_frame = ttk.Frame(self.top_frame)
@@ -88,11 +88,11 @@ class InvoiceForm:
 
         # - - -
         self.top_right_subleft_frame = ttk.Frame(self.top_right_frame)
-        self.top_right_subleft_frame.pack(side = tk.LEFT, anchor="n")
+        self.top_right_subleft_frame.pack(side = tk.LEFT, anchor="s")
         
         # - - -
         self.top_right_subright_frame = ttk.Frame(self.top_right_frame)
-        self.top_right_subright_frame.pack(side = tk.RIGHT, anchor="n")
+        self.top_right_subright_frame.pack(side = tk.RIGHT, anchor="s")
 
 
         ttk.Label(self.top_left_subleft_frame, text="Invoice Number:").grid(row = 0, column = 0, padx = 10, pady = 10)
@@ -181,8 +181,21 @@ class InvoiceForm:
         self.entry_invoice_no.grid(row = 0, column = 1, padx = 10, pady = 10)
         self.entry_invoice_date = ttk.Entry(self.top_left_subright_frame, textvariable=self.dating)  # date picker
         self.entry_invoice_date.grid(row = 1, column = 1, padx = 10, pady = 10)
-        self.entry_reverse_charges = ttk.Entry(self.top_left_subright_frame)
-        self.entry_reverse_charges.grid(row = 2, column = 1, padx = 10, pady = 10)
+        
+        self.reverse_charge_var = tk.BooleanVar(self.window, value = False)
+
+        self.reverse_frame = ttk.Frame(self.top_left_subright_frame)
+        self.reverse_frame.grid(row = 2, column = 1, padx = 10, pady = 10)
+
+        self.reverse_true_radio_button = ttk.Radiobutton(
+            self.reverse_frame, text="Yes", variable=self.reverse_charge_var, value=True)
+        self.reverse_true_radio_button.pack(side = tk.LEFT, expand = True)
+
+        self.reverse_false_radio_button = ttk.Radiobutton(
+            self.reverse_frame, text="No", variable=self.reverse_charge_var, value=False)
+        self.reverse_false_radio_button.pack(side = tk.RIGHT, expand = True)
+
+        
         self.entry_state = ttk.Entry(self.top_left_subright_frame)
         self.entry_state.grid(row = 3, column = 1, padx = 10, pady = 10)
         self.entry_code = ttk.Entry(self.top_left_subright_frame)
@@ -283,8 +296,10 @@ class InvoiceForm:
             total=self.entry_total_tax_amt.get(),
             total_cgst=self.entry_cgst.get(),
             total_sgst=self.entry_sgst.get(),
-            purchase=self.typeVar.get()
+            purchase=self.typeVar.get(),
+            reverse_charges=self.reverse_charge_var.get()
         )
+        print(resp)
         return resp
 
     def insertDetails(self, inv_id):
@@ -364,11 +379,14 @@ class InvoiceForm:
         print('Confirmed')
         inv_id = self.insertInvoice()
         print("Invoice id generated:", inv_id)
-        x = self.insertDetails(inv_id)
-        print(x)
-        self.back_to_home_page()
-        messagebox.showinfo(title='Invoice Status',
-                            message='Invoice has been successfully recorded')
+        if inv_id:
+            x = self.insertDetails(inv_id)
+            print(x)
+            if x:
+                messagebox.showinfo(title='Invoice Status',
+                                    message='Invoice and details have been successfully recorded')
+                
+                self.back_to_home_page()
 
     def onCalculate(self):
         global CAL_CLICKED
