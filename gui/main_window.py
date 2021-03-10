@@ -75,7 +75,7 @@ class MainWindow:
         SettingsPage()
 
     def testpdf(self):
-        invoice, details = models.get_invoice_by_id(5)
+        invoice, details = models.get_invoice_by_id(6)
         invoice = { field: invoice.__dict__[field] for field in invoice.__dict__ }
         details = [{ field: detail.__dict__[field] for field in detail.__dict__ } for detail in details]
         #print(invoice, details)

@@ -65,10 +65,12 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH = ""):
     pdf.text(x=130, y=64, txt=str(INVOICE["name"]))
 
     pdf.set_font('Arial', 'B', 9.0)
-    pdf.text(x=115, y=70, txt='Address:')  # Address
-    pdf.text(x = 130, y = 69, txt = INVOICE['address'])
-    pdf.line(130, 70, 200, 70)
-    pdf.line(115, 76, 200, 76)
+    pdf.text(x=115, y=70, txt='Address:') # Address
+    
+    pdf.ln(54)
+    pdf.cell(120, 6, "")
+    pdf.multi_cell(w = 70, h = 2, txt = str(INVOICE['address']),
+        align = "L", fill = False, border = 0)
     pdf.set_font('Arial', 'B', 9.0)
     pdf.text(x=115, y=82, txt='GSTIN No: ')
     pdf.text(x=160, y=82, txt=str(INVOICE["gst"]))
@@ -87,7 +89,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH = ""):
     ''' Table '''
 
     deets_w = {'deet_no': 5.5, 'name': 20, 'hsn': 10, 'qty': 9.5, 'rate': 7, 'mrp': 7, 'total': 10, 'discount': 10, 'taxable_amt': 16}
-    pdf.ln(88)
+    pdf.ln(24)
     pdf.set_font('Times', 'IB', 9.0)
     for ii in deets_w:
         pdf.cell(deets_w[ii] * 2, 6, str(ii).replace("_", " ").title(), border=1, align='C', fill=False)
