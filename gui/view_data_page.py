@@ -166,8 +166,6 @@ class ViewDataPage:
 
         self.print_table = tk.StringVar(self.print_frame)
         self.table_print = ttk.Label(self.print_frame, text='Invoice ID:')
-        # ttk.OptionMenu(
-        #     self.print_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
         self.table_print.pack(side=tk.LEFT, expand=True,  padx=10, pady=10)
 
         self.print_id = tk.IntVar(self.print_frame)
@@ -218,7 +216,6 @@ class ViewDataPage:
 
     def back_to_home_page(self):
         ''' confirmation '''
-        pass
 
         self.window.destroy()
 
@@ -351,55 +348,3 @@ class ViewDataPage:
             return messagebox.showinfo("Success", "Deleted!")
         else:
             return messagebox.showerror("Error", "Could not delete")
-
-
-'''
-
-class InvoiceView:
-    def __init__(self, invoice, details):
-        self.root = tk.Tk()
-
-        self.invoice = invoice
-        self.details = details
-        
-        self.base_frame = ttk.Frame(self.root, borderwidth=2, relief="groove")
-        self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=20)
-
-        self.canvas = tk.Canvas(self.base_frame, width=1800, height = 300)
-        self.scrollbar_y = ttk.Scrollbar(self.base_frame, orient = tk.VERTICAL, command = self.canvas.yview)
-        self.frame = ttk.Frame(self.canvas, width=1100)
-
-        self.frame.bind(
-            "<Configure>",
-            lambda e: self.canvas.configure(
-                scrollregion = self.canvas.bbox("all")
-            )
-        )
-
-        self.canvas.create_window((0, 0), window=self.frame, anchor="center")
-        self.canvas.configure(yscrollcommand=self.scrollbar_y.set)
-
-        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        self.scrollbar_y.pack(side=tk.RIGHT, fill = tk.Y)
-        
-        if not self.invoice:
-            return
-        
-        self.invoice = self.invoice.__dict__
-        
-        col = 0
-        for field in self.invoice:
-            en = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8), wrap = tk.WORD)
-            en.insert(tk.END, field)
-            en.configure(state="disabled")
-            en.grid(row = 0, column=col)
-
-            val = tk.Text(self.frame, width=14, height = 2, font=('Arial', 8), wrap = tk.WORD)
-            val.insert(tk.END, self.invoice[field])
-            val.configure(state="disabled")
-            val.grid(row = 1, column=col)
-
-            col += 1
-        
-        self.root.mainloop()
-'''

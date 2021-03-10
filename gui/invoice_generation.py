@@ -216,8 +216,6 @@ class InvoiceForm:
             side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack()
 
-        #ttk.Label(self.bottom_left_subleft_frame, text="AYURVEDIC PROP MEDICINE").grid(row = 2, column = 0, padx = 10, pady = 5)
-
         x = ttk.Frame(self.bottom_left_frame)
         ttk.Label(x, text="Bank Name:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)

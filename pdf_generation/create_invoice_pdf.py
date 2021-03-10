@@ -85,8 +85,6 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
     pdf.text(x=160, y=88, txt='Code: ')
     pdf.text(x=175, y=88, txt=str(INVOICE["party_code"]))
 
-    #pdf.line(10, 93, 200, 93)
-
     ''' Table '''
 
     deets_w = {'deet_no': 5.5, 'name': 20, 'hsn': 10, 'qty': 9.5,
@@ -180,10 +178,8 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
     pdf.cell(40, 6, str(INVOICE["gst_reverse_charge"]),
              border=1, align='C', fill=False)
 
-    ##pdf.line(105, 230, 105, 290)
     pdf.ln(12)
 
-    #pdf.line(110, 270, 195, 270)
     pdf.set_font('Times', 'IB', 9.0)
     sign_text = 'For Rajeshree Marketing'
     pdf.cell(190, 6, sign_text, align="R", fill=False)
@@ -194,7 +190,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
     pdf.cell(130, 6, 'E & O.E.', align="R", fill=False)
 
     pdf.cell(60, 6, 'Authorized Signature', align="R", fill=False)
-    #pdf.line(10, 290, 200, 290)
+
     pdf.ln(6)
     pdf.cell(190, 6, "", align="C", border="T", fill=False)
 

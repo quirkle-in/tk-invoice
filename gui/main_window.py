@@ -34,8 +34,7 @@ class MainWindow:
                                     corner_radius=15, hover_color = '#4f86ff', fg_color='#6399ff', text_font=('Avenir',13))
         self.btn_view_invoices.pack(expand=True)
 
-        # self.btn_settings = ttk.Button(self.window, text="Settings", command = self.settings_page, width = 30)
-        # self.btn_settings.pack(expand=True)
+
         self.btn_settings = TkinterCustomButton(text="Settings", command = self.settings_page, width = 200, 
                                     corner_radius=15, hover_color = '#005e50', fg_color='#00966e', text_font=('Avenir',13))
         self.btn_settings.pack(expand=True)
