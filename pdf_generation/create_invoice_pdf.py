@@ -1,7 +1,10 @@
 from fpdf import FPDF
+from datetime import datetime
 
 
-def create_invoice_pdf():
+def create_invoice_pdf(INVOICE, DETAILS):
+    print(INVOICE)
+    #print(DETAILS)
 
     pdf = FPDF('P', 'mm', 'A4')
 
@@ -20,7 +23,7 @@ def create_invoice_pdf():
         x=50, y=22, txt='1/16, Vijay Nagar, Bandrekarwadi Jogeshwari, (East), Mumbai - 400 060.')
 
     pdf.set_font('Arial', 'B', 10.0)
-    pdf.text(x=78, y=30, txt='GST No. :-    27AKEPB0058K1ZE')
+    pdf.text(x=78, y=30, txt='GST No. :    27AKEPB0058K1ZE')
 
     pdf.line(10, 35, 200, 35)
 
@@ -34,12 +37,12 @@ def create_invoice_pdf():
     pdf.set_font('Arial', 'B', 9.0)
     number = '21'
     pdf.text(x=15, y=64, txt='Invoice Number: ')
-    pdf.text(x=60, y=64, txt=number)
+    pdf.text(x=60, y=64, txt= str(INVOICE["invoice_no"]) )
 
     pdf.set_font('Arial', 'B', 9.0)
     date = '21/03/2021'
     pdf.text(x=15, y=72, txt='Invoice Date:')
-    pdf.text(x=60, y=72, txt=date)
+    pdf.text(x=60, y=72, txt = INVOICE["invoice_date"].strftime("%d/%m/%Y"))
 
     pdf.set_font('Arial', 'B', 9.0)
     reverse_charges = 'Yes'
@@ -67,9 +70,9 @@ def create_invoice_pdf():
     pdf.text(x=143, y=54, txt='BILL TO PARTY')
 
     pdf.set_font('Arial', 'B', 9.0)
-    number = '21'
+    number = '27'
     pdf.text(x=115, y=64, txt='Name: ')
-    pdf.text(x=160, y=64, txt=number)
+    pdf.text(x=160, y=64, txt=INVOICE["name"])
 
     pdf.set_font('Arial', 'B', 9.0)
     date = '21/03/2021'
@@ -200,7 +203,12 @@ def create_invoice_pdf():
     pdf.text(x=160, y=288, txt='Authorized Signature')
 
     pdf.line(10, 290, 200, 290)
-    pdf.output('dummy.pdf', 'F')
+
+    try:
+        pdf.output('dummy.pdf', 'F')
+        print("Created.")
+    except Exception as e:
+        print(e)
 
 
 if __name__ == '__main__':
