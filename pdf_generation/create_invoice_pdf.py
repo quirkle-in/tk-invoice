@@ -89,14 +89,8 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
 
     ''' Table '''
 
-<<<<<<< HEAD
     deets_w = {'Sr No': 5.5, 'name': 20, 'hsn': 10, 'qty': 9.5, 'rate': 7, 'mrp': 7, 'total': 10, 'discount': 10, 'taxable_amt': 16}
     pdf.ln(30)
-=======
-    deets_w = {'deet_no': 5.5, 'name': 20, 'hsn': 10, 'qty': 9.5,
-               'rate': 7, 'mrp': 7, 'total': 10, 'discount': 10, 'taxable_amt': 16}
-    pdf.ln(27)
->>>>>>> 91c6600715b6f715acf98f15a9c2c945757494ac
     pdf.set_font('Times', 'IB', 9.0)
     for ii in deets_w:
         pdf.cell(deets_w[ii] * 2, 6, str(ii).replace("_",
