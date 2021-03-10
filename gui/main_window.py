@@ -24,7 +24,7 @@ class MainWindow:
         self.btn_add_entity = ttk.Button(self.window, text="Add Entity", command = self.add_entity_page, width = 30)
         self.btn_add_entity.pack(expand=True)
 
-        self.btn_view_invoices = ttk.Button(self.window, text="View Data", command = self.view_invoice_page, width = 30)
+        self.btn_view_invoices = ttk.Button(self.window, text="View & Export Data", command = self.view_invoice_page, width = 30)
         self.btn_view_invoices.pack(expand=True)
 
         self.btn_settings = ttk.Button(self.window, text="Settings", command = self.settings_page, width = 30)

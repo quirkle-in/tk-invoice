@@ -162,40 +162,52 @@ class ViewDataPage:
             self.filter_frame, text = "Get Data",
             command = self.get_view
         )
-        self.btn_execute.grid(row = 0, column = 4, padx=20)        
+        self.btn_execute.grid(row = 0, column = 4, padx=20)     
 
 
         ''' DELETE DATA '''
-
         self.delete_frame = ttk.Frame(self.window)
         self.delete_frame.pack(side = tk.BOTTOM, padx=20, pady = 20)
 
-        ttk.Label(self.delete_frame, text = "PRINT / DELETE DATA").grid(row = 0, column = 1)
+        ttk.Label(self.delete_frame, text = "DELETE DATA").pack(side = tk.TOP, expand = True, padx = 10, pady = 10)
 
         self.delete_table = tk.StringVar(self.delete_frame)
-        self.table_delete = ttk.OptionMenu(
-            self.delete_frame, self.delete_table, "None Selected", "None Selected", "Details", "Invoices", "Entities"
-        )
-        self.table_delete.grid(row = 1, column = 0)
+        self.table_delete = ttk.OptionMenu(self.delete_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
+        self.table_delete.pack(side = tk.LEFT, expand=True,  padx = 10, pady = 10)
 
         self.delete_id = tk.IntVar(self.delete_frame)
         self.entry_delete = ttk.Entry(self.delete_frame, textvariable=self.delete_id)
-        self.entry_delete.grid(row = 1, column = 2)
+        self.entry_delete.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+
+        self.btn_delete = ttk.Button(self.delete_frame, text = "Delete", width=30, command = self.delete_table_row)
+        self.btn_delete.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+
+
+        ''' PRINT DATA '''
+        self.print_frame = ttk.Frame(self.window)
+        self.print_frame.pack(side = tk.BOTTOM, padx=20, pady = 20)
+
+        ttk.Label(self.print_frame, text = "PRINT DATA").pack(side = tk.TOP, expand = True, padx = 10, pady = 10)
+
+        self.print_table = tk.StringVar(self.print_frame)
+        self.table_print = ttk.OptionMenu(self.print_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
+        self.table_print.pack(side = tk.LEFT, expand=True,  padx = 10, pady = 10)
+
+        self.print_id = tk.IntVar(self.print_frame)
+        self.entry_print = ttk.Entry(self.print_frame, textvariable=self.print_id)
+        self.entry_print.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+
+        self.btn_print = ttk.Button(self.print_frame, text = "Print", width=30, command = self.delete_table_row)
+        self.btn_print.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+
+
 
         self.btn_print = ttk.Button(
-            self.delete_frame, text = 'Print',
+            self.window, text = 'Print',
             width=30, command=self.print_table_row
         )
         self.btn_print.grid(row=1, column = 1)
-
-        self.btn_delete = ttk.Button(
-            self.delete_frame, text = "Delete",
-            width=30, command = self.delete_table_row
-        )
-        self.btn_delete.grid(row = 2, column = 1)
-
-
-
+        
         ''' EXPORT DATA '''
 
         self.btn_export = ttk.Button(
