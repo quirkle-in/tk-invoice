@@ -248,7 +248,6 @@ class ViewDataPage:
         x = models.print_table_row(table, _id)
         save_print_path = filedialog.asksaveasfilename(defaultextension=".pdf")
         
-        get_it_printed = 
 
         
         

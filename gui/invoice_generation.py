@@ -272,6 +272,12 @@ class InvoiceForm:
         )
         self.btn_invoice_submit.grid(row = 0, column = 1, padx = 10, pady = 10)
 
+        self.btn_invoice_print = ttk.Button(
+            self.footer_frame, text='Print', command=onPrint,
+            width=30
+        )
+        self.btn_invoice_print.grid(row=1, column=5, padx=10, pady=10)
+
         ''' Window Mainloop '''
         self.window.mainloop()
 
@@ -348,8 +354,7 @@ class InvoiceForm:
                     self.goods_table.entries[j]['taxable_amt'].set(
                         int(i['total']) - int(i['discount']))
                     j = j + 1
-            # if self.entry_total_before_tax.get()) > 0:
-            #     self.change_bottom_right()
+
             self.entry_total_before_tax.delete(0, END)
             self.entry_cgst.delete(0, END)
             self.entry_igst.delete(0, END)
@@ -399,6 +404,10 @@ class InvoiceForm:
         else:
             messagebox.showerror(
                 title='Attention', message='Please click calculate button before submission')
+
+        
+        def onPrint(self):
+            pass
 
         # self.performCaluclations()
 
