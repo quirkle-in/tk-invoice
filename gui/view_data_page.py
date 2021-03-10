@@ -4,12 +4,14 @@ from sqlalchemy.sql.base import Executable
 from ttkthemes import ThemedStyle
 import tkinter as tk
 import models
+from pdf_generation.purchase_sale_view import purchase_report
 
 
 INVOICE_COLUMNS = ["invoice_id", "invoice_no",
-    "invoice_date", "name", "address", "gst",
-    "purchase", "account_no", "total_tax_amt",
-    "total_after_tax"]
+                   "invoice_date", "name", "address", "gst",
+                   "purchase", "account_no", "total_tax_amt",
+                   "total_after_tax"]
+
 
 DETAIL_COLUMNS = ["deet_id", "deet_no", "invoice_id",
     "name", "batch", "hsn", "qty", "rate", "mrp", "total",
@@ -21,19 +23,25 @@ class TableView:
         self.root = root
         self.data = data
 
-        
         self.base_frame = ttk.Frame(self.root)
-        self.base_frame.pack(side = tk.BOTTOM, pady=20)
+        self.base_frame.pack(side=tk.BOTTOM, pady=20)
 
+<<<<<<< HEAD
         self.canvas = tk.Canvas(self.base_frame, width=920, height = 300)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame,
             orient = tk.VERTICAL, command = self.canvas.yview)
         self.frame = ttk.Frame(self.canvas)
+=======
+        self.canvas = tk.Canvas(self.base_frame, width=1150, height=300)
+        self.scrollbar_y = ttk.Scrollbar(self.base_frame,
+                                         orient=tk.VERTICAL, command=self.canvas.yview)
+        self.frame = ttk.Frame(self.canvas, width=1150)
+>>>>>>> 91c6600715b6f715acf98f15a9c2c945757494ac
 
         self.frame.bind(
             "<Configure>",
             lambda e: self.canvas.configure(
-                scrollregion = self.canvas.bbox("all")
+                scrollregion=self.canvas.bbox("all")
             )
         )
 
@@ -41,11 +49,10 @@ class TableView:
         self.canvas.configure(yscrollcommand=self.scrollbar_y.set)
 
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        self.scrollbar_y.pack(side=tk.RIGHT, fill = tk.Y)
-        
+        self.scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
+
         if not self.data or self.data == []:
             return
-
 
         if filters["table"].get() == "Invoices":
             self.columns = INVOICE_COLUMNS
@@ -54,7 +61,8 @@ class TableView:
 
         col = 0
         for field in self.columns:
-            i = tk.Text(self.frame, width=12, height = 2, font=('Arial', 8, "bold"), wrap = tk.WORD)
+            i = tk.Text(self.frame, width=12, height=2,
+                        font=('Arial', 8, "bold"), wrap=tk.WORD)
             i.tag_configure('tag-center', justify='center')
             i.insert(tk.END, field.replace("_", " ").upper(), 'tag-center')
             i.configure(state="disabled")
@@ -63,29 +71,85 @@ class TableView:
 
         for row in range(len(self.data)):
             x = self.data[row]
-            #print(x)
+            # print(x)
             col = 0
             for field in self.columns:
-                en = tk.Text(self.frame, width=12, height = 2, font=('Arial', 8), wrap = tk.WORD)
+                en = tk.Text(self.frame, width=12, height=2,
+                             font=('Arial', 8), wrap=tk.WORD)
                 en.insert(tk.END, str(x[field]))
                 en.configure(state="disabled")
-                en.grid(row= row + 1, column=col)
+                en.grid(row=row + 1, column=col)
                 col += 1
 
+<<<<<<< HEAD
+=======
+
+class InvoiceView:
+    def __init__(self, invoice, details):
+        self.root = tk.Tk()
+
+        self.invoice = invoice
+        self.details = details
+
+        self.base_frame = ttk.Frame(self.root, borderwidth=2, relief="groove")
+        self.base_frame.pack(side=tk.BOTTOM, padx=20, pady=20)
+
+        self.canvas = tk.Canvas(self.base_frame, width=1800, height=300)
+        self.scrollbar_y = ttk.Scrollbar(
+            self.base_frame, orient=tk.VERTICAL, command=self.canvas.yview)
+        self.frame = ttk.Frame(self.canvas, width=1100)
+
+        self.frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(
+                scrollregion=self.canvas.bbox("all")
+            )
+        )
+
+        self.canvas.create_window((0, 0), window=self.frame, anchor="center")
+        self.canvas.configure(yscrollcommand=self.scrollbar_y.set)
+
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
+
+        if not self.invoice:
+            return
+
+        self.invoice = self.invoice.__dict__
+
+        col = 0
+        for field in self.invoice:
+            en = tk.Text(self.frame, width=14, height=2,
+                         font=('Arial', 8), wrap=tk.WORD)
+            en.insert(tk.END, field)
+            en.configure(state="disabled")
+            en.grid(row=0, column=col)
+
+            val = tk.Text(self.frame, width=14, height=2,
+                          font=('Arial', 8), wrap=tk.WORD)
+            val.insert(tk.END, self.invoice[field])
+            val.configure(state="disabled")
+            val.grid(row=1, column=col)
+
+            col += 1
+
+        self.root.mainloop()
+
+
+>>>>>>> 91c6600715b6f715acf98f15a9c2c945757494ac
 class ViewDataPage:
     def __init__(self):
 
         self.window = tk.Tk()
-        self.window.configure(background = "#f3f3f3")
+        self.window.configure(background="#f3f3f3")
         self.window.title("View Page")
         self.window.geometry("1200x700")
         self.window.resizable(True, True)
         self.data = None
         self.DATA_TABLE = None
 
-        
         self.filters = {
-            "table" : tk.StringVar(self.window, None),
+            "table": tk.StringVar(self.window, None),
             "limit": tk.StringVar(self.window, None),
             "type": tk.StringVar(self.window, None),
         }
@@ -95,13 +159,13 @@ class ViewDataPage:
         self.window.iconbitmap('favicon.ico')
 
         self.title = ttk.Label(
-            self.window, text="VIEW & EXPORT", font = ("Arial", 14, "bold")
+            self.window, text="VIEW & EXPORT", font=("Arial", 14, "bold")
         )
         self.title.pack(side=tk.TOP, padx=300, pady=50)
 
         self.back_to_home = ttk.Button(
             self.window, text="Back",
-            command = self.back_to_home_page
+            command=self.back_to_home_page
         )
         self.back_to_home.pack(side=tk.TOP)
 
@@ -110,81 +174,137 @@ class ViewDataPage:
         self.filter_frame = ttk.Frame(self.window)
         self.filter_frame.pack(padx=20, pady=20)
 
-        ttk.Label(self.filter_frame, text = "Select Table: ").grid(row = 0, column = 0, padx=20)
-        self.filter_table = ttk.OptionMenu(self.filter_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
-        self.filter_table.grid(row = 0, column = 1)
+        ttk.Label(self.filter_frame, text="Select Table: ").grid(
+            row=0, column=0, padx=20)
+        self.filter_table = ttk.OptionMenu(
+            self.filter_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
+        self.filter_table.grid(row=0, column=1)
 
-        ttk.Label(self.filter_frame, text = "Type: ").grid(row = 0, column = 2, padx=20)
-        self.filter_type = ttk.OptionMenu(self.filter_frame, self.filters["type"], "All", "Purchases", "Sales", "All")
-        self.filter_type.grid(row = 0, column = 3)
-        
+        ttk.Label(self.filter_frame, text="Type: ").grid(
+            row=0, column=2, padx=20)
+        self.filter_type = ttk.OptionMenu(
+            self.filter_frame, self.filters["type"], "All", "Purchases", "Sales", "All")
+        self.filter_type.grid(row=0, column=3)
+
         self.btn_execute = ttk.Button(
-            self.filter_frame, text = "Get Data",
-            command = self.get_view
+            self.filter_frame, text="Get Data",
+            command=self.get_view
         )
-        self.btn_execute.grid(row = 0, column = 4, padx=20)     
+        self.btn_execute.grid(row=0, column=4, padx=20)
 
-
-        self.bottom_frame = ttk.Frame(self.window, borderwidth=2, relief="groove")
-        self.bottom_frame.pack(side = tk.BOTTOM, expand = True, padx = 10, pady = 10)
+        self.bottom_frame = ttk.Frame(
+            self.window, borderwidth=2, relief="groove")
+        self.bottom_frame.pack(side=tk.BOTTOM, expand=True, padx=10, pady=10)
 
         ''' DELETE DATA '''
-        self.delete_frame = ttk.Frame(self.bottom_frame, borderwidth=2, relief="groove")
-        self.delete_frame.pack(side = tk.RIGHT, padx=20, pady = 20)
+        self.delete_frame = ttk.Frame(
+            self.bottom_frame, borderwidth=2, relief="groove")
+        self.delete_frame.pack(side=tk.RIGHT, padx=20, pady=20)
 
-        ttk.Label(self.delete_frame, text = "DELETE DATA").pack(side = tk.TOP, expand = True, padx = 10, pady = 10)
+        ttk.Label(self.delete_frame, text="DELETE DATA").pack(
+            side=tk.TOP, expand=True, padx=10, pady=10)
 
-        self.table_delete = ttk.OptionMenu(self.delete_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
-        self.table_delete.pack(side = tk.LEFT, expand=True,  padx = 10, pady = 10)
+        self.table_delete = ttk.OptionMenu(
+            self.delete_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
+        self.table_delete.pack(side=tk.LEFT, expand=True,  padx=10, pady=10)
 
         self.delete_id = tk.IntVar(self.delete_frame)
-        self.entry_delete = ttk.Entry(self.delete_frame, textvariable=self.delete_id)
-        self.entry_delete.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+        self.entry_delete = ttk.Entry(
+            self.delete_frame, textvariable=self.delete_id)
+        self.entry_delete.pack(side=tk.LEFT, expand=True, padx=10, pady=10)
 
-        self.btn_delete = ttk.Button(self.delete_frame, text = "Delete", width=30, command = self.delete_table_row)
-        self.btn_delete.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+        self.btn_delete = ttk.Button(
+            self.delete_frame, text="Delete", width=30, command=self.delete_table_row)
+        self.btn_delete.pack(side=tk.LEFT, expand=True, padx=10, pady=10)
 
         ''' PRINT DATA '''
-        self.print_frame = ttk.Frame(self.bottom_frame, borderwidth=2, relief="groove")
-        self.print_frame.pack(side=  tk.LEFT, padx=20, pady = 20)
+        self.print_frame = ttk.Frame(
+            self.bottom_frame, borderwidth=2, relief="groove")
+        self.print_frame.pack(side=tk.LEFT, padx=20, pady=20)
 
-        ttk.Label(self.print_frame, text = "PRINT DATA").pack(side = tk.TOP, expand = True, padx = 10, pady = 10)
+        ttk.Label(self.print_frame, text="PRINT DATA").pack(
+            side=tk.TOP, expand=True, padx=10, pady=10)
 
         self.print_table = tk.StringVar(self.print_frame)
-        self.table_print = ttk.OptionMenu(self.print_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
-        self.table_print.pack(side = tk.LEFT, expand=True,  padx = 10, pady = 10)
+        self.table_print = ttk.OptionMenu(
+            self.print_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
+        self.table_print.pack(side=tk.LEFT, expand=True,  padx=10, pady=10)
 
         self.print_id = tk.IntVar(self.print_frame)
-        self.entry_print = ttk.Entry(self.print_frame, textvariable=self.print_id)
-        self.entry_print.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
+        self.entry_print = ttk.Entry(
+            self.print_frame, textvariable=self.print_id)
+        self.entry_print.pack(side=tk.LEFT, expand=True, padx=10, pady=10)
 
-        self.btn_print = ttk.Button(self.print_frame, text = "Print", width=30, command = self.print_table_row)
-        self.btn_print.pack(side = tk.LEFT, expand = True, padx = 10, pady = 10)
-        
+        self.btn_print = ttk.Button(
+            self.print_frame, text="Print", width=30, command=self.print_table_row)
+        self.btn_print.pack(side=tk.LEFT, expand=True, padx=10, pady=10)
 
-        self.report_frame = ttk.Frame(self.window, borderwidth=2, relief="groove")
-        self.report_frame.pack(side = tk.BOTTOM, padx = 10, pady = 10)
+        self.report_frame = ttk.Frame(
+            self.window, borderwidth=2, relief="groove")
+        self.report_frame.pack(side=tk.BOTTOM, padx=10, pady=10)
 
+        self.btn_purchases_report = ttk.Button(
+            self.report_frame, text="Generate Purchases Report", width=30, command=self.generate_purchase_report)
+        self.btn_purchases_report.pack(side=tk.LEFT, padx=10, pady=10)
 
-        self.btn_purchases_report = ttk.Button(self.report_frame, text = "Generate Purchases Report", width=30)
-        self.btn_purchases_report.pack(side = tk.LEFT, padx = 10, pady = 10)
-
+<<<<<<< HEAD
         self.btn_sales_report = ttk.Button(self.report_frame, text = "Generate Sales Report", width=30)
         self.btn_sales_report.pack(side = tk.RIGHT, padx = 10, pady = 10)
         
         self.window.mainloop()
+=======
+        self.btn_sales_report = ttk.Button(
+            self.report_frame, text="Generate Sales Report", width=30, command=self.generate_sales_report)
+        self.btn_sales_report.pack(side=tk.RIGHT, padx=10, pady=10)
 
+        self.DATA_TABLE = TableView(self.window, self.data)
+>>>>>>> 91c6600715b6f715acf98f15a9c2c945757494ac
+
+        self.window.mainloop()
 
     def back_to_home_page(self):
         ''' confirmation '''
         pass
 
         self.window.destroy()
-    
+
+    def generate_purchase_report(self):
+        details = models.purchase_report()
+        filepath = filedialog.askdirectory(
+            initialdir='/', title='Select Folder')
+        DETAILS = {
+            'path': filepath,
+            'name': 'PURCHASE REPORT',
+            'dets': details
+        }
+        status = purchase_report(DETAILS)
+        if status:
+            messagebox.showinfo(
+                title='Status', message='Purchase Report created successfully')
+        else:
+            messagebox.showerror(
+                title='Error', message='Error during creation of Purchase Report')
+
+    def generate_sales_report(self):
+        details = models.sales_report()
+        filepath = filedialog.askdirectory(
+            initialdir='/', title='Select Folder')
+        DETAILS = {
+            'path': filepath,
+            'name': 'SALES REPORT',
+            'dets': details
+        }
+        status = purchase_report(DETAILS)
+        if status:
+            messagebox.showinfo(
+                title='Status', message='Sales Report created successfully')
+        else:
+            messagebox.showerror(
+                title='Error', message='Error during creation of Sales Report')
 
     def get_view(self):
         filters = {i: self.filters[i].get() for i in self.filters}
-        #print(filters)
+        # print(filters)
         data = None
 
         data = models.filtered_view(
@@ -192,7 +312,8 @@ class ViewDataPage:
             filters["type"]
         )
 
-        self.data = [{field: row.__dict__[field] for field in row.__dict__} for row in data]
+        self.data = [{field: row.__dict__[field]
+                      for field in row.__dict__} for row in data]
 
         try:
             self.DATA_TABLE.base_frame.destroy()
@@ -200,16 +321,14 @@ class ViewDataPage:
             print(e)
         self.DATA_TABLE = TableView(self.window, self.data, self.filters)
 
-
     def print_table_row(self):
         table = self.filters["table"].get()
         _id = self.print_id.get()
 
         x = models.get_table_row(table, _id)
-        file_path = filedialog.askdirectory(initialdir = "/", title = "Select a folder to export to")
-       
-        
-        
+        file_path = filedialog.askdirectory(
+            initialdir="/", title="Select a folder to export to")
+
     def delete_table_row(self):
         table = self.filters["table"].get()
         _id = self.delete_id.get()
@@ -221,6 +340,7 @@ class ViewDataPage:
             return messagebox.showinfo("Success", "Deleted!")
         else:
             return messagebox.showerror("Error", "Could not delete")
+
 
 '''
 
