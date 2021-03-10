@@ -168,7 +168,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
     Total tables
     '''
 
-    pdf.line(105, 230, 105, 290)
+    pdf.line(105, 245, 105, 290)
 
     right_bottom_headers = [
         'total_before_tax', 'total_cgst', 'total_sgst',

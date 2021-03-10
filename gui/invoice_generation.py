@@ -300,7 +300,7 @@ class InvoiceForm:
             if not x:
                 errors += 1
         print("Errors:", errors)
-        return
+        return True
 
     def performCaluclations(self):
         try:
@@ -381,8 +381,7 @@ class InvoiceForm:
                 self.sendAlert("Error while creating.")
 
         else:
-            messagebox.showerror(
-                title='Attention', message='Please click calculate button before submission')
+            messagebox.showerror(title='Attention', message='Please click calculate button before submission')
     
     def collect_field_data(self):
         self.invoice_data = {
