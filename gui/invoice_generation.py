@@ -166,7 +166,8 @@ class InvoiceForm:
         x = ttk.Frame(self.top_right_frame)
         ttk.Label(x, text="Address:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
-        self.entry_party_address = ScrolledText(x, height=2, width=24, wrap = tk.WORD)  # Address
+        self.entry_party_address = ScrolledText(
+            x, height=2, width=24, wrap=tk.WORD)  # Address
         self.entry_party_address.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack()
@@ -248,19 +249,22 @@ class InvoiceForm:
         x.pack()
 
         x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="IGST @" + str(self.SETTINGS['igst']) + "%:").pack(side=tk.LEFT, expand=True, padx=10, pady=5)
+        ttk.Label(x, text="IGST @" + str(self.SETTINGS['igst']) + "%:").pack(
+            side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_igst = ttk.Entry(x)
         self.entry_igst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack()
 
         x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="CGST @" + str(self.SETTINGS['cgst']) + "%:").pack(side=tk.LEFT, expand=True, padx=10, pady=5)
+        ttk.Label(x, text="CGST @" + str(self.SETTINGS['cgst']) + "%:").pack(
+            side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_cgst = ttk.Entry(x)
         self.entry_cgst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack()
 
         x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="SGST @" + str(self.SETTINGS['sgst']) + "%:").pack(side=tk.LEFT, expand=True, padx=10, pady=5)
+        ttk.Label(x, text="SGST @" + str(self.SETTINGS['sgst']) + "%:").pack(
+            side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_sgst = ttk.Entry(x)
         self.entry_sgst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack()
@@ -304,7 +308,6 @@ class InvoiceForm:
         self.btn_invoice_print = ttk.Button(
             self.footer_frame, text='Print', command=self.onPrint, width=30)
         self.btn_invoice_print.grid(row=0, column=2, padx=10, pady=10)
-        
 
         ''' Window Mainloop '''
         self.window.mainloop()
@@ -313,8 +316,7 @@ class InvoiceForm:
         path = 'settings.json'
         with open(path) as f:
             self.SETTINGS = json.load(f)
-            #print(self.SETTINGS)
-            
+            # print(self.SETTINGS)
 
     def back_to_home_page(self):
         self.window.destroy()
@@ -339,7 +341,6 @@ class InvoiceForm:
         print("Errors:", errors)
         return True
 
-
     def performCaluclations(self):
         try:
             igst = int(self.SETTINGS["igst"])
@@ -363,8 +364,8 @@ class InvoiceForm:
                     i['taxable_amt'] = int(i['total'] - int(i['discount']))
                     total = total + i['taxable_amt']
 
-                    #print(self.goods_table.entries[j])
-                    #print(self.goods_table.entries[j]['total'].set(i['total']))
+                    # print(self.goods_table.entries[j])
+                    # print(self.goods_table.entries[j]['total'].set(i['total']))
 
                     self.goods_table.entries[j]['taxable_amt'].set(
                         int(i['total']) - int(i['discount']))
@@ -384,14 +385,17 @@ class InvoiceForm:
             self.entry_igst.insert(0, round(total * sgst / 100, 2))
             self.entry_sgst.insert(0, round(total * igst / 100, 2))
 
-            self.entry_total_tax_amt.insert(0, round(total * (1 + (cgst + sgst + igst) / 100), 2))
-            
+            self.entry_total_tax_amt.insert(
+                0, round(total * (1 + (cgst + sgst + igst) / 100), 2))
+
             #print(round(total * (1 + (cgst + sgst + igst) / 100), 2))
             #print(round(total + (total * cgst / 100) + (total * sgst / 100) + (total * igst / 100), 2))
-            
-            self.entry_total_after_tax_amt.insert(0, round(total * (1 + (cgst + sgst + igst) / 100), 2))
-            
-            self.entry_rs_in_words.insert(0, num2words(self.entry_total_after_tax_amt.get()).title())
+
+            self.entry_total_after_tax_amt.insert(
+                0, round(total * (1 + (cgst + sgst + igst) / 100), 2))
+
+            self.entry_rs_in_words.insert(0, num2words(
+                self.entry_total_after_tax_amt.get()).title())
 
         except Exception as e:
             print(e)
@@ -479,10 +483,12 @@ class InvoiceForm:
                 self.collect_field_data()
                 good_deets = self.goods_table.getGoodsDetails()
                 # print(good_deets)
-                filepath = filedialog.askdirectory(master = self.window,
-                    initialdir="/", title="Select a folder to export to")
+                filepath = filedialog.askdirectory(
+                    initialdir=self.SETTINGS["default_save_folder"], title="Select a folder to export to")
+
                 printing = create_invoice_pdf(
-                    self.invoice_data, good_deets, filepath)
+                    self.invoice_data, good_deets, filepath, self.SETTINGS)
+
                 messagebox.showinfo(title='Print Status',
                                     message='PDF Generated Successfully', master=self.window)
                 print("Export to PDF response:", printing)
@@ -499,7 +505,8 @@ class InvoiceForm:
         return True
 
     def sendAlert(self, message):
-        messagebox.showerror(title='Error', message=message, master=self.window)
+        messagebox.showerror(
+            title='Error', message=message, master=self.window)
 
     def autofill_entity_fields(self):
         res = models.get_entity_by_name(self.autofill_var.get())
@@ -508,7 +515,7 @@ class InvoiceForm:
                 title='Error', message='No saved items were found.')
             return
         x = {field: res.__dict__[field] for field in res.__dict__}
-        #print(x)
+        # print(x)
 
         try:
             self.entry_party_name.delete(0, tk.END)

@@ -103,16 +103,17 @@ class ViewDataPage:
         style.set_theme("breeze")
         self.window.iconbitmap('favicon.ico')
 
-        self.title = ttk.Label(
-            self.window, text="VIEW & EXPORT", font=("Arial", 14, "bold")
-        )
-        self.title.pack(side=tk.TOP, padx=300, pady=50)
+        self.header_frame = ttk.Frame(self.window)
+        self.header_frame.pack(side  = tk.TOP, padx = 10, pady = 10)
+
+        self.title = ttk.Label(self.header_frame, text="VIEW & EXPORT", font=("Arial", 14, "bold"))
+        self.title.pack(side=tk.TOP, padx=300, pady=20)
 
         self.back_to_home = ttk.Button(
-            self.window, text="Back",
+            self.header_frame, text="Back",
             command=self.back_to_home_page
         )
-        self.back_to_home.pack(side=tk.TOP)
+        self.back_to_home.pack(side=tk.LEFT)
 
         ''' FILTER FRAME '''
 
@@ -132,7 +133,7 @@ class ViewDataPage:
         self.filter_type.grid(row=0, column=3)
 
         self.btn_execute = ttk.Button(
-            self.filter_frame, text="Get Data",
+            self.filter_frame, text="Get Data / Refresh",
             command=self.get_view
         )
         self.btn_execute.grid(row=0, column=4, padx=20)
@@ -269,8 +270,7 @@ class ViewDataPage:
         data = None
 
         if filters['table'] == 'None Selected':
-            messagebox.showerror(
-                title='Error', message='Select a table to get data from', master=self.window)
+            messagebox.showerror(title='Error', message='Select a table to get data from.', master=self.window)
             return
 
         data = models.filtered_view(
@@ -337,11 +337,9 @@ class ViewDataPage:
         # print('Invoice Dets: ', single_invoice)
         # print('Details in inv: ', details)
 
-        file_path = filedialog.askdirectory(
-            master=self.window, initialdir=self.default_folder, title="Select a folder to export to")
+        file_path = filedialog.askdirectory(initialdir=self.settings["default_save_folder"], title="Select a folder to export to")
 
-        status = create_invoice_pdf(
-            INVOICE=single_invoice, DETAILS=details, FILEPATH=file_path)
+        status = create_invoice_pdf(INVOICE=single_invoice, DETAILS=details, FILEPATH=file_path, SETTINGS= self.settings)
 
         if status:
             messagebox.showinfo(
@@ -354,7 +352,7 @@ class ViewDataPage:
         table = self.filters["table"].get()
         _id = self.delete_id.get()
 
-        print('delete: ', table, _id)
+        #print('delete: ', table, _id)
 
         x = models.delete_table_row(table, _id)
         if x:
