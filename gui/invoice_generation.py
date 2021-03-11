@@ -66,12 +66,6 @@ class InvoiceForm:
             self.top_frame, borderwidth=2, relief="groove")
         self.top_right_frame.pack(side=tk.RIGHT, anchor="n", padx=10)
 
-        ''' FOOTER '''
-
-        self.footer_frame = ttk.Frame(
-            self.window, borderwidth=2, relief="groove")
-        self.footer_frame.pack(side=tk.BOTTOM, padx=10)
-
         ''' BOTTOM '''
         # -
         self.bottom_frame = ttk.Frame(self.window)
@@ -86,7 +80,13 @@ class InvoiceForm:
         # - -
         self.bottom_right_frame = ttk.Frame(
             self.bottom_frame, borderwidth=2, relief="groove")
-        self.bottom_right_frame.pack(side=tk.RIGHT, anchor="n", padx=10)
+        self.bottom_right_frame.pack(side=tk.LEFT, anchor="n", padx=10)
+
+        
+        ''' FOOTER '''
+        self.footer_frame = ttk.Frame(
+            self.bottom_frame, borderwidth=2, relief="groove")
+        self.footer_frame.pack(side=tk.RIGHT, padx=10)
 
         ''' WIDGETS '''
 
@@ -299,16 +299,16 @@ class InvoiceForm:
         ''' Calculate Button '''
         self.btn_deets_calculate = ttk.Button(
             self.footer_frame, text='Calculate', command=self.onCalculate, width=30)
-        self.btn_deets_calculate.grid(row=0, column=0, padx=10, pady=5)
+        self.btn_deets_calculate.grid(row=0, column=0, padx=10, pady=14)
 
         ''' Submit Button'''
         self.btn_invoice_submit = ttk.Button(
             self.footer_frame, text="Submit", command=self.onSubmit, width=30)
-        self.btn_invoice_submit.grid(row=0, column=1, padx=10, pady=5)
+        self.btn_invoice_submit.grid(row=1, column=0, padx=10, pady=14)
 
         self.btn_invoice_print = ttk.Button(
             self.footer_frame, text='Print', command=self.onPrint, width=30)
-        self.btn_invoice_print.grid(row=0, column=2, padx=10, pady=10)
+        self.btn_invoice_print.grid(row=2, column=0, padx=10, pady=14)
 
         ''' Window Mainloop '''
         self.window.mainloop()

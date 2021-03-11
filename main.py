@@ -4,13 +4,13 @@ from gui.main_window import MainWindow
 from models import Base, engine
 
 default_settings = {
-                    "pdf_title": "Change this value in Settings",
-                    "pdf_address": "Change this value in Settings",
-                    "pdf_gst_no": "Change this value in Settings",
+                    "pdf_title": "Rajeshree Marketing",
+                    "pdf_address": "1/16, Vijay Nagar, Bandrekarwadi, Jogeshwari (East), Mumbai 400060.",
+                    "pdf_gst_no": "7AKEPB0058K1ZE",
                     "cgst": "6",
                     "sgst": "1",
                     "igst": "6",
-                    "state": "Change this value in Settings",
+                    "state": "Maharashtra",
                     "default_save_folder": os.path.abspath(os.curdir)
                 }
 
