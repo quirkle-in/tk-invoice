@@ -3,6 +3,7 @@ from pdf_generation.purchase_sale_view import purchase_report
 from tkinter import messagebox, ttk, filedialog
 from gui.components import datepick
 from ttkthemes import ThemedStyle
+from datetime import datetime
 import tkinter as tk
 import models
 import json
@@ -194,6 +195,7 @@ class ViewDataPage:
         self.entry_start_date = ttk.Entry(
             self.report_frame, textvariable=self.var_start_date)  # date picker
         self.entry_start_date.pack(side=tk.LEFT, expand=True, padx=10, pady=5)
+        self.entry_start_date.insert(0, datetime.now().strftime("%d/%m/%Y"))
         self.entry_start_date.bind("<1>", self.calOpen_start)
 
         ttk.Label(self.report_frame, text="End Date").pack(
@@ -201,6 +203,7 @@ class ViewDataPage:
         self.entry_end_date = ttk.Entry(
             self.report_frame, textvariable=self.var_end_date)  # date picker
         self.entry_end_date.pack(side=tk.LEFT, expand=True, padx=10, pady=5)
+        self.entry_end_date.insert(0, datetime.now().strftime("%d/%m/%Y"))
         self.entry_end_date.bind("<1>", self.calOpen_end)
 
         self.btn_purchases_report = ttk.Button(
@@ -227,7 +230,8 @@ class ViewDataPage:
     def generate_purchase_report(self):
         details = models.purchase_report(
             self.var_start_date.get(), self.var_end_date.get())
-        filepath = filedialog.askdirectory(initialdir=self.settings["default_save_folder"], title='Select Folder')
+        filepath = filedialog.askdirectory(master=self.window,
+                                           initialdir=self.settings["default_save_folder"], title='Select Folder')
         DETAILS = {
             'path': filepath,
             'name': 'PURCHASE REPORT',
@@ -244,7 +248,8 @@ class ViewDataPage:
     def generate_sales_report(self):
         details = models.sales_report(
             self.var_start_date.get(), self.var_end_date.get())
-        filepath = filedialog.askdirectory(initialdir=self.settings["default_save_folder"], title='Select Folder')
+        filepath = filedialog.askdirectory(
+            master=self.window, initialdir=self.settings["default_save_folder"], title='Select Folder')
         DETAILS = {
             'path': filepath,
             'name': 'SALES REPORT',
@@ -264,7 +269,8 @@ class ViewDataPage:
         data = None
 
         if filters['table'] == 'None Selected':
-            messagebox.showerror(title='Error', message='Select a table to get data from', master=self.window)
+            messagebox.showerror(
+                title='Error', message='Select a table to get data from', master=self.window)
             return
 
         data = models.filtered_view(
@@ -331,9 +337,11 @@ class ViewDataPage:
         # print('Invoice Dets: ', single_invoice)
         # print('Details in inv: ', details)
 
-        file_path = filedialog.askdirectory(initialdir=self.default_folder, title="Select a folder to export to")
+        file_path = filedialog.askdirectory(
+            master=self.window, initialdir=self.default_folder, title="Select a folder to export to")
 
-        status = create_invoice_pdf(INVOICE=single_invoice, DETAILS=details, FILEPATH=file_path)
+        status = create_invoice_pdf(
+            INVOICE=single_invoice, DETAILS=details, FILEPATH=file_path)
 
         if status:
             messagebox.showinfo(

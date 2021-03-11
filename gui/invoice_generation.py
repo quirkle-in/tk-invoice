@@ -479,7 +479,7 @@ class InvoiceForm:
                 self.collect_field_data()
                 good_deets = self.goods_table.getGoodsDetails()
                 # print(good_deets)
-                filepath = filedialog.askdirectory(
+                filepath = filedialog.askdirectory(master = self.window,
                     initialdir="/", title="Select a folder to export to")
                 printing = create_invoice_pdf(
                     self.invoice_data, good_deets, filepath)
