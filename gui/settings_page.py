@@ -91,10 +91,10 @@ class SettingsPage:
         print("Saving settings...")
         if self.save_settings():
             print("Saved.")
-            messagebox.showinfo("Success", "Settings saved.")
+            messagebox.showinfo("Success", "Settings saved.", master=self.window)
         else:
             print("Could not save.")
-            messagebox.showinfo("Error", "Settings not saved.")
+            messagebox.showinfo("Error", "Settings not saved.", master=self.window)
         self.window.destroy()
 
     def back_to_home(self):

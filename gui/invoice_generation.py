@@ -412,7 +412,7 @@ class InvoiceForm:
             if x:
                 print("Details recorded.")
                 messagebox.showinfo(
-                    title='Invoice Status', message='Invoice and details have been successfully recorded')
+                    title='Invoice Status', message='Invoice and details have been successfully recorded', master=self.window)
                 return True
 
     def onCalculate(self):
@@ -429,7 +429,7 @@ class InvoiceForm:
                     "Invalid Data! Should not contain any empty fields")
                 return False
             msg_box = messagebox.askyesno(
-                title='Attention', message="Are you sure, you want to submit? ")
+                title='Attention', message="Are you sure, you want to submit? ", master=self.window)
             if msg_box:
                 res = self.onConfirm()
                 if not res:
@@ -437,7 +437,7 @@ class InvoiceForm:
 
         else:
             messagebox.showerror(
-                title='Attention', message='Please click calculate button before submission')
+                title='Attention', message='Please click calculate button before submission', master=self.window)
         self.set_invoice_id()
 
     def collect_field_data(self):
@@ -475,19 +475,23 @@ class InvoiceForm:
     def onPrint(self):
         global CAL_CLICKED
         if CAL_CLICKED >= 1:
-            self.collect_field_data()
-            good_deets = self.goods_table.getGoodsDetails()
-            print(good_deets)
-            filepath = filedialog.askdirectory(
-                initialdir="/", title="Select a folder to export to")
-            printing = create_invoice_pdf(
-                self.invoice_data, good_deets, filepath)
-            messagebox.showinfo(title='Print Status',
-                                message='PDF Generated Successfully')
-            print("Export to PDF response:", printing)
+            if self.validateData() == True:
+                self.onCalculate()
+                self.collect_field_data()
+                good_deets = self.goods_table.getGoodsDetails()
+                # print(good_deets)
+                filepath = filedialog.askdirectory(
+                    initialdir="/", title="Select a folder to export to")
+                printing = create_invoice_pdf(
+                    self.invoice_data, good_deets, filepath)
+                messagebox.showinfo(title='Print Status',
+                                    message='PDF Generated Successfully', master=self.window)
+                print("Export to PDF response:", printing)
+            else:
+                return
         else:
             messagebox.showerror(
-                title='Print Status', message='PDF could not be generated before calculation.')
+                title='Print Status', message='PDF could not be generated before calculation.', master=self.window)
 
     def validateData(self):
         goods_details = self.goods_table.getGoodsDetails()
@@ -496,7 +500,7 @@ class InvoiceForm:
         return True
 
     def sendAlert(self, message):
-        messagebox.showerror(title='Error', message=message)
+        messagebox.showerror(title='Error', message=message, master=self.window)
 
     def autofill_entity_fields(self):
         res = models.get_entity_by_name(self.autofill_var.get())

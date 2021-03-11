@@ -54,10 +54,10 @@ class AddEntityPage:
         res = models.create_entity(data)
         print(res)
         if res:
-            messagebox.showinfo(title = "Success!", message = "Created entity")
+            messagebox.showinfo(title = "Success!", message = "Created entity", master=self.window)
             self.back_to_home()
         else:
-            messagebox.showerror(title = "Failed", message = "Unable to create entity.")
+            messagebox.showerror(title = "Failed", message = "Unable to create entity.", master=self.window)
 
 
     def back_to_home(self):

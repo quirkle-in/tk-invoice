@@ -21,9 +21,9 @@ if __name__ == "__main__":
         with open("settings.json", 'w') as json_file:
                 json.dump({
                     "cgst": "6",
-                    "sgst": "6",
+                    "sgst": "1",
                     "igst": "6",
-                    "state": "",
+                    "state": "Maharashtra",
                     "default_save_folder": os.path.abspath(os.curdir)
                 }, json_file)
 
