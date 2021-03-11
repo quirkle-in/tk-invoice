@@ -73,7 +73,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
     pdf.set_font('Arial', 'B', 9.0)
     pdf.text(x=115, y=70, txt='Address:')  # Address
 
-    pdf.ln(54)
+    pdf.ln(56)
     pdf.cell(120, 6, "")
     pdf.multi_cell(w=70, h=2, txt=str(INVOICE['address']),
                    align="L", fill=False, border=0)
