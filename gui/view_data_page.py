@@ -263,6 +263,10 @@ class ViewDataPage:
         # print(filters)
         data = None
 
+        if filters['table'] == 'None Selected':
+            messagebox.showerror(title='Error', message='Select a table to get data from')
+            return
+
         data = models.filtered_view(
             filters["table"],
             filters["type"]
