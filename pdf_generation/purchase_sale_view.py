@@ -2,7 +2,7 @@ from fpdf import FPDF
 from datetime import datetime
 
 
-def purchase_report(DETAILS):
+def purchase_report(DETAILS, SETTINGS):
 
     FILENAME = f"{DETAILS['name']}_{DETAILS['start_date']}_{DETAILS['end_date']}.pdf"
 
@@ -15,15 +15,15 @@ def purchase_report(DETAILS):
 
     x, y = 140, 15
 
-    pdf.text(x=80, y=y, txt='Rajeshree Marketing')
+    pdf.text(x=80, y=y, txt=str(SETTINGS["pdf_title"]))
     pdf.ln(2)
 
     pdf.set_font('Arial', '', 10.0)
     pdf.text(
-        x=50, y=22, txt='1/16, Vijay Nagar, Bandrekarwadi Jogeshwari (East), Mumbai - 400 060.')
+        x=50, y=22, txt=str(SETTINGS["pdf_address"]))
 
     pdf.set_font('Arial', 'B', 10.0)
-    pdf.text(x=78, y=30, txt='GST No. :    27AKEPB0058K1ZE')
+    pdf.text(x=78, y=30, txt=f'GST No. : {SETTINGS["pdf_gst_no"]}')
 
     pdf.line(10, 35, 200, 35)
 

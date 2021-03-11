@@ -240,7 +240,7 @@ class ViewDataPage:
             "start_date": self.var_start_date.get().replace("/", "-"),
             "end_date": self.var_end_date.get().replace("/", "-")
         }
-        status = purchase_report(DETAILS)
+        status = purchase_report(DETAILS, self.settings)
         if status:
             messagebox.showinfo(
                 title='Status', message='Purchase Report created successfully', master=self.window)
@@ -259,7 +259,7 @@ class ViewDataPage:
             "start_date": self.var_start_date.get().replace("/", "-"),
             "end_date": self.var_end_date.get().replace("/", "-")
         }
-        status = purchase_report(DETAILS)
+        status = purchase_report(DETAILS, self.settings)
         if status:
             messagebox.showinfo(
                 title='Status', message='Sales Report created successfully', master=self.window)

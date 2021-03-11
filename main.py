@@ -29,8 +29,10 @@ if __name__ == "__main__":
             for default in default_settings:
                 if default not in settings:
                     settings[default] = default_settings[default]
-            json.dump(default_settings, json_file)
-            json_file.close()
+            try:
+                json.dump(settings, json_file)
+            except Exception as e:
+                print(e)
     except:
         with open("settings.json", 'w') as json_file:
                 json.dump(default_settings, json_file)
