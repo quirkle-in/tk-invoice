@@ -244,7 +244,7 @@ def purchase_report(start_date=False, end_date=False):
         x = datetime.strptime(end_date, "%d/%m/%Y").strftime("%Y-%m-%d")
         data = data.filter(Invoice.invoice_date <= x)
     data = data.all()
-    #print(data)
+    # print(data)
 
     s_no = 1
     for x in data:
