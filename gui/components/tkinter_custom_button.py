@@ -211,6 +211,9 @@ class TkinterCustomButton(tkinter.Frame):
             self.canvas.itemconfig(part, fill=self.fg_color, outline=self.fg_color)
 
     def clicked(self, event=0):
-        if self.function is not None:
-            self.function()
-            self.on_leave()
+        try:
+            if self.function is not None:
+                self.function()
+                self.on_leave()
+        except Exception as e:
+            print(e)
