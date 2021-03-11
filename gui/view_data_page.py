@@ -324,8 +324,8 @@ class ViewDataPage:
             details.append(details_dict)
             s_no += 1
 
-        print('Invoice Dets: ', single_invoice)
-        print('Details in inv: ', details)
+        # print('Invoice Dets: ', single_invoice)
+        # print('Details in inv: ', details)
 
         file_path = filedialog.askdirectory(initialdir=self.default_folder, title="Select a folder to export to")
 
