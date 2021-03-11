@@ -20,10 +20,10 @@ if __name__ == "__main__":
     except:
         with open("settings.json", 'w') as json_file:
                 json.dump({
-                    "cgst": "",
+                    "cgst": "6",
                     "sgst": "1",
-                    "igst": "",
-                    "state": "",
+                    "igst": "6",
+                    "state": "Maharashtra",
                     "default_save_folder": os.path.abspath(os.curdir)
                 }, json_file)
 
