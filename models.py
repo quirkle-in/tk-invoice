@@ -274,7 +274,7 @@ def sales_report(start_date=False, end_date=False):
         x = datetime.strptime(start_date, "%d/%m/%Y").strftime("%Y-%m-%d")
         data = data.filter(Invoice.invoice_date >= x)
     if end_date != "All":
-        x = datetime.strptime(start_date, "%d/%m/%Y").strftime("%Y-%m-%d")
+        x = datetime.strptime(end_date, "%d/%m/%Y").strftime("%Y-%m-%d")
         data = data.filter(Invoice.invoice_date <= x)
     data = data.all()
 
