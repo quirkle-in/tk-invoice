@@ -43,6 +43,18 @@ def purchase_report(DETAILS):
                'taxable_amt': 16}
     pdf.ln(40)
 
+    pdf.set_font('Arial', "", 9)
+    if DETAILS["start_date"] == "All":
+        pdf.cell(100, 6, "From: Start")
+    else:
+        pdf.cell(100, 6, "From: " + DETAILS["start_date"])
+    pdf.ln(6)
+    if DETAILS["end_date"] == "All":
+        pdf.cell(100, 6, "To: Now")
+    else:
+        pdf.cell(100, 6, "To: " + DETAILS["end_date"])
+    pdf.ln(10)
+
     pdf.set_font('Times', 'IB', 9.0)
 
     for ii in deets_w:
