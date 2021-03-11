@@ -36,7 +36,7 @@ class InvoiceForm:
 
         ''' TK VARIABLES '''
         self.reverse_charge_var = tk.BooleanVar(self.window, value=False)
-        self.typeVar = tk.IntVar(self.window)
+        self.typeVar = tk.BooleanVar(self.window, value = True)
         self.invoice_number_default = tk.IntVar(self.window)
         self.autofill_var = tk.StringVar(self.window)
         ''' DATE PICKER STRING VAR '''
@@ -144,6 +144,7 @@ class InvoiceForm:
         ttk.Label(x, text="State:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_state = ttk.Entry(x)
+        self.entry_state.insert(0, self.SETTINGS["state"])
         self.entry_state.pack(side=tk.LEFT, expand=True, padx=10, pady=5)
 
         self.entry_code = ttk.Entry(x)
@@ -201,12 +202,12 @@ class InvoiceForm:
         ''' Purchase / Sale option '''
         x = ttk.Frame(self.bottom_left_frame)
         self.purchase_radio_button = ttk.Radiobutton(
-            x, text="Purchase", variable=self.typeVar, value=0)
+            x, text="Purchase", variable=self.typeVar, value=True)
         self.purchase_radio_button.pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
 
         self.sale_radio_button = ttk.Radiobutton(
-            x, text="Sale", variable=self.typeVar, value=1)
+            x, text="Sale", variable=self.typeVar, value=False)
         self.sale_radio_button.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack()
