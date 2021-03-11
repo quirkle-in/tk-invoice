@@ -3,6 +3,16 @@ import os
 from gui.main_window import MainWindow
 from models import Base, engine
 
+default_settings = {
+                    "pdf_title": "Rajeshree Marketing",
+                    "pdf_address": "1/16, Vijay Nagar, Bandrekarwadi, Jogeshwari (East), Mumbai 400060.",
+                    "pdf_gst_no": "7AKEPB0058K1ZE",
+                    "cgst": "6",
+                    "sgst": "1",
+                    "igst": "6",
+                    "state": "Maharashtra",
+                    "default_save_folder": os.path.abspath(os.curdir)
+                }
 
 if __name__ == "__main__":
 
@@ -14,17 +24,15 @@ if __name__ == "__main__":
         pass
 
     try:
-        with open("settings.json", 'r') as json_file:
+        with open("settings.json", 'rw') as json_file:
             settings = json_file.read()
+            for default in default_settings:
+                if default not in settings:
+                    settings[default] = default_settings[default]
+            json.dump(default_settings, json_file)
             json_file.close()
     except:
         with open("settings.json", 'w') as json_file:
-                json.dump({
-                    "cgst": "6",
-                    "sgst": "1",
-                    "igst": "6",
-                    "state": "Maharashtra",
-                    "default_save_folder": os.path.abspath(os.curdir)
-                }, json_file)
+                json.dump(default_settings, json_file)
 
     MainWindow()

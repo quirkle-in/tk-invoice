@@ -480,9 +480,10 @@ class InvoiceForm:
                 good_deets = self.goods_table.getGoodsDetails()
                 # print(good_deets)
                 filepath = filedialog.askdirectory(
-                    initialdir="/", title="Select a folder to export to")
-                printing = create_invoice_pdf(
-                    self.invoice_data, good_deets, filepath)
+                    initialdir=self.SETTINGS["default_save_folder"], title="Select a folder to export to")
+                
+                printing = create_invoice_pdf(self.invoice_data, good_deets, filepath, self.SETTINGS)
+                
                 messagebox.showinfo(title='Print Status',
                                     message='PDF Generated Successfully', master=self.window)
                 print("Export to PDF response:", printing)

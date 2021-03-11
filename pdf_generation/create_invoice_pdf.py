@@ -2,7 +2,12 @@ from fpdf import FPDF
 from datetime import datetime
 
 
-def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
+def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
+
+    NAME = str(SETTINGS["pdf_title"])
+    ADDRESS = str(SETTINGS["pdf_address"])
+    GST_NO = str(SETTINGS["pdf_gst_no"])
+    
 
     pdf = FPDF('P', 'mm', 'A4')
     FILENAME = "Invoice" + "_" + \
@@ -13,15 +18,15 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
     pdf.add_page()
 
     pdf.set_font('Arial', 'B', 14.0)
-    pdf.text(x=80, y=15, txt='Rajeshree Marketing')
+    pdf.text(x=80, y=15, txt = NAME)
     pdf.ln(2)
 
     pdf.set_font('Arial', '', 10.0)
     pdf.text(
-        x=50, y=22, txt='1/16, Vijay Nagar, Bandrekarwadi, Jogeshwari (East), Mumbai 400060.')
+        x=50, y=22, txt=ADDRESS)
 
     pdf.set_font('Arial', 'B', 10.0)
-    pdf.text(x=78, y=30, txt='GST No. : 27AKEPB0058K1ZE')
+    pdf.text(x=78, y=30, txt=f'GST No. : {GST_NO}')
 
     pdf.line(10, 35, 200, 35)
 
@@ -181,7 +186,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH):
     pdf.ln(12)
 
     pdf.set_font('Times', 'IB', 9.0)
-    sign_text = 'For Rajeshree Marketing'
+    sign_text = f'For {NAME.title()}'
     pdf.cell(190, 6, sign_text, align="R", fill=False)
 
     pdf.ln(18)

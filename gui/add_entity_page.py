@@ -52,7 +52,7 @@ class AddEntityPage:
             data[field] = x
         
         res = models.create_entity(data)
-        print(res)
+        #print(res)
         if res:
             messagebox.showinfo(title = "Success!", message = "Created entity", master=self.window)
             self.back_to_home()
