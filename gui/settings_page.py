@@ -18,7 +18,7 @@ class SettingsPage:
         self.window.resizable(True, True)
 
         style = ThemedStyle(self.window)
-        style.set_theme("vista")
+        style.set_theme("breeze")
 
         self.window.iconbitmap('favicon.ico')
 
@@ -60,7 +60,10 @@ class SettingsPage:
 
 
         self.btn_save = ttk.Button(self.window, text = "Save & Exit", command = self.save_and_exit)
-        self.btn_save.pack(expand = True, padx = 20, pady = 10)
+        self.btn_save.pack(side = tk.LEFT, padx = 20, pady = 10)
+
+        self.btn_cancel = ttk.Button(self.window, text = "Cancel", command = self.back_to_home)
+        self.btn_cancel.pack(side = tk.RIGHT, padx = 20, pady = 10)
 
         self.window.mainloop()
     
@@ -92,6 +95,9 @@ class SettingsPage:
         else:
             print("Could not save.")
             messagebox.showinfo("Error", "Settings not saved.", master=self.window)
+        self.window.destroy()
+
+    def back_to_home(self):
         self.window.destroy()
 
 

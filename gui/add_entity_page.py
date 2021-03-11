@@ -16,7 +16,7 @@ class AddEntityPage:
 
         
         style = ThemedStyle(self.window)
-        style.set_theme("vista")
+        style.set_theme("breeze")
 
         self.window.iconbitmap('favicon.ico')
 
