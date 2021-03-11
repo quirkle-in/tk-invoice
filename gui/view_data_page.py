@@ -236,10 +236,10 @@ class ViewDataPage:
         status = purchase_report(DETAILS)
         if status:
             messagebox.showinfo(
-                title='Status', message='Purchase Report created successfully')
+                title='Status', message='Purchase Report created successfully', master=self.window)
         else:
             messagebox.showerror(
-                title='Error', message='Error during creation of Purchase Report')
+                title='Error', message='Error during creation of Purchase Report', master=self.window)
 
     def generate_sales_report(self):
         details = models.sales_report(
@@ -253,10 +253,10 @@ class ViewDataPage:
         status = purchase_report(DETAILS)
         if status:
             messagebox.showinfo(
-                title='Status', message='Sales Report created successfully')
+                title='Status', message='Sales Report created successfully', master=self.window)
         else:
             messagebox.showerror(
-                title='Error', message='Error during creation of Sales Report')
+                title='Error', message='Error during creation of Sales Report', master=self.window)
 
     def get_view(self):
         filters = {i: self.filters[i].get() for i in self.filters}
@@ -264,7 +264,7 @@ class ViewDataPage:
         data = None
 
         if filters['table'] == 'None Selected':
-            messagebox.showerror(title='Error', message='Select a table to get data from')
+            messagebox.showerror(title='Error', message='Select a table to get data from', master=self.window)
             return
 
         data = models.filtered_view(
@@ -337,10 +337,10 @@ class ViewDataPage:
 
         if status:
             messagebox.showinfo(
-                title='Status', message='PDF Generated')
+                title='Status', message='PDF Generated', master=self.window)
         else:
             messagebox.showerror(
-                title='Error', message='Couldn\'t generate PDF')
+                title='Error', message='Couldn\'t generate PDF', master=self.window)
 
     def delete_table_row(self):
         table = self.filters["table"].get()
@@ -350,6 +350,6 @@ class ViewDataPage:
 
         x = models.delete_table_row(table, _id)
         if x:
-            return messagebox.showinfo("Success", "Deleted!")
+            return messagebox.showinfo("Success", "Deleted!", master=self.window)
         else:
-            return messagebox.showerror("Error", "Could not delete")
+            return messagebox.showerror("Error", "Could not delete", master=self.window)
