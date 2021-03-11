@@ -3,6 +3,8 @@ from tkcalendar import Calendar
 from datetime import datetime
 from tkinter import ttk
 import tkinter as tk
+#from babel.dates import format_date, parse_date, get_day_names, get_month_names
+from babel.numbers import *
 
 
 class CalWindow:
@@ -31,5 +33,5 @@ class CalWindow:
         self.window.mainloop()
 
     def date_getter(self):
-        self.date_widget.set(datetime.strptime(self.cal.get_date(), "%d/%m/%Y").strftime("%d/%m/%Y"))
+        self.date_widget.set(datetime.strptime(self.cal.get_date(), "%m/%d/%y").strftime("%d/%m/%Y"))
         self.window.destroy()
