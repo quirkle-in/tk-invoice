@@ -1,20 +1,15 @@
-from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Date, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-
-import os
-from dotenv import load_dotenv
-load_dotenv()
+from datetime import datetime
 
 
-engine = create_engine(os.getenv("SQLITE_URL"), echo=False)
+engine = create_engine("sqlite:///invoice.db", echo=False)
 
 SessionLocal = sessionmaker(bind=engine)
 Base = declarative_base()
 db = SessionLocal()
-
 
 class Invoice(Base):
 
