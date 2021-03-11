@@ -203,7 +203,7 @@ class ViewDataPage:
         self.btn_purchases_report.pack(side=tk.LEFT, padx=10, pady=10)
 
         self.btn_sales_report = ttk.Button(
-            self.report_frame, text="Generate Sales Report", width=30)
+            self.report_frame, text="Generate Sales Report", width=30, command=self.generate_sales_report)
         self.btn_sales_report.pack(side=tk.LEFT, padx=10, pady=10)
 
         self.window.mainloop()
@@ -222,8 +222,7 @@ class ViewDataPage:
     def generate_purchase_report(self):
         details = models.purchase_report(
             self.var_start_date.get(), self.var_end_date.get())
-        filepath = filedialog.askdirectory(
-            initialdir='/', title='Select Folder')
+        filepath = filedialog.askdirectory(initialdir='/', title='Select Folder')
         DETAILS = {
             'path': filepath,
             'name': 'PURCHASE REPORT',
@@ -240,8 +239,7 @@ class ViewDataPage:
     def generate_sales_report(self):
         details = models.sales_report(
             self.var_start_date.get(), self.var_end_date.get())
-        filepath = filedialog.askdirectory(
-            initialdir='/', title='Select Folder')
+        filepath = filedialog.askdirectory(initialdir='/', title='Select Folder')
         DETAILS = {
             'path': filepath,
             'name': 'SALES REPORT',

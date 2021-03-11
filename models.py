@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Date, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -236,11 +237,14 @@ def get_invoice_by_id(_id):
 def purchase_report(start_date=False, end_date=False):
     details = []
     data = db.query(Invoice).filter_by(purchase=True)
-
     if start_date != "":
-        data = data.filter(Invoice.invoice_date > start_date)
+        x = datetime.strptime(start_date, "%d/%m/%Y").strftime("%Y/%m/%d")
+        print(x)
+        data = data.filter(Invoice.invoice_date >= x)
     if end_date != "":
-        data = data.filter(Invoice.invoice_date < end_date)
+        x = datetime.strptime(start_date, "%d/%m/%Y").strftime("%Y/%m/%d")
+        print(x)
+        data = data.filter(Invoice.invoice_date <= end_date)
     data = data.all()
     # print(data)
 
