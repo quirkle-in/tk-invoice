@@ -31,6 +31,5 @@ class CalWindow:
         self.window.mainloop()
 
     def date_getter(self):
-        self.date_widget.set(datetime.strptime(
-            self.cal.get_date(), "%m/%d/%y").strftime("%d/%m/%Y"))
+        self.date_widget.set(datetime.strptime(self.cal.get_date(), "%d/%m/%Y").strftime("%d/%m/%Y"))
         self.window.destroy()
