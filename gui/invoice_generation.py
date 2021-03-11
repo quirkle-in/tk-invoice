@@ -313,7 +313,7 @@ class InvoiceForm:
         path = 'settings.json'
         with open(path) as f:
             self.SETTINGS = json.load(f)
-            print(self.SETTINGS)
+            #print(self.SETTINGS)
             
 
     def back_to_home_page(self):
@@ -363,8 +363,8 @@ class InvoiceForm:
                     i['taxable_amt'] = int(i['total'] - int(i['discount']))
                     total = total + i['taxable_amt']
 
-                    print(self.goods_table.entries[j])
-                    print(self.goods_table.entries[j]['total'].set(i['total']))
+                    #print(self.goods_table.entries[j])
+                    #print(self.goods_table.entries[j]['total'].set(i['total']))
 
                     self.goods_table.entries[j]['taxable_amt'].set(
                         int(i['total']) - int(i['discount']))
@@ -384,14 +384,13 @@ class InvoiceForm:
             self.entry_igst.insert(0, round(total * sgst / 100, 2))
             self.entry_sgst.insert(0, round(total * igst / 100, 2))
 
-            self.entry_total_tax_amt.insert(0, round((total * cgst / 100) + (total * sgst / 100) + (total * igst / 100), 2))
+            self.entry_total_tax_amt.insert(0, round(total * (1 + (cgst + sgst + igst) / 100), 2))
             
-            print(round(total * (1 + (cgst + sgst + igst) / 100), 2))
-            print(round(total + (total * cgst / 100) + (total * sgst / 100) + (total * igst / 100), 2))
+            #print(round(total * (1 + (cgst + sgst + igst) / 100), 2))
+            #print(round(total + (total * cgst / 100) + (total * sgst / 100) + (total * igst / 100), 2))
             
-            self.entry_total_after_tax_amt.insert(0, round(total + (total * cgst / 100) + (total * sgst / 100) + (total * igst / 100), 2))
+            self.entry_total_after_tax_amt.insert(0, round(total * (1 + (cgst + sgst + igst) / 100), 2))
             
-
             self.entry_rs_in_words.insert(0, num2words(self.entry_total_after_tax_amt.get()).title())
 
         except Exception as e:
@@ -509,7 +508,7 @@ class InvoiceForm:
                 title='Error', message='No saved items were found.')
             return
         x = {field: res.__dict__[field] for field in res.__dict__}
-        print(x)
+        #print(x)
 
         try:
             self.entry_party_name.delete(0, tk.END)
