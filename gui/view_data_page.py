@@ -236,7 +236,9 @@ class ViewDataPage:
         DETAILS = {
             'path': filepath,
             'name': 'PURCHASE REPORT',
-            'dets': details
+            'dets': details,
+            "start_date": self.var_start_date.get().replace("/", "-"),
+            "end_date": self.var_end_date.get().replace("/", "-")
         }
         status = purchase_report(DETAILS)
         if status:
@@ -253,7 +255,9 @@ class ViewDataPage:
         DETAILS = {
             'path': filepath,
             'name': 'SALES REPORT',
-            'dets': details
+            'dets': details,
+            "start_date": self.var_start_date.get().replace("/", "-"),
+            "end_date": self.var_end_date.get().replace("/", "-")
         }
         status = purchase_report(DETAILS)
         if status:

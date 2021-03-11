@@ -4,8 +4,7 @@ from datetime import datetime
 
 def purchase_report(DETAILS):
 
-    FILENAME = DETAILS['name'] + '_' + \
-        datetime.now().strftime('%d-%m-%Y_') + ".pdf"
+    FILENAME = f"{DETAILS['name']}_{DETAILS['start_date']}_{DETAILS['end_date']}.pdf"
 
     pdf = FPDF('P', 'mm', 'A4')
 
