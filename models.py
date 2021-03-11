@@ -237,15 +237,14 @@ def get_invoice_by_id(_id):
 def purchase_report(start_date=False, end_date=False):
     details = []
     data = db.query(Invoice).filter_by(purchase=True)
-    if start_date != "":
-        x = datetime.strptime(start_date, "%d/%m/%Y").strftime("%Y/%m/%d")
-        print(x)
+    if start_date != "All":
+        x = datetime.strptime(start_date, "%d/%m/%Y").strftime("%Y-%m-%d")
         data = data.filter(Invoice.invoice_date >= x)
-    if end_date != "":
-        x = datetime.strptime(end_date, "%d/%m/%Y").strftime("%Y/%m/%d")
-        print(x)
-        data = data.filter(Invoice.invoice_date <= end_date)
+    if end_date != "All":
+        x = datetime.strptime(end_date, "%d/%m/%Y").strftime("%Y-%m-%d")
+        data = data.filter(Invoice.invoice_date <= x)
     data = data.all()
+    # print(data)
 
     s_no = 1
     for x in data:
@@ -266,14 +265,17 @@ def purchase_report(start_date=False, end_date=False):
     return details
 
 
-def sales_report(start_date="", end_date=""):
+def sales_report(start_date=False, end_date=False):
     details = []
     data = db.query(Invoice).filter_by(purchase=False)
 
-    if start_date != "":
-        data = data.filter(Invoice.invoice_date > start_date)
-    if end_date != "":
-        data = data.filter(Invoice.invoice_date < end_date)
+    print(start_date, end_date)
+    if start_date != "All":
+        x = datetime.strptime(start_date, "%d/%m/%Y").strftime("%Y-%m-%d")
+        data = data.filter(Invoice.invoice_date >= x)
+    if end_date != "All":
+        x = datetime.strptime(end_date, "%d/%m/%Y").strftime("%Y-%m-%d")
+        data = data.filter(Invoice.invoice_date <= x)
     data = data.all()
 
     s_no = 1

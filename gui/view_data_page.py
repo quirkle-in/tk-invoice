@@ -188,15 +188,15 @@ class ViewDataPage:
             self.window, borderwidth=2, relief="groove")
         self.report_frame.pack(side=tk.BOTTOM, padx=10, pady=10)
 
-        self.var_start_date = tk.StringVar(self.window, value="")
-        self.var_end_date = tk.StringVar(self.window, value="")
+        self.var_start_date = tk.StringVar(self.window, value="All")
+        self.var_end_date = tk.StringVar(self.window, value="All")
 
         ttk.Label(self.report_frame, text="Start Date").pack(
             side=tk.LEFT, expand=True, padx=10, pady=10)
         self.entry_start_date = ttk.Entry(
             self.report_frame, textvariable=self.var_start_date)  # date picker
         self.entry_start_date.pack(side=tk.LEFT, expand=True, padx=10, pady=5)
-        self.entry_start_date.insert(0, datetime.now().strftime("%d/%m/%Y"))
+        #self.entry_start_date.insert(0, datetime.now().strftime("%d/%m/%Y"))
         self.entry_start_date.bind("<1>", self.calOpen_start)
 
         ttk.Label(self.report_frame, text="End Date").pack(
@@ -204,7 +204,7 @@ class ViewDataPage:
         self.entry_end_date = ttk.Entry(
             self.report_frame, textvariable=self.var_end_date)  # date picker
         self.entry_end_date.pack(side=tk.LEFT, expand=True, padx=10, pady=5)
-        self.entry_end_date.insert(0, datetime.now().strftime("%d/%m/%Y"))
+        #self.entry_end_date.insert(0, datetime.now().strftime("%d/%m/%Y"))
         self.entry_end_date.bind("<1>", self.calOpen_end)
 
         self.btn_purchases_report = ttk.Button(
@@ -247,8 +247,7 @@ class ViewDataPage:
                 title='Error', message='Error during creation of Purchase Report', master=self.window)
 
     def generate_sales_report(self):
-        details = models.sales_report(
-            self.var_start_date.get(), self.var_end_date.get())
+        details = models.sales_report(self.var_start_date.get(), self.var_end_date.get())
         filepath = filedialog.askdirectory(
             master=self.window, initialdir=self.settings["default_save_folder"], title='Select Folder')
         DETAILS = {
