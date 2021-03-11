@@ -47,7 +47,7 @@ class AddEntityPage:
         for field in self.data:
             x = self.data[field].get()
             if x == "":
-                messagebox.showerror(title = "Error", message = "Invalid / empty fields")
+                messagebox.showerror(title = "Error", message = "Invalid / empty fields", master=self.window)
                 return
             data[field] = x
         
