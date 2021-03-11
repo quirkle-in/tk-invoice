@@ -367,6 +367,7 @@ class InvoiceForm:
 
                     # print(self.goods_table.entries[j])
                     # print(self.goods_table.entries[j]['total'].set(i['total']))
+                    self.goods_table.entries[j]['total'].set(i['total'])
 
                     self.goods_table.entries[j]['taxable_amt'].set(
                         int(i['total']) - int(i['discount']))
@@ -415,8 +416,7 @@ class InvoiceForm:
             x = self.insertDetails(inv_id)
             if x:
                 print("Details recorded.")
-                messagebox.showinfo(
-                    title='Invoice Status', message='Invoice and details have been successfully recorded', master=self.window)
+                messagebox.showinfo(title='Invoice Status', message='Invoice and details have been successfully recorded', master=self.window)
                 return True
 
     def onCalculate(self):
@@ -432,16 +432,14 @@ class InvoiceForm:
                 self.sendAlert(
                     "Invalid Data! Should not contain any empty fields")
                 return False
-            msg_box = messagebox.askyesno(
-                title='Attention', message="Are you sure, you want to submit? ", master=self.window)
+            msg_box = messagebox.askyesno(title='Attention', message="Are you sure, you want to submit? ", master=self.window)
             if msg_box:
                 res = self.onConfirm()
                 if not res:
                     self.sendAlert("Error while creating.")
 
         else:
-            messagebox.showerror(
-                title='Attention', message='Please click calculate button before submission', master=self.window)
+            messagebox.showerror(title='Attention', message='Please click calculate button before submission', master=self.window)
         self.set_invoice_id()
 
     def collect_field_data(self):
@@ -490,14 +488,12 @@ class InvoiceForm:
                 printing = create_invoice_pdf(
                     self.invoice_data, good_deets, filepath, self.SETTINGS)
 
-                messagebox.showinfo(title='Print Status',
-                                    message='PDF Generated Successfully', master=self.window)
+                messagebox.showinfo(title='Print Status', message='PDF Generated Successfully', master=self.window)
                 print("Export to PDF response:", printing)
             else:
                 return
         else:
-            messagebox.showerror(
-                title='Print Status', message='PDF could not be generated before calculation.', master=self.window)
+            messagebox.showerror(title='Print Status', message='PDF could not be generated before calculation.', master=self.window)
 
     def validateData(self):
         goods_details = self.goods_table.getGoodsDetails()
@@ -506,14 +502,12 @@ class InvoiceForm:
         return True
 
     def sendAlert(self, message):
-        messagebox.showerror(
-            title='Error', message=message, master=self.window)
+        messagebox.showerror(title='Error', message=message, master=self.window)
 
     def autofill_entity_fields(self):
         res = models.get_entity_by_name(self.autofill_var.get())
         if res == None:
-            messagebox.showerror(
-                title='Error', message='No saved items were found.')
+            messagebox.showerror(title='Error', message='No saved items were found.', master = self.window)
             return
         x = {field: res.__dict__[field] for field in res.__dict__}
         # print(x)

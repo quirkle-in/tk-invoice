@@ -242,11 +242,9 @@ class ViewDataPage:
         }
         status = purchase_report(DETAILS, self.settings)
         if status:
-            messagebox.showinfo(
-                title='Status', message='Purchase Report created successfully', master=self.window)
+            messagebox.showinfo(title='Status', message='Purchase Report created successfully', master=self.window)
         else:
-            messagebox.showerror(
-                title='Error', message='Error during creation of Purchase Report', master=self.window)
+            messagebox.showerror(title='Error', message='Error during creation of Purchase Report', master=self.window)
 
     def generate_sales_report(self):
         details = models.sales_report(self.var_start_date.get(), self.var_end_date.get())
@@ -261,11 +259,9 @@ class ViewDataPage:
         }
         status = purchase_report(DETAILS, self.settings)
         if status:
-            messagebox.showinfo(
-                title='Status', message='Sales Report created successfully', master=self.window)
+            messagebox.showinfo(title='Status', message='Sales Report created successfully', master=self.window)
         else:
-            messagebox.showerror(
-                title='Error', message='Error during creation of Sales Report', master=self.window)
+            messagebox.showerror(title='Error', message='Error during creation of Sales Report', master=self.window)
 
     def get_view(self):
         filters = {i: self.filters[i].get() for i in self.filters}
@@ -345,11 +341,9 @@ class ViewDataPage:
         status = create_invoice_pdf(INVOICE=single_invoice, DETAILS=details, FILEPATH=file_path, SETTINGS= self.settings)
 
         if status:
-            messagebox.showinfo(
-                title='Status', message='PDF Generated', master=self.window)
+            messagebox.showinfo(title='Status', message='PDF Generated', master=self.window)
         else:
-            messagebox.showerror(
-                title='Error', message='Couldn\'t generate PDF', master=self.window)
+            messagebox.showerror(title='Error', message='Couldn\'t generate PDF', master=self.window)
 
     def delete_table_row(self):
         table = self.filters["table"].get()
