@@ -38,9 +38,7 @@ class MainWindow:
         self.btn_settings = TkinterCustomButton(text="Settings", command = self.settings_page, width = 200, 
                                     corner_radius=15, hover_color = '#005e50', fg_color='#00966e', text_font=('Avenir',13))
         self.btn_settings.pack(expand=True)
-
   
-        
 
         self.window.mainloop()
 

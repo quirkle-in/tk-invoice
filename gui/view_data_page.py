@@ -1,10 +1,11 @@
+from pdf_generation.create_invoice_pdf import create_invoice_pdf
 from pdf_generation.purchase_sale_view import purchase_report
 from tkinter import messagebox, ttk, filedialog
 from gui.components import datepick
 from ttkthemes import ThemedStyle
 import tkinter as tk
 import models
-from pdf_generation.create_invoice_pdf import create_invoice_pdf
+import json
 
 
 INVOICE_COLUMNS = ["invoice_id", "invoice_no",
@@ -85,6 +86,10 @@ class ViewDataPage:
         self.window.geometry("1200x700")
         self.window.resizable(True, True)
         self.data = None
+
+        with open("settings.json", 'r') as json_file:
+            self.settings = json.load(json_file)
+
         self.DATA_TABLE = None
 
         self.filters = {
@@ -222,7 +227,7 @@ class ViewDataPage:
     def generate_purchase_report(self):
         details = models.purchase_report(
             self.var_start_date.get(), self.var_end_date.get())
-        filepath = filedialog.askdirectory(initialdir='/', title='Select Folder')
+        filepath = filedialog.askdirectory(initialdir=self.settings["default_save_folder"], title='Select Folder')
         DETAILS = {
             'path': filepath,
             'name': 'PURCHASE REPORT',
@@ -239,7 +244,7 @@ class ViewDataPage:
     def generate_sales_report(self):
         details = models.sales_report(
             self.var_start_date.get(), self.var_end_date.get())
-        filepath = filedialog.askdirectory(initialdir='/', title='Select Folder')
+        filepath = filedialog.askdirectory(initialdir=self.settings["default_save_folder"], title='Select Folder')
         DETAILS = {
             'path': filepath,
             'name': 'SALES REPORT',
@@ -322,11 +327,9 @@ class ViewDataPage:
         print('Invoice Dets: ', single_invoice)
         print('Details in inv: ', details)
 
-        file_path = filedialog.askdirectory(
-            initialdir="/", title="Select a folder to export to")
+        file_path = filedialog.askdirectory(initialdir=self.default_folder, title="Select a folder to export to")
 
-        status = create_invoice_pdf(
-            INVOICE=single_invoice, DETAILS=details, FILEPATH=file_path)
+        status = create_invoice_pdf(INVOICE=single_invoice, DETAILS=details, FILEPATH=file_path)
 
         if status:
             messagebox.showinfo(
