@@ -30,7 +30,7 @@ class SettingsPage:
         self.load_settings()
         self.setting_variables = {}
     
-        self.canvas = tk.Canvas(self.base_frame, width=500, height = 600)
+        self.canvas = tk.Canvas(self.base_frame, width=900, height = 600)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame, #canvas, maybe
             orient = "vertical", command = self.canvas.yview)
         self.frame = ttk.Frame(self.canvas)
@@ -66,6 +66,10 @@ class SettingsPage:
     
 
     def save_settings(self):
+        for setting in self.settings:
+            if setting == "default_save_folder":
+                x = self.setting_variables[setting].get().replace("\\", "/")
+            self.settings[setting] = self.setting_variables[setting].get()
         try:
             with open(file_path, 'w') as json_file:
                 json.dump(self.settings, json_file)
@@ -100,4 +104,4 @@ def save_setting(setting, value):
         return True
     except Exception as e:
         print(e)
-        return False    
+        return False
