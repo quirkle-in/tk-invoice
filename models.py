@@ -238,11 +238,11 @@ def purchase_report(start_date=False, end_date=False):
     details = []
     data = db.query(Invoice).filter_by(purchase=True)
     if start_date != "":
-        x = datetime.strptime(start_date, "%d/%m/%Y").strftime("%Y/%m/%d")
+        x = datetime.strptime(start_date, "%d/%m/%y").strftime("%Y/%m/%d")
         print(x)
         data = data.filter(Invoice.invoice_date >= x)
     if end_date != "":
-        x = datetime.strptime(start_date, "%d/%m/%Y").strftime("%Y/%m/%d")
+        x = datetime.strptime(start_date, "%d/%m/%y").strftime("%Y/%m/%d")
         print(x)
         data = data.filter(Invoice.invoice_date <= end_date)
     data = data.all()
