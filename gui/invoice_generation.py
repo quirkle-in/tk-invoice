@@ -448,7 +448,7 @@ class InvoiceForm:
             "party_code":          self.entry_party_code.get(),
 
             "purchase":            self.typeVar.get(),
-            "rupees_in_words":     self.entry_rs_in_words.get(),
+            "rupees_in_words":     self.entry_rs_in_words.get('1.0', 'end-1c'),
             "bank_name":           self.entry_bank_name.get(),
             "account_no":          self.entry_ac_no.get(),
             "ifsc":                 self.entry_ifsc.get(),
