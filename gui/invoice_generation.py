@@ -474,7 +474,8 @@ class InvoiceForm:
                 good_deets = self.goods_table.getGoodsDetails()
                 # print(good_deets)
                 filepath = filedialog.askdirectory(
-                    initialdir=self.SETTINGS["default_save_folder"], title="Select a folder to export to")
+                    initialdir=self.SETTINGS["default_save_folder"], title="Select a folder to export to", master=self.window)
+                print(filepath)
 
                 printing = create_invoice_pdf(
                     self.invoice_data, good_deets, filepath, self.SETTINGS)
