@@ -215,7 +215,7 @@ class InvoiceForm:
         x = ttk.Frame(self.bottom_left_frame)
         ttk.Label(x, text="Rs. in Words:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
-        self.entry_rs_in_words = ttk.Entry(x)
+        self.entry_rs_in_words = ScrolledText(x, height=2, width=48, wrap=tk.WORD)
         self.entry_rs_in_words.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack(anchor = "e")
@@ -365,7 +365,7 @@ class InvoiceForm:
                     j = j + 1
 
             ''' clear fields before inserting '''
-            self.entry_rs_in_words.delete(0, END)
+            self.entry_rs_in_words.delete("1.0", END)
             self.entry_total_before_tax.delete(0, END)
             self.entry_cgst.delete(0, END)
             self.entry_igst.delete(0, END)
@@ -387,7 +387,7 @@ class InvoiceForm:
             self.entry_total_after_tax_amt.insert(
                 0, round(total * (1 + (cgst + sgst + igst) / 100), 2))
 
-            self.entry_rs_in_words.insert(0, num2words(
+            self.entry_rs_in_words.insert("0.0", num2words(
                 self.entry_total_after_tax_amt.get()).title())
 
         except Exception as e:
