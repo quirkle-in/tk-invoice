@@ -255,6 +255,7 @@ def purchase_report(start_date=False, end_date=False):
             invoice_id=x.invoice_id).all()
         for y in detail_data:
             details_dict = {'Sr No': s_no,
+                            "Inv ID": x.invoice_id,
                             'name': y.name,
                             'hsn': y.hsn,
                             'qty': y.qty,

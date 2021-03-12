@@ -33,14 +33,15 @@ def purchase_report(DETAILS, SETTINGS):
     pdf.line(10, 48, 200, 48)
 
     deets_w = {'Sr No': 5.5,
-               'name': 20,
+                "Inv ID": 5.5, 
+               'name': 16,
                'hsn': 10,
                'qty': 7.5,
                'rate': 9,
                'mrp': 7,
                'total': 10,
                'discount': 10,
-               'taxable_amt': 16}
+               'taxable_amt': 14.5}
     pdf.ln(40)
 
     pdf.set_font('Arial', "", 9)
