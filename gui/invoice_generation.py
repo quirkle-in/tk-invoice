@@ -120,7 +120,7 @@ class InvoiceForm:
 
         x = ttk.Frame(self.top_left_frame)
         ttk.Label(x, text="Invoice Date:").pack(
-            side=tk.LEFT, expand=True, padx=10, pady=5)
+            side=tk.LEFT, expand=True, padx=18, pady=5)
         self.entry_invoice_date = ttk.Entry(
             x, textvariable=self.dating)  # date picker
         self.entry_invoice_date.pack(
@@ -134,10 +134,10 @@ class InvoiceForm:
         self.reverse_frame.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
         self.reverse_true_radio_button = ttk.Radiobutton(
             self.reverse_frame, text="Yes", variable=self.reverse_charge_var, value=True)
-        self.reverse_true_radio_button.pack(side=tk.LEFT, expand=True)
+        self.reverse_true_radio_button.pack(side=tk.LEFT, expand=True, padx=10)
         self.reverse_false_radio_button = ttk.Radiobutton(
             self.reverse_frame, text="No", variable=self.reverse_charge_var, value=False)
-        self.reverse_false_radio_button.pack(side=tk.RIGHT, expand=True)
+        self.reverse_false_radio_button.pack(side=tk.RIGHT, expand=True, padx=10)
         x.pack()
 
         x = ttk.Frame(self.top_left_frame)
@@ -160,7 +160,7 @@ class InvoiceForm:
         x = ttk.Frame(self.top_right_frame)
         ttk.Label(x, text="Name:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
-        self.entry_party_name = ttk.Entry(x, width=32)
+        self.entry_party_name = ttk.Entry(x, width=48)
         self.entry_party_name.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack()
 
@@ -168,7 +168,7 @@ class InvoiceForm:
         ttk.Label(x, text="Address:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_party_address = ScrolledText(
-            x, height=2, width=24, wrap=tk.WORD)  # Address
+            x, height=2, width=48, wrap=tk.WORD)  # Address
         self.entry_party_address.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack()
@@ -176,7 +176,7 @@ class InvoiceForm:
         x = ttk.Frame(self.top_right_frame)
         ttk.Label(x, text="GSTIN Unique ID:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
-        self.entry_party_gstin = ttk.Entry(x, width=32)
+        self.entry_party_gstin = ttk.Entry(x, width=42)
         self.entry_party_gstin.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack()
@@ -218,28 +218,28 @@ class InvoiceForm:
         self.entry_rs_in_words = ttk.Entry(x)
         self.entry_rs_in_words.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_left_frame)
         ttk.Label(x, text="Bank Name:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_bank_name = ttk.Entry(x)
         self.entry_bank_name.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_left_frame)
         ttk.Label(x, text="A/c No.:").pack(side=tk.LEFT,
                                            expand=True, padx=10, pady=5)
         self.entry_ac_no = ttk.Entry(x)
         self.entry_ac_no.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_left_frame)
         ttk.Label(x, text="IFS Code:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_ifsc = ttk.Entry(x)
         self.entry_ifsc.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_right_frame)
         ttk.Label(x, text="Total Before Tax:").pack(
@@ -247,28 +247,28 @@ class InvoiceForm:
         self.entry_total_before_tax = ttk.Entry(x)
         self.entry_total_before_tax.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_right_frame)
         ttk.Label(x, text="IGST @" + str(self.SETTINGS['igst']) + "%:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_igst = ttk.Entry(x)
         self.entry_igst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_right_frame)
         ttk.Label(x, text="CGST @" + str(self.SETTINGS['cgst']) + "%:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_cgst = ttk.Entry(x)
         self.entry_cgst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_right_frame)
         ttk.Label(x, text="SGST @" + str(self.SETTINGS['sgst']) + "%:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_sgst = ttk.Entry(x)
         self.entry_sgst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_right_frame)
         ttk.Label(x, text="Total Tax Amount:").pack(
@@ -276,7 +276,7 @@ class InvoiceForm:
         self.entry_total_tax_amt = ttk.Entry(x)
         self.entry_total_tax_amt.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_right_frame)
         ttk.Label(x, text="Total After Tax Amount:").pack(
@@ -284,7 +284,7 @@ class InvoiceForm:
         self.entry_total_after_tax_amt = ttk.Entry(x)
         self.entry_total_after_tax_amt.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_right_frame)
         ttk.Label(x, text="GST on Reverse Charges:").pack(
@@ -292,7 +292,7 @@ class InvoiceForm:
         self.entry_gst_reverse_charge = ttk.Entry(x)
         self.entry_gst_reverse_charge.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor = "e")
 
         self.entry_invoice_date.bind("<1>", self.calOpen)
 

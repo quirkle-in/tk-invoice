@@ -27,18 +27,23 @@ class AddEntityPage:
         self.titles = [column.key for column in Entity.__table__.columns]
         self.titles.remove('entity_id')
 
-        ttk.Button(self.window, text = "Back", command = self.back_to_home).pack(padx = 10, pady = 5)
+        self.header_frame = ttk.Frame(self.window)
+        self.header_frame.pack(side = tk.TOP, expand = True)
 
-        ttk.Label(self.window, text="ADD ENTITY", font = ("Arial", 14, "bold")).pack(expand = True, padx = 15)
+        ttk.Label(self.header_frame, text="ADD ENTITY", font = ("Arial", 14, "bold")).pack(side = tk.TOP, expand = True, padx = 15)
+        ttk.Button(self.header_frame, text = "Back", command = self.back_to_home).pack(padx = 10, pady = 5)
         
+        self.base_frame = ttk.Frame(self.window)
+        self.base_frame.pack(anchor="n")
+
         for field in self.titles:
             self.data[field] = tk.StringVar(self.window)
 
-            f = ttk.Frame(self.window)
+            f = ttk.Frame(self.base_frame)
             ttk.Label(f, text = field.replace("_", " ").upper()).pack(side = tk.LEFT, padx = 10, pady = 5)
             en = ttk.Entry(f, width = 30, textvariable = self.data[field])
             en.pack(side = tk.RIGHT, padx = 10, pady = 5)
-            f.pack(expand = True)
+            f.pack(anchor="e")
 
         ttk.Button(self.window, text = "Add Entity", command = self.add_entity, width = 30).pack(expand = True, pady = 10)
 

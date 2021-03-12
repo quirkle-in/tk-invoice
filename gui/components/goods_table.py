@@ -12,7 +12,7 @@ class Table:
         self.total_goods_rows = 0
 
 
-        self.base_frame = ttk.Frame(self.root)
+        self.base_frame = ttk.Frame(self.root, borderwidth=2, relief="groove")
         self.base_frame.pack(padx = 10)
 
         
