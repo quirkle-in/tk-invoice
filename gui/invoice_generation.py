@@ -477,12 +477,17 @@ class InvoiceForm:
                     initialdir=self.SETTINGS["default_save_folder"], title="Select a folder to export to", master=self.window)
                 print(filepath)
 
+
                 printing = create_invoice_pdf(
                     self.invoice_data, good_deets, filepath, self.SETTINGS)
-
-                messagebox.showinfo(title='Print Status', message='PDF Generated Successfully', master=self.window)
+                
+                if printing:
+                    messagebox.showinfo(title='Print Status', message='PDF Generated Successfully', master=self.window)
+                else:
+                    messagebox.showerror(title='Print Status', message='PDF could not be generated', master=self.window)
                 print("Export to PDF response:", printing)
             else:
+                messagebox.showerror(title='Print Status', message='PDF could not be generated on invalid fields', master=self.window)
                 return
         else:
             messagebox.showerror(title='Print Status', message='PDF could not be generated before calculation.', master=self.window)
