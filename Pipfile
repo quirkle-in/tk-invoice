@@ -29,7 +29,11 @@ Babel = "==2.9.0"
 Pillow = "==8.1.2"
 "PyPDF2" = "==1.26.0"
 SQLAlchemy = "==1.3.23"
-"py2exe" = "*"
+"py2exe" = "==0.10.2.1"
+cachetools = "==4.2.1"
+graphviz = "==0.16"
+install = "==1.3.4"
+PySimpleGUI = "==4.35.0"
 
 [dev-packages]
 

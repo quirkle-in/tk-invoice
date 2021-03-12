@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1dee851e7b3c2386eab948448c7d8e97cb6409deee392f19b0d3f843f451b508"
+            "sha256": "508fa31d15d723f1e1083be91249685540ff0a88376404512dc06b63ac51abe4"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -37,6 +37,7 @@
                 "sha256:1d9d5f567be80f7c07d765e21b814326d78c61eb0c3a637dffc0e5d1796cb2e2",
                 "sha256:f469e29e7aa4cff64d8de4aad95ce76de8ea1125a16c68e0d93f65c3c3dc92e9"
             ],
+            "index": "pypi",
             "version": "==4.2.1"
         },
         "docopt": {
@@ -59,6 +60,22 @@
             ],
             "index": "pypi",
             "version": "==0.18.2"
+        },
+        "graphviz": {
+            "hashes": [
+                "sha256:3cad5517c961090dfc679df6402a57de62d97703e2880a1a46147bb0dc1639eb",
+                "sha256:d2d25af1c199cad567ce4806f0449cb74eb30cf451fd7597251e1da099ac6e57"
+            ],
+            "index": "pypi",
+            "version": "==0.16"
+        },
+        "install": {
+            "hashes": [
+                "sha256:1455304a2475b6753a9b0c28243ca7d8b7d71aeea1a88e6de94034fc57d765a0",
+                "sha256:dfec614e0cc90f00659067a078bc2ec032d9f0758f3df230c073eeaffd0cefa1"
+            ],
+            "index": "pypi",
+            "version": "==1.3.4"
         },
         "num2words": {
             "hashes": [
@@ -219,6 +236,14 @@
             ],
             "index": "pypi",
             "version": "==1.26.0"
+        },
+        "pysimplegui": {
+            "hashes": [
+                "sha256:65055716b7669c0dcba379d48a59cecdd106b5c5b327541cbc5fbe7d4efca7bd",
+                "sha256:770d5419a7a01c1889a5e789a2fed60987e5639058e6375b41ac69a5408c855d"
+            ],
+            "index": "pypi",
+            "version": "==4.35.0"
         },
         "python-dotenv": {
             "hashes": [
