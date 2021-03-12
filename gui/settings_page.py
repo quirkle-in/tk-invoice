@@ -8,8 +8,10 @@ import os
 file_path = "settings.json"
 
 class SettingsPage:
-    def __init__(self):
-        self.settings = {}
+    def __init__(self, SETTINGS, main_window):
+        self.SETTINGS = SETTINGS
+        self.setting_variables = {}
+        self.main_window = main_window
 
         self.window = tk.Tk()
         self.window.configure(background="#f3f3f3")
@@ -26,9 +28,6 @@ class SettingsPage:
 
         self.base_frame = ttk.Frame(self.window)
         self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=40)
-
-        self.load_settings()
-        self.setting_variables = {}
     
         self.canvas = tk.Canvas(self.base_frame, width=900, height = 600)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame, #canvas, maybe
@@ -49,8 +48,8 @@ class SettingsPage:
         self.scrollbar_y.pack(side="right", fill = "y")
 
 
-        for setting in self.settings:
-            self.setting_variables[setting] = tk.StringVar(self.window, value = self.settings[setting])
+        for setting in self.SETTINGS:
+            self.setting_variables[setting] = tk.StringVar(self.window, value = self.SETTINGS[setting])
             
             f = ttk.Frame(self.frame)
             ttk.Label(f, text = setting.replace("_", " ").upper(), font = ("Arial", 10, "bold")).pack(side = tk.LEFT, padx = 10, pady = 30)
@@ -69,36 +68,35 @@ class SettingsPage:
     
 
     def save_settings(self):
-        for setting in self.settings:
+        for setting in self.SETTINGS:
             if setting == "default_save_folder":
-                x = self.setting_variables[setting].get().replace("\\", "/")
-            self.settings[setting] = self.setting_variables[setting].get()
+                self.setting_variables[setting].set(self.setting_variables[setting].get().replace("\\", "/"))
+            self.SETTINGS[setting] = self.setting_variables[setting].get()
         try:
             with open(file_path, 'w') as json_file:
-                json.dump(self.settings, json_file)
+                json.dump(self.SETTINGS, json_file)
             return True
         except Exception as e:
             print(e)
             return False
 
-    
-    def load_settings(self):
-        with open(file_path, 'r') as json_file:
-            self.settings = json.load(json_file)
-            #print(self.settings)
 
     def save_and_exit(self):
         print("Saving settings...")
         if self.save_settings():
             print("Saved.")
             messagebox.showinfo("Success", "Settings saved.", master=self.window)
+            self.back_to_home()
         else:
             print("Could not save.")
             messagebox.showinfo("Error", "Settings not saved.", master=self.window)
-        self.window.destroy()
+
 
     def back_to_home(self):
         self.window.destroy()
+        self.main_window.lift()
+        self.main_window.attributes('-topmost',True)
+        self.main_window.after_idle(self.main_window.attributes,'-topmost', False)
 
 
 def save_setting(setting, value):

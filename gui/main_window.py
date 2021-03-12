@@ -4,8 +4,8 @@ from gui.add_entity_page import AddEntityPage
 from gui.view_data_page import ViewDataPage
 from gui.settings_page import SettingsPage
 from ttkthemes import ThemedStyle
-from tkinter import ttk
 import tkinter as tk
+import json
 
 
 class MainWindow:
@@ -15,6 +15,8 @@ class MainWindow:
         self.window.title("Home")
         self.window.geometry("400x400")
         self.window.resizable(True, True)
+        
+        self.SETTINGS = None
 
         style = ThemedStyle(self.window)
         style.set_theme("breeze")
@@ -39,21 +41,36 @@ class MainWindow:
                                     corner_radius=15, hover_color = '#005e50', fg_color='#00966e', text_font=('Avenir',13))
         self.btn_settings.pack(expand=True)
   
+        self.window.lift()
+        self.window.attributes('-topmost',True)
+        self.window.after_idle(self.window.attributes,'-topmost', False)
 
         self.window.mainloop()
 
 
     def create_invoice_page(self):
-        InvoiceForm()
+        self.get_and_set_settings()
+        InvoiceForm(self.SETTINGS, self.window)
 
     
     def view_invoice_page(self):
-        ViewDataPage()
+        self.get_and_set_settings()
+        ViewDataPage(self.SETTINGS, self.window)
 
 
     def add_entity_page(self):
-        AddEntityPage()
+        self.get_and_set_settings()
+        AddEntityPage(self.SETTINGS, self.window)
     
 
     def settings_page(self):
-        SettingsPage()
+        self.get_and_set_settings()
+        SettingsPage(self.SETTINGS, self.window)
+
+
+
+    def get_and_set_settings(self):
+        path = 'settings.json'
+        with open(path) as f:
+            self.SETTINGS = json.load(f)
+            # print(self.SETTINGS)

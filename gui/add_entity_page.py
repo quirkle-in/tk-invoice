@@ -7,7 +7,10 @@ import models
 
 
 class AddEntityPage:
-    def __init__(self):
+    def __init__(self, SETTINGS, main_window):
+        self.SETTINGS = SETTINGS
+        self.main_window = main_window
+        
         self.window = tk.Tk()
         self.window.configure(background = "#f3f3f3")
         self.window.title("Add an Entity")
@@ -62,3 +65,6 @@ class AddEntityPage:
 
     def back_to_home(self):
         self.window.destroy()
+        self.main_window.lift()
+        self.main_window.attributes('-topmost',True)
+        self.main_window.after_idle(self.main_window.attributes,'-topmost', False)

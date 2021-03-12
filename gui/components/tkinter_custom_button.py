@@ -216,4 +216,5 @@ class TkinterCustomButton(tkinter.Frame):
                 self.function()
                 self.on_leave()
         except Exception as e:
-            print(e)
+            #print(e)
+            pass

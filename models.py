@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Date, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from datetime import datetime
 
@@ -43,7 +44,6 @@ class Invoice(Base):
     total_after_tax = Column(Float, default=0.00)
     gst_reverse_charge = Column(String(100))
 
-
 class Details(Base):
 
     __tablename__ = "details"
@@ -61,6 +61,7 @@ class Details(Base):
     discount = Column(Float)
     taxable_amt = Column(Float)
 
+    invoice = relationship("Invoice", back_populates = "details")
 
 class Entity(Base):
 
@@ -76,6 +77,13 @@ class Entity(Base):
     a_c_no = Column(String(100))
     ifc_code = Column(String(100))
 
+
+Invoice.details = relationship(
+    "Details",
+    order_by = Details.deet_id, 
+    back_populates = "invoice",
+    cascade = "all, delete, delete-orphan" 
+)
 
 ''' INVOICE FUNTIONS '''
 
@@ -185,18 +193,18 @@ def filtered_view(table, type):
     elif table == "Entities":
         res = db.query(Entity)
 
-    if not res:
-        return []
+    if not res: return []
     return res.all()
 
 
 def get_table_row(_id):
     inv_det = db.query(Invoice).filter_by(invoice_id=_id).first()
-    goods_det = db.query(Details).filter_by(
-        invoice_id=inv_det.invoice_id).all()
-
-    return [inv_det, goods_det]
-
+    if inv_det:
+        goods_det = db.query(Details).filter_by(invoice_id=inv_det.invoice_id).all()
+        return [inv_det, goods_det]
+    else:
+        return [False, False]
+        
 
 def delete_table_row(table, _id):
     if table == "Invoices":

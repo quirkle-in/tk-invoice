@@ -19,9 +19,9 @@ CAL_CLICKED = 0
 
 
 class InvoiceForm:
-    def __init__(self):
-        self.SETTINGS = None
-        self.get_and_set_settings()
+    def __init__(self, SETTINGS, main_window):
+        self.SETTINGS = SETTINGS
+        self.main_window = main_window
 
         self.window = tk.Tk()
         self.window.configure(background="#f3f3f3")
@@ -313,15 +313,6 @@ class InvoiceForm:
         ''' Window Mainloop '''
         self.window.mainloop()
 
-    def get_and_set_settings(self):
-        path = 'settings.json'
-        with open(path) as f:
-            self.SETTINGS = json.load(f)
-            # print(self.SETTINGS)
-
-    def back_to_home_page(self):
-        self.window.destroy()
-
     def calOpen(self, event):
         datepick.CalWindow(self.dating)
 
@@ -550,3 +541,9 @@ class InvoiceForm:
             print(e)
             self.window.destroy()
             return
+
+    def back_to_home_page(self):
+        self.window.destroy()
+        self.main_window.lift()
+        self.main_window.attributes('-topmost',True)
+        self.main_window.after_idle(self.main_window.attributes,'-topmost', False)

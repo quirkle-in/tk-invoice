@@ -9,15 +9,20 @@ import models
 import json
 
 
-INVOICE_COLUMNS = ["invoice_id", "invoice_no",
-                   "invoice_date", "name", "address", "gst",
-                   "purchase", "account_no", "total_tax_amt",
-                   "total_after_tax"]
+INVOICE_COLUMNS = [
+    "invoice_id", "invoice_no", "invoice_date", "name", "address", "gst",
+    "purchase", "account_no", "total_tax_amt", "total_after_tax"
+]
 
+DETAIL_COLUMNS = [
+    "deet_id", "deet_no", "invoice_id", "name", "batch", "hsn", 
+    "qty", "rate", "mrp", "total", "discount", "taxable_amt"
+]
 
-DETAIL_COLUMNS = ["deet_id", "deet_no", "invoice_id",
-                  "name", "batch", "hsn", "qty", "rate", "mrp", "total",
-                  "discount", "taxable_amt"]
+ENTITY_COLUMNS = [
+    "entity_id", "name", "address", "gstin_uid", "state",
+    "state_code", "bank_name", "a_c_no", "ifc_code"
+]
 
 
 class TableView:
@@ -30,8 +35,7 @@ class TableView:
         self.base_frame.pack(side=tk.BOTTOM, pady=20)
 
         self.canvas = tk.Canvas(self.base_frame, width=920, height=300)
-        self.scrollbar_y = ttk.Scrollbar(self.base_frame,
-                                         orient=tk.VERTICAL, command=self.canvas.yview)
+        self.scrollbar_y = ttk.Scrollbar(self.base_frame, orient=tk.VERTICAL, command=self.canvas.yview)
         self.frame = ttk.Frame(self.canvas)
 
         self.frame.bind(
@@ -48,12 +52,15 @@ class TableView:
         self.scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
 
         if not self.data or self.data == []:
+            ttk.Label(self.frame, text = "No data found").pack(side = tk.TOP, padx = 10, pady = 10)
             return
 
         if filters["table"].get() == "Invoices":
             self.columns = INVOICE_COLUMNS
-        else:
+        elif filters["table"].get() == "Details":
             self.columns = DETAIL_COLUMNS
+        else:
+            self.columns = ENTITY_COLUMNS
 
         col = 0
         for field in self.columns:
@@ -79,7 +86,9 @@ class TableView:
 
 
 class ViewDataPage:
-    def __init__(self):
+    def __init__(self, SETTINGS, main_window):
+        self.SETTINGS = SETTINGS
+        self.main_window = main_window
 
         self.window = tk.Tk()
         self.window.configure(background="#f3f3f3")
@@ -87,9 +96,6 @@ class ViewDataPage:
         self.window.geometry("1200x700")
         self.window.resizable(True, True)
         self.data = None
-
-        with open("settings.json", 'r') as json_file:
-            self.settings = json.load(json_file)
 
         self.DATA_TABLE = None
 
@@ -154,34 +160,28 @@ class ViewDataPage:
             self.delete_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
         self.table_delete.pack(side=tk.LEFT, expand=True,  padx=10, pady=10)
 
-        self.delete_id = tk.IntVar(self.delete_frame)
-        self.entry_delete = ttk.Entry(
-            self.delete_frame, textvariable=self.delete_id)
+        self.delete_id = tk.IntVar(self.delete_frame, value = 1)
+        self.entry_delete = ttk.Entry(self.delete_frame, textvariable=self.delete_id)
         self.entry_delete.pack(side=tk.LEFT, expand=True, padx=10, pady=10)
 
-        self.btn_delete = ttk.Button(
-            self.delete_frame, text="Delete", width=30, command=self.delete_table_row)
+        self.btn_delete = ttk.Button(self.delete_frame, text="Delete", width=30, command=self.delete_table_row)
         self.btn_delete.pack(side=tk.LEFT, expand=True, padx=10, pady=10)
 
         ''' PRINT DATA '''
-        self.print_frame = ttk.Frame(
-            self.bottom_frame, borderwidth=2, relief="groove")
+        self.print_frame = ttk.Frame(self.bottom_frame, borderwidth=2, relief="groove")
         self.print_frame.pack(side=tk.LEFT, padx=20, pady=20)
 
-        ttk.Label(self.print_frame, text="PRINT DATA").pack(
-            side=tk.TOP, expand=True, padx=10, pady=10)
+        ttk.Label(self.print_frame, text="PRINT DATA").pack(side=tk.TOP, expand=True, padx=10, pady=10)
 
         self.print_table = tk.StringVar(self.print_frame)
         self.table_print = ttk.Label(self.print_frame, text='Invoice ID:')
         self.table_print.pack(side=tk.LEFT, expand=True,  padx=10, pady=10)
 
-        self.print_id = tk.IntVar(self.print_frame)
-        self.entry_print = ttk.Entry(
-            self.print_frame, textvariable=self.print_id)
+        self.print_id = tk.IntVar(self.print_frame, value = 1)
+        self.entry_print = ttk.Entry(self.print_frame, textvariable=self.print_id)
         self.entry_print.pack(side=tk.LEFT, expand=True, padx=10, pady=10)
 
-        self.btn_print = ttk.Button(
-            self.print_frame, text="Print", width=30, command=self.print_table_row)
+        self.btn_print = ttk.Button(self.print_frame, text="Print", width=30, command=self.print_table_row)
         self.btn_print.pack(side=tk.LEFT, expand=True, padx=10, pady=10)
 
         self.report_frame = ttk.Frame(
@@ -193,8 +193,7 @@ class ViewDataPage:
 
         ttk.Label(self.report_frame, text="Start Date").pack(
             side=tk.LEFT, expand=True, padx=10, pady=10)
-        self.entry_start_date = ttk.Entry(
-            self.report_frame, textvariable=self.var_start_date)  # date picker
+        self.entry_start_date = ttk.Entry(self.report_frame, textvariable=self.var_start_date)  # date picker
         self.entry_start_date.pack(side=tk.LEFT, expand=True, padx=10, pady=5)
         #self.entry_start_date.insert(0, datetime.now().strftime("%d/%m/%Y"))
         self.entry_start_date.bind("<1>", self.calOpen_start)
@@ -223,16 +222,10 @@ class ViewDataPage:
     def calOpen_end(self, event):
         datepick.CalWindow(self.var_end_date)
 
-    def back_to_home_page(self):
-        ''' confirmation '''
-
-        self.window.destroy()
-
     def generate_purchase_report(self):
         details = models.purchase_report(
             self.var_start_date.get(), self.var_end_date.get())
-        filepath = filedialog.askdirectory(master=self.window,
-                                           initialdir=self.settings["default_save_folder"], title='Select Folder')
+        filepath = filedialog.askdirectory(master=self.window, initialdir=self.SETTINGS["default_save_folder"], title='Select Folder')
         DETAILS = {
             'path': filepath,
             'name': 'PURCHASE REPORT',
@@ -240,7 +233,7 @@ class ViewDataPage:
             "start_date": self.var_start_date.get().replace("/", "-"),
             "end_date": self.var_end_date.get().replace("/", "-")
         }
-        status = purchase_report(DETAILS, self.settings)
+        status = purchase_report(DETAILS, self.SETTINGS)
         if status:
             messagebox.showinfo(title='Status', message='Purchase Report created successfully', master=self.window)
         else:
@@ -248,8 +241,7 @@ class ViewDataPage:
 
     def generate_sales_report(self):
         details = models.sales_report(self.var_start_date.get(), self.var_end_date.get())
-        filepath = filedialog.askdirectory(
-            master=self.window, initialdir=self.settings["default_save_folder"], title='Select Folder')
+        filepath = filedialog.askdirectory(master=self.window, initialdir=self.SETTINGS["default_save_folder"], title='Select Folder')
         DETAILS = {
             'path': filepath,
             'name': 'SALES REPORT',
@@ -257,7 +249,7 @@ class ViewDataPage:
             "start_date": self.var_start_date.get().replace("/", "-"),
             "end_date": self.var_end_date.get().replace("/", "-")
         }
-        status = purchase_report(DETAILS, self.settings)
+        status = purchase_report(DETAILS, self.SETTINGS)
         if status:
             messagebox.showinfo(title='Status', message='Sales Report created successfully', master=self.window)
         else:
@@ -281,15 +273,19 @@ class ViewDataPage:
                       for field in row.__dict__} for row in data]
 
         try:
-            self.DATA_TABLE.base_frame.destroy()
+            if self.DATA_TABLE:
+                self.DATA_TABLE.base_frame.destroy()
         except Exception as e:
             print(e)
         self.DATA_TABLE = TableView(self.window, self.data, self.filters)
 
     def print_table_row(self):
-        _id = self.print_id.get()
+        _id = int(self.print_id.get())
 
         x = models.get_table_row(_id)
+        if not x[0]:
+            messagebox.showerror("Attention", "You need to enter a valid invoice id.", master = self.window)
+            return
 
         single_invoice = {
             "invoice_no":          x[0].invoice_no,
@@ -336,14 +332,14 @@ class ViewDataPage:
         # print('Invoice Dets: ', single_invoice)
         # print('Details in inv: ', details)
 
-        file_path = filedialog.askdirectory(initialdir=self.settings["default_save_folder"], title="Select a folder to export to")
+        file_path = filedialog.askdirectory(initialdir=self.SETTINGS["default_save_folder"], title="Select a folder to export to", master = self.window)
 
-        status = create_invoice_pdf(INVOICE=single_invoice, DETAILS=details, FILEPATH=file_path, SETTINGS= self.settings)
+        status = create_invoice_pdf(INVOICE=single_invoice, DETAILS=details, FILEPATH=file_path, SETTINGS= self.SETTINGS)
 
         if status:
-            messagebox.showinfo(title='Status', message='PDF Generated', master=self.window)
+            messagebox.showinfo(title='Status', message='PDF Generated', master=self.print_frame)
         else:
-            messagebox.showerror(title='Error', message='Couldn\'t generate PDF', master=self.window)
+            messagebox.showerror(title='Error', message='Couldn\'t generate PDF', master=self.print_frame)
 
     def delete_table_row(self):
         table = self.filters["table"].get()
@@ -353,6 +349,12 @@ class ViewDataPage:
 
         x = models.delete_table_row(table, _id)
         if x:
-            return messagebox.showinfo("Success", "Deleted!", master=self.window)
+            return messagebox.showinfo("Success", "Deleted!", master=self.delete_frame)
         else:
-            return messagebox.showerror("Error", "Could not delete", master=self.window)
+            return messagebox.showerror("Error", "Could not delete", master=self.delete_frame)
+
+    def back_to_home_page(self):
+        self.window.destroy()
+        self.main_window.lift()
+        self.main_window.attributes('-topmost',True)
+        self.main_window.after_idle(self.main_window.attributes,'-topmost', False)
