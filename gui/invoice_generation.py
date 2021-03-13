@@ -250,10 +250,10 @@ class InvoiceForm:
         x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="IGST @" + str(self.SETTINGS['igst']) + "%:").pack(
+        ttk.Label(x, text="SGST @" + str(self.SETTINGS['sgst']) + "%:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
-        self.entry_igst = ttk.Entry(x)
-        self.entry_igst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
+        self.entry_sgst = ttk.Entry(x)
+        self.entry_sgst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_right_frame)
@@ -264,11 +264,12 @@ class InvoiceForm:
         x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="SGST @" + str(self.SETTINGS['sgst']) + "%:").pack(
+        ttk.Label(x, text="IGST @" + str(self.SETTINGS['igst']) + "%:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
-        self.entry_sgst = ttk.Entry(x)
-        self.entry_sgst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
+        self.entry_igst = ttk.Entry(x)
+        self.entry_igst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack(anchor = "e")
+
 
         x = ttk.Frame(self.bottom_right_frame)
         ttk.Label(x, text="Total Tax Amount:").pack(
