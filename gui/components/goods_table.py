@@ -21,7 +21,14 @@ class Table:
             command = self.add_new_goods_row,
             width = 20
         )
-        self.btn_add_row.pack(expand = True)
+        self.btn_add_row.pack(expand=True)
+
+        self.btn_add_row = ttk.Button(
+            self.root, text = "Delete Row",
+            command = self.add_new_goods_row,
+            width = 20
+        )
+        self.btn_add_row.pack(expand=True)
 
         self.canvas = tk.Canvas(self.base_frame, width=960, height = 120)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame, #canvas, maybe

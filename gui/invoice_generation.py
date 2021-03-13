@@ -250,21 +250,27 @@ class InvoiceForm:
         x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="SGST @" + str(self.SETTINGS['sgst']) + "%:").pack(
+        self.sgst_var = tk.StringVar(x)
+        self.sgst_var.set("SGST @" + str(self.SETTINGS['sgst']) + '%: ')
+        self.label_sgst = ttk.Label(x, textvariable = self.sgst_var).pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_sgst = ttk.Entry(x)
         self.entry_sgst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="CGST @" + str(self.SETTINGS['cgst']) + "%:").pack(
+        self.cgst_var = tk.StringVar(x)
+        self.cgst_var.set("CGST @" + str(self.SETTINGS['cgst']) + '%: ')
+        self.label_cgst = ttk.Label(x, textvariable=self.cgst_var).pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_cgst = ttk.Entry(x)
         self.entry_cgst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack(anchor = "e")
 
         x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="IGST @" + str(self.SETTINGS['igst']) + "%:").pack(
+        self.igst_var = tk.StringVar(x)
+        self.igst_var.set("IGST @" + str(self.SETTINGS['igst']) + '%: ')
+        self.label_igst = ttk.Label(x, textvariable=self.igst_var).pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_igst = ttk.Entry(x)
         self.entry_igst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
@@ -297,19 +303,24 @@ class InvoiceForm:
 
         self.entry_invoice_date.bind("<1>", self.calOpen)
 
+        ''' Refresh Page '''
+        self.btn_deets_calculate = ttk.Button(
+            self.footer_frame, text='Refresh Page', command=self.onRefresh, width=30)
+        self.btn_deets_calculate.grid(row=1, column=0, padx=10, pady=14)
+
         ''' Calculate Button '''
         self.btn_deets_calculate = ttk.Button(
             self.footer_frame, text='Calculate', command=self.onCalculate, width=30)
-        self.btn_deets_calculate.grid(row=0, column=0, padx=10, pady=14)
+        self.btn_deets_calculate.grid(row=2, column=0, padx=10, pady=14)
 
         ''' Submit Button'''
         self.btn_invoice_submit = ttk.Button(
             self.footer_frame, text="Submit", command=self.onSubmit, width=30)
-        self.btn_invoice_submit.grid(row=1, column=0, padx=10, pady=14)
+        self.btn_invoice_submit.grid(row=3, column=0, padx=10, pady=14)
 
         self.btn_invoice_print = ttk.Button(
             self.footer_frame, text='Print', command=self.onPrint, width=30)
-        self.btn_invoice_print.grid(row=2, column=0, padx=10, pady=14)
+        self.btn_invoice_print.grid(row=4, column=0, padx=10, pady=14)
 
         ''' Window Mainloop '''
         self.window.mainloop()
@@ -410,6 +421,16 @@ class InvoiceForm:
                 print("Details recorded.")
                 messagebox.showinfo(title='Invoice Status', message='Invoice and details have been successfully recorded', master=self.window)
                 return True
+
+    def onRefresh(self):
+        path = 'settings.json'
+        with open(path) as f:
+            self.SETTINGS = json.load(f)
+        self.sgst_var.set("SGST @" + str(self.SETTINGS["sgst"]) + '%: ')
+        self.cgst_var.set("CGST @" + str(self.SETTINGS["cgst"]) + '%: ')
+        self.igst_var.set("IGST @" + str(self.SETTINGS["igst"]) + '%: ')
+
+
 
     def onCalculate(self):
         global CAL_CLICKED
