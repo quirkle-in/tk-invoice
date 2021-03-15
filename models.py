@@ -51,7 +51,7 @@ class Details(Base):
     __tablename__ = "details"
 
     deet_id = Column(Integer, index=True, primary_key=True)
-    deet_no = Column(Integer)
+    Sr_No = Column(Integer)
     invoice_id = Column(Integer, ForeignKey(Invoice.invoice_id))
     hsn = Column(Integer)
     prod = Column(String(100))
@@ -137,7 +137,7 @@ def createDetails(detail_data):
         db.add(det)
         db.commit()
         print('Goods Details inserted')
-        return det.deet_id
+        return det.Sr_No
     except Exception as e:
         print(e)
         db.rollback()

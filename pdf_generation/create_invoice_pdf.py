@@ -7,7 +7,6 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
     NAME = str(SETTINGS["pdf_title"])
     ADDRESS = str(SETTINGS["pdf_address"])
     GST_NO = str(SETTINGS["pdf_gst_no"])
-    
 
     pdf = FPDF('P', 'mm', 'A4')
     FILENAME = "Invoice" + "_" + \
@@ -18,7 +17,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
     pdf.add_page()
 
     pdf.set_font('Arial', 'B', 14.0)
-    pdf.text(x=80, y=15, txt = NAME)
+    pdf.text(x=80, y=15, txt=NAME)
     pdf.ln(2)
 
     pdf.set_font('Arial', '', 10.0)
@@ -92,8 +91,8 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
 
     ''' Table '''
 
-    deets_w = {'deet_no': 5.5, 'name': 20, 'hsn': 10, 'qty': 9.5,
-               'rate': 7, 'mrp': 7, 'total': 10, 'discount': 10, 'taxable_amt': 16}
+    deets_w = {'Sr_No': 5.5, 'hsn': 10, 'prod': 20, 'batch_no': 8, 'mfg': 9, 'qty': 9.5,
+               'rate': 7, 'mrp': 7, 'taxable_amt': 16}
     pdf.ln(30)
     pdf.set_font('Times', 'IB', 9.0)
     for ii in deets_w:

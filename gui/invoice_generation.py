@@ -363,7 +363,7 @@ class InvoiceForm:
                         continue
 
                 ''' continue '''
-                if i['deet_no'] != '':
+                if i['Sr_No'] != '':
                     i['taxable_amt'] = int(i['qty']) * int(i['rate'])
                     total = total + i['taxable_amt']
 
@@ -390,9 +390,9 @@ class InvoiceForm:
             self.entry_sgst.insert(0, round(total * sgst / 100, 2))
 
             self.entry_total_tax_amt.insert(
-                0, round(total * (1 + (cgst + sgst + igst) / 100), 2))
+                0, round(total * ((cgst + sgst + igst) / 100), 2))
             self.entry_total_after_tax_amt.insert(
-                0, round(total * (1 + (cgst + sgst + igst) / 100), 2))
+                0, round(total + (total * ((cgst + sgst + igst)) / 100), 2))
 
             self.entry_rs_in_words.insert("0.0", num2words(
                 self.entry_total_after_tax_amt.get()).title())

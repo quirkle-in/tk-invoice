@@ -11,34 +11,32 @@ class Table:
         self.root = root
         self.total_goods_rows = 0
 
-
         self.base_frame = ttk.Frame(self.root, borderwidth=2, relief="groove")
-        self.base_frame.pack(padx = 10)
+        self.base_frame.pack(padx=10)
 
-        
         self.btn_add_row = ttk.Button(
-            self.root, text = "Add New Row",
-            command = self.add_new_goods_row,
-            width = 20
+            self.root, text="Add New Row",
+            command=self.add_new_goods_row,
+            width=20
         )
         self.btn_add_row.pack(expand=True)
 
         self.btn_add_row = ttk.Button(
-            self.root, text = "Delete Row",
-            command = self.add_new_goods_row,
-            width = 20
+            self.root, text="Delete Row",
+            command=self.add_new_goods_row,
+            width=20
         )
         self.btn_add_row.pack(expand=True)
 
-        self.canvas = tk.Canvas(self.base_frame, width=960, height = 120)
-        self.scrollbar_y = ttk.Scrollbar(self.base_frame, #canvas, maybe
-            orient = "vertical", command = self.canvas.yview)
+        self.canvas = tk.Canvas(self.base_frame, width=960, height=120)
+        self.scrollbar_y = ttk.Scrollbar(self.base_frame,  # canvas, maybe
+                                         orient="vertical", command=self.canvas.yview)
         self.frame = ttk.Frame(self.canvas)
 
         self.frame.bind(
             "<Configure>",
             lambda e: self.canvas.configure(
-                scrollregion = self.canvas.bbox("all")
+                scrollregion=self.canvas.bbox("all")
             )
         )
 
@@ -46,8 +44,7 @@ class Table:
         self.canvas.configure(yscrollcommand=self.scrollbar_y.set)
 
         self.canvas.pack(side="left", fill="both", expand=True)
-        self.scrollbar_y.pack(side="right", fill = "y")
-
+        self.scrollbar_y.pack(side="right", fill="y")
 
         # gets the cols
         self.titles = [column.key for column in Details.__table__.columns]
@@ -59,22 +56,21 @@ class Table:
 
         col = 0
         for field in self.titles:
-            self.i = ttk.Entry(self.frame, width=14, font=('Arial', 8), 
-                justify = tk.CENTER)
+            self.i = ttk.Entry(self.frame, width=14, font=('Arial', 8),
+                               justify=tk.CENTER)
             self.i.insert(tk.END, field.replace("_", " ").upper())
             self.i.configure(state="disabled", foreground="#000000")
             self.i.grid(row=0, column=col)
             col += 1
-        
 
         for _ in range(1):
             self.add_new_goods_row()
-        
-        
+
     def getGoodsDetails(self):
         list_of_entries = []
         for row in self.entries:
-            txn = {}; valid = True
+            txn = {}
+            valid = True
             for field in self.titles:
                 x = row[field].get()
                 if field not in ["total", "taxable_amt"]:
@@ -99,10 +95,10 @@ class Table:
         col = 0
         for field in self.titles:
             en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
-                textvariable=self.entries[self.total_goods_rows][field])
+                           textvariable=self.entries[self.total_goods_rows][field])
             en.grid(row=self.total_goods_rows + 1, column=col)
             col += 1
-        
-        ### default id
-        self.entries[self.total_goods_rows]["deet_no"].set(len(self.entries))
+
+        # default id
+        self.entries[self.total_goods_rows]["Sr_No"].set(len(self.entries))
         self.total_goods_rows += 1
