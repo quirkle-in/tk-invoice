@@ -119,7 +119,7 @@ class InvoiceForm:
 
         x = ttk.Frame(self.top_left_frame)
         ttk.Label(x, text="Invoice Date:").pack(
-            side=tk.LEFT, expand=True, padx=10, pady=5)
+            side=tk.LEFT, expand=True, padx=18, pady=5)
         self.entry_invoice_date = ttk.Entry(
             x, textvariable=self.dating)  # date picker
         self.entry_invoice_date.pack(
@@ -133,10 +133,11 @@ class InvoiceForm:
         self.reverse_frame.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
         self.reverse_true_radio_button = ttk.Radiobutton(
             self.reverse_frame, text="Yes", variable=self.reverse_charge_var, value=True)
-        self.reverse_true_radio_button.pack(side=tk.LEFT, expand=True)
+        self.reverse_true_radio_button.pack(side=tk.LEFT, expand=True, padx=10)
         self.reverse_false_radio_button = ttk.Radiobutton(
             self.reverse_frame, text="No", variable=self.reverse_charge_var, value=False)
-        self.reverse_false_radio_button.pack(side=tk.RIGHT, expand=True)
+        self.reverse_false_radio_button.pack(
+            side=tk.RIGHT, expand=True, padx=10)
         x.pack()
 
         x = ttk.Frame(self.top_left_frame)
@@ -159,7 +160,7 @@ class InvoiceForm:
         x = ttk.Frame(self.top_right_frame)
         ttk.Label(x, text="Name:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
-        self.entry_party_name = ttk.Entry(x, width=32)
+        self.entry_party_name = ttk.Entry(x, width=48)
         self.entry_party_name.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack()
 
@@ -167,7 +168,7 @@ class InvoiceForm:
         ttk.Label(x, text="Address:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_party_address = ScrolledText(
-            x, height=2, width=24, wrap=tk.WORD)  # Address
+            x, height=2, width=48, wrap=tk.WORD)  # Address
         self.entry_party_address.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack()
@@ -175,7 +176,7 @@ class InvoiceForm:
         x = ttk.Frame(self.top_right_frame)
         ttk.Label(x, text="GSTIN Unique ID:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
-        self.entry_party_gstin = ttk.Entry(x, width=32)
+        self.entry_party_gstin = ttk.Entry(x, width=42)
         self.entry_party_gstin.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
         x.pack()
@@ -214,31 +215,32 @@ class InvoiceForm:
         x = ttk.Frame(self.bottom_left_frame)
         ttk.Label(x, text="Rs. in Words:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
-        self.entry_rs_in_words = ttk.Entry(x)
+        self.entry_rs_in_words = ScrolledText(
+            x, height=2, width=48, wrap=tk.WORD)
         self.entry_rs_in_words.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor="e")
 
         x = ttk.Frame(self.bottom_left_frame)
         ttk.Label(x, text="Bank Name:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_bank_name = ttk.Entry(x)
         self.entry_bank_name.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor="e")
 
         x = ttk.Frame(self.bottom_left_frame)
         ttk.Label(x, text="A/c No.:").pack(side=tk.LEFT,
                                            expand=True, padx=10, pady=5)
         self.entry_ac_no = ttk.Entry(x)
         self.entry_ac_no.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor="e")
 
         x = ttk.Frame(self.bottom_left_frame)
         ttk.Label(x, text="IFS Code:").pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_ifsc = ttk.Entry(x)
         self.entry_ifsc.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor="e")
 
         x = ttk.Frame(self.bottom_right_frame)
         ttk.Label(x, text="Total Before Tax:").pack(
@@ -246,28 +248,34 @@ class InvoiceForm:
         self.entry_total_before_tax = ttk.Entry(x)
         self.entry_total_before_tax.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor="e")
 
         x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="IGST @" + str(self.SETTINGS['igst']) + "%:").pack(
-            side=tk.LEFT, expand=True, padx=10, pady=5)
-        self.entry_igst = ttk.Entry(x)
-        self.entry_igst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
-
-        x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="CGST @" + str(self.SETTINGS['cgst']) + "%:").pack(
-            side=tk.LEFT, expand=True, padx=10, pady=5)
-        self.entry_cgst = ttk.Entry(x)
-        self.entry_cgst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
-
-        x = ttk.Frame(self.bottom_right_frame)
-        ttk.Label(x, text="SGST @" + str(self.SETTINGS['sgst']) + "%:").pack(
+        self.sgst_var = tk.StringVar(x)
+        self.sgst_var.set("SGST @" + str(self.SETTINGS['sgst']) + '%: ')
+        self.label_sgst = ttk.Label(x, textvariable=self.sgst_var).pack(
             side=tk.LEFT, expand=True, padx=10, pady=5)
         self.entry_sgst = ttk.Entry(x)
         self.entry_sgst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor="e")
+
+        x = ttk.Frame(self.bottom_right_frame)
+        self.cgst_var = tk.StringVar(x)
+        self.cgst_var.set("CGST @" + str(self.SETTINGS['cgst']) + '%: ')
+        self.label_cgst = ttk.Label(x, textvariable=self.cgst_var).pack(
+            side=tk.LEFT, expand=True, padx=10, pady=5)
+        self.entry_cgst = ttk.Entry(x)
+        self.entry_cgst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
+        x.pack(anchor="e")
+
+        x = ttk.Frame(self.bottom_right_frame)
+        self.igst_var = tk.StringVar(x)
+        self.igst_var.set("IGST @" + str(self.SETTINGS['igst']) + '%: ')
+        self.label_igst = ttk.Label(x, textvariable=self.igst_var).pack(
+            side=tk.LEFT, expand=True, padx=10, pady=5)
+        self.entry_igst = ttk.Entry(x)
+        self.entry_igst.pack(side=tk.RIGHT, expand=True, padx=10, pady=5)
+        x.pack(anchor="e")
 
         x = ttk.Frame(self.bottom_right_frame)
         ttk.Label(x, text="Total Tax Amount:").pack(
@@ -275,7 +283,7 @@ class InvoiceForm:
         self.entry_total_tax_amt = ttk.Entry(x)
         self.entry_total_tax_amt.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor="e")
 
         x = ttk.Frame(self.bottom_right_frame)
         ttk.Label(x, text="Total After Tax Amount:").pack(
@@ -283,7 +291,7 @@ class InvoiceForm:
         self.entry_total_after_tax_amt = ttk.Entry(x)
         self.entry_total_after_tax_amt.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor="e")
 
         x = ttk.Frame(self.bottom_right_frame)
         ttk.Label(x, text="GST on Reverse Charges:").pack(
@@ -291,23 +299,28 @@ class InvoiceForm:
         self.entry_gst_reverse_charge = ttk.Entry(x)
         self.entry_gst_reverse_charge.pack(
             side=tk.RIGHT, expand=True, padx=10, pady=5)
-        x.pack()
+        x.pack(anchor="e")
 
         self.entry_invoice_date.bind("<1>", self.calOpen)
+
+        ''' Refresh Page '''
+        self.btn_deets_calculate = ttk.Button(
+            self.footer_frame, text='Refresh Page', command=self.onRefresh, width=30)
+        self.btn_deets_calculate.grid(row=1, column=0, padx=10, pady=14)
 
         ''' Calculate Button '''
         self.btn_deets_calculate = ttk.Button(
             self.footer_frame, text='Calculate', command=self.onCalculate, width=30)
-        self.btn_deets_calculate.grid(row=0, column=0, padx=10, pady=14)
+        self.btn_deets_calculate.grid(row=2, column=0, padx=10, pady=14)
 
         ''' Submit Button'''
         self.btn_invoice_submit = ttk.Button(
             self.footer_frame, text="Submit", command=self.onSubmit, width=30)
-        self.btn_invoice_submit.grid(row=1, column=0, padx=10, pady=14)
+        self.btn_invoice_submit.grid(row=3, column=0, padx=10, pady=14)
 
         self.btn_invoice_print = ttk.Button(
             self.footer_frame, text='Print', command=self.onPrint, width=30)
-        self.btn_invoice_print.grid(row=2, column=0, padx=10, pady=14)
+        self.btn_invoice_print.grid(row=4, column=0, padx=10, pady=14)
 
         ''' Window Mainloop '''
         self.window.mainloop()
@@ -363,7 +376,7 @@ class InvoiceForm:
                     j = j + 1
 
             ''' clear fields before inserting '''
-            self.entry_rs_in_words.delete(0, END)
+            self.entry_rs_in_words.delete("1.0", END)
             self.entry_total_before_tax.delete(0, END)
             self.entry_cgst.delete(0, END)
             self.entry_igst.delete(0, END)
@@ -381,7 +394,7 @@ class InvoiceForm:
             self.entry_total_after_tax_amt.insert(
                 0, round(total * (1 + (cgst + sgst + igst) / 100), 2))
 
-            self.entry_rs_in_words.insert(0, num2words(
+            self.entry_rs_in_words.insert("0.0", num2words(
                 self.entry_total_after_tax_amt.get()).title())
 
         except Exception as e:
@@ -404,6 +417,14 @@ class InvoiceForm:
                 messagebox.showinfo(
                     title='Invoice Status', message='Invoice and details have been successfully recorded', master=self.window)
                 return True
+
+    def onRefresh(self):
+        path = 'settings.json'
+        with open(path) as f:
+            self.SETTINGS = json.load(f)
+        self.sgst_var.set("SGST @" + str(self.SETTINGS["sgst"]) + '%: ')
+        self.cgst_var.set("CGST @" + str(self.SETTINGS["cgst"]) + '%: ')
+        self.igst_var.set("IGST @" + str(self.SETTINGS["igst"]) + '%: ')
 
     def onCalculate(self):
         global CAL_CLICKED
@@ -445,7 +466,7 @@ class InvoiceForm:
             "party_code":          self.entry_party_code.get(),
 
             "purchase":            self.typeVar.get(),
-            "rupees_in_words":     self.entry_rs_in_words.get(),
+            "rupees_in_words":     self.entry_rs_in_words.get('1.0', 'end-1c'),
             "bank_name":           self.entry_bank_name.get(),
             "account_no":          self.entry_ac_no.get(),
             "ifsc":                 self.entry_ifsc.get(),
@@ -471,15 +492,22 @@ class InvoiceForm:
                 good_deets = self.goods_table.getGoodsDetails()
                 # print(good_deets)
                 filepath = filedialog.askdirectory(
-                    initialdir=self.SETTINGS["default_save_folder"], title="Select a folder to export to")
+                    initialdir=self.SETTINGS["default_save_folder"], title="Select a folder to export to", master=self.window)
+                print(filepath)
 
                 printing = create_invoice_pdf(
                     self.invoice_data, good_deets, filepath, self.SETTINGS)
 
-                messagebox.showinfo(
-                    title='Print Status', message='PDF Generated Successfully', master=self.window)
+                if printing:
+                    messagebox.showinfo(
+                        title='Print Status', message='PDF Generated Successfully', master=self.window)
+                else:
+                    messagebox.showerror(
+                        title='Print Status', message='PDF could not be generated', master=self.window)
                 print("Export to PDF response:", printing)
             else:
+                messagebox.showerror(
+                    title='Print Status', message='PDF could not be generated on invalid fields', master=self.window)
                 return
         else:
             messagebox.showerror(

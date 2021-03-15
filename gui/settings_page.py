@@ -24,10 +24,19 @@ class SettingsPage:
 
         self.window.iconbitmap('favicon.ico')
 
-        ttk.Label(self.window, text = "SETTINGS", font = ("Arial", 10, "bold"))
+        ttk.Label(self.window, text = "SETTINGS", font = ("Arial", 14, "bold")).pack(padx = 10, pady = 10)
 
-        self.base_frame = ttk.Frame(self.window)
-        self.base_frame.pack(side = tk.BOTTOM, padx=20, pady=40)
+        self.header_frame = ttk.Frame(self.window, borderwidth=2, relief="groove")
+        self.header_frame.pack(padx = 10, pady = 10)
+
+        self.btn_save = ttk.Button(self.header_frame, text = "Save & Exit", command = self.save_and_exit)
+        self.btn_save.pack(side = tk.LEFT, padx = 20, pady = 10)
+
+        self.btn_cancel = ttk.Button(self.header_frame, text = "Cancel", command = self.back_to_home)
+        self.btn_cancel.pack(side = tk.RIGHT, padx = 20, pady = 10)
+
+        self.base_frame = ttk.Frame(self.window, borderwidth=2, relief="groove")
+        self.base_frame.pack(padx=20, pady=10)
     
         self.canvas = tk.Canvas(self.base_frame, width=900, height = 600)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame, #canvas, maybe
@@ -55,14 +64,7 @@ class SettingsPage:
             ttk.Label(f, text = setting.replace("_", " ").upper(), font = ("Arial", 10, "bold")).pack(side = tk.LEFT, padx = 10, pady = 30)
             entry = ttk.Entry(f, textvariable = self.setting_variables[setting],  width = 60)
             entry.pack(side = tk.RIGHT, expand = True, padx = 30, pady = 10)
-            f.pack()
-
-
-        self.btn_save = ttk.Button(self.window, text = "Save & Exit", command = self.save_and_exit)
-        self.btn_save.pack(side = tk.LEFT, padx = 20, pady = 10)
-
-        self.btn_cancel = ttk.Button(self.window, text = "Cancel", command = self.back_to_home)
-        self.btn_cancel.pack(side = tk.RIGHT, padx = 20, pady = 10)
+            f.pack(anchor = "e", padx = 10, pady = 5)
 
         self.window.mainloop()
     

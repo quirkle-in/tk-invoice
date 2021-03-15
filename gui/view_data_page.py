@@ -123,7 +123,7 @@ class ViewDataPage:
 
         ''' FILTER FRAME '''
 
-        self.filter_frame = ttk.Frame(self.window)
+        self.filter_frame = ttk.Frame(self.window, borderwidth=2, relief="groove")
         self.filter_frame.pack(padx=20, pady=20)
 
         ttk.Label(self.filter_frame, text="Select Table: ").grid(

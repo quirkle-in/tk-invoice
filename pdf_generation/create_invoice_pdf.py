@@ -11,8 +11,8 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
 
     pdf = FPDF('P', 'mm', 'A4')
     FILENAME = "Invoice" + "_" + \
-        INVOICE['name'] + '_' + str(INVOICE['invoice_no']) + \
-        datetime.now().strftime('%d-%m-%Y_') + ".pdf"
+        INVOICE['name'] + '_id_' + str(INVOICE['invoice_no']) + '_' +\
+        datetime.now().strftime('%d-%m-%Y%H%S') + '_' + ".pdf"
 
     # Add new page. Without this you cannot create the document.
     pdf.add_page()
