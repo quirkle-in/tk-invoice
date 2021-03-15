@@ -12,6 +12,7 @@ SessionLocal = sessionmaker(bind=engine)
 Base = declarative_base()
 db = SessionLocal()
 
+
 class Invoice(Base):
 
     __tablename__ = "invoice"
@@ -44,6 +45,7 @@ class Invoice(Base):
     total_after_tax = Column(Float, default=0.00)
     gst_reverse_charge = Column(String(100))
 
+
 class Details(Base):
 
     __tablename__ = "details"
@@ -51,17 +53,17 @@ class Details(Base):
     deet_id = Column(Integer, index=True, primary_key=True)
     deet_no = Column(Integer)
     invoice_id = Column(Integer, ForeignKey(Invoice.invoice_id))
-    name = Column(String(100))
-    batch = Column(String(100), nullable=False)
     hsn = Column(Integer)
+    prod = Column(String(100))
+    batch_no = Column(String(100), nullable=False)
+    mfg = Column(String(10))
     qty = Column(Integer)
     rate = Column(Float)
     mrp = Column(Float)
-    total = Column(Integer)
-    discount = Column(Float)
     taxable_amt = Column(Float)
 
-    invoice = relationship("Invoice", back_populates = "details")
+    invoice = relationship("Invoice", back_populates="details")
+
 
 class Entity(Base):
 
@@ -80,9 +82,9 @@ class Entity(Base):
 
 Invoice.details = relationship(
     "Details",
-    order_by = Details.deet_id, 
-    back_populates = "invoice",
-    cascade = "all, delete, delete-orphan" 
+    order_by=Details.deet_id,
+    back_populates="invoice",
+    cascade="all, delete, delete-orphan"
 )
 
 ''' INVOICE FUNTIONS '''
@@ -193,18 +195,20 @@ def filtered_view(table, type):
     elif table == "Entities":
         res = db.query(Entity)
 
-    if not res: return []
+    if not res:
+        return []
     return res.all()
 
 
 def get_table_row(_id):
     inv_det = db.query(Invoice).filter_by(invoice_id=_id).first()
     if inv_det:
-        goods_det = db.query(Details).filter_by(invoice_id=inv_det.invoice_id).all()
+        goods_det = db.query(Details).filter_by(
+            invoice_id=inv_det.invoice_id).all()
         return [inv_det, goods_det]
     else:
         return [False, False]
-        
+
 
 def delete_table_row(table, _id):
     if table == "Invoices":

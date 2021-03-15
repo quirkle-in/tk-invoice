@@ -36,7 +36,7 @@ class InvoiceForm:
 
         ''' TK VARIABLES '''
         self.reverse_charge_var = tk.BooleanVar(self.window, value=False)
-        self.typeVar = tk.BooleanVar(self.window, value = True)
+        self.typeVar = tk.BooleanVar(self.window, value=True)
         self.invoice_number_default = tk.IntVar(self.window)
         self.autofill_var = tk.StringVar(self.window)
         ''' DATE PICKER STRING VAR '''
@@ -82,7 +82,6 @@ class InvoiceForm:
             self.bottom_frame, borderwidth=2, relief="groove")
         self.bottom_right_frame.pack(side=tk.LEFT, anchor="n", padx=10)
 
-        
         ''' FOOTER '''
         self.footer_frame = ttk.Frame(
             self.bottom_frame, borderwidth=2, relief="groove")
@@ -352,16 +351,15 @@ class InvoiceForm:
 
                 ''' continue '''
                 if i['deet_no'] != '':
-                    i['total'] = int(i['qty']) * int(i['rate'])
-                    i['taxable_amt'] = int(i['total'] - int(i['discount']))
+                    i['taxable_amt'] = int(i['qty']) * int(i['rate'])
                     total = total + i['taxable_amt']
 
                     # print(self.goods_table.entries[j])
                     # print(self.goods_table.entries[j]['total'].set(i['total']))
-                    self.goods_table.entries[j]['total'].set(i['total'])
+                    # self.goods_table.entries[j]['total'].set(i['total'])
 
                     self.goods_table.entries[j]['taxable_amt'].set(
-                        int(i['total']) - int(i['discount']))
+                        int(i['qty']) * int(i['rate']))
                     j = j + 1
 
             ''' clear fields before inserting '''
@@ -375,15 +373,11 @@ class InvoiceForm:
 
             self.entry_total_before_tax.insert(0, round(total, 2))
             self.entry_cgst.insert(0, round(total * cgst / 100, 2))
-            self.entry_igst.insert(0, round(total * sgst / 100, 2))
-            self.entry_sgst.insert(0, round(total * igst / 100, 2))
+            self.entry_igst.insert(0, round(total * igst / 100, 2))
+            self.entry_sgst.insert(0, round(total * sgst / 100, 2))
 
             self.entry_total_tax_amt.insert(
                 0, round(total * (1 + (cgst + sgst + igst) / 100), 2))
-
-            #print(round(total * (1 + (cgst + sgst + igst) / 100), 2))
-            #print(round(total + (total * cgst / 100) + (total * sgst / 100) + (total * igst / 100), 2))
-
             self.entry_total_after_tax_amt.insert(
                 0, round(total * (1 + (cgst + sgst + igst) / 100), 2))
 
@@ -407,7 +401,8 @@ class InvoiceForm:
             x = self.insertDetails(inv_id)
             if x:
                 print("Details recorded.")
-                messagebox.showinfo(title='Invoice Status', message='Invoice and details have been successfully recorded', master=self.window)
+                messagebox.showinfo(
+                    title='Invoice Status', message='Invoice and details have been successfully recorded', master=self.window)
                 return True
 
     def onCalculate(self):
@@ -423,14 +418,16 @@ class InvoiceForm:
                 self.sendAlert(
                     "Invalid Data! Should not contain any empty fields")
                 return False
-            msg_box = messagebox.askyesno(title='Attention', message="Are you sure, you want to submit? ", master=self.window)
+            msg_box = messagebox.askyesno(
+                title='Attention', message="Are you sure, you want to submit? ", master=self.window)
             if msg_box:
                 res = self.onConfirm()
                 if not res:
                     self.sendAlert("Error while creating.")
 
         else:
-            messagebox.showerror(title='Attention', message='Please click calculate button before submission', master=self.window)
+            messagebox.showerror(
+                title='Attention', message='Please click calculate button before submission', master=self.window)
         self.set_invoice_id()
 
     def collect_field_data(self):
@@ -479,12 +476,14 @@ class InvoiceForm:
                 printing = create_invoice_pdf(
                     self.invoice_data, good_deets, filepath, self.SETTINGS)
 
-                messagebox.showinfo(title='Print Status', message='PDF Generated Successfully', master=self.window)
+                messagebox.showinfo(
+                    title='Print Status', message='PDF Generated Successfully', master=self.window)
                 print("Export to PDF response:", printing)
             else:
                 return
         else:
-            messagebox.showerror(title='Print Status', message='PDF could not be generated before calculation.', master=self.window)
+            messagebox.showerror(
+                title='Print Status', message='PDF could not be generated before calculation.', master=self.window)
 
     def validateData(self):
         goods_details = self.goods_table.getGoodsDetails()
@@ -493,12 +492,14 @@ class InvoiceForm:
         return True
 
     def sendAlert(self, message):
-        messagebox.showerror(title='Error', message=message, master=self.window)
+        messagebox.showerror(
+            title='Error', message=message, master=self.window)
 
     def autofill_entity_fields(self):
         res = models.get_entity_by_name(self.autofill_var.get())
         if res == None:
-            messagebox.showerror(title='Error', message='No saved items were found.', master = self.window)
+            messagebox.showerror(
+                title='Error', message='No saved items were found.', master=self.window)
             return
         x = {field: res.__dict__[field] for field in res.__dict__}
         # print(x)
@@ -545,5 +546,6 @@ class InvoiceForm:
     def back_to_home_page(self):
         self.window.destroy()
         self.main_window.lift()
-        self.main_window.attributes('-topmost',True)
-        self.main_window.after_idle(self.main_window.attributes,'-topmost', False)
+        self.main_window.attributes('-topmost', True)
+        self.main_window.after_idle(
+            self.main_window.attributes, '-topmost', False)
