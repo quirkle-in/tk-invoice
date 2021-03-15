@@ -10,6 +10,7 @@ class Table:
     def __init__(self, root):
         self.root = root
         self.total_goods_rows = 0
+        self.rows = []
 
         self.base_frame = ttk.Frame(self.root, borderwidth=2, relief="groove")
         self.base_frame.pack(padx=10)
@@ -97,6 +98,7 @@ class Table:
             en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
                            textvariable=self.entries[self.total_goods_rows][field])
             en.grid(row=self.total_goods_rows + 1, column=col)
+            self.rows.append(en)
             col += 1
 
         # default id
@@ -104,4 +106,9 @@ class Table:
         self.total_goods_rows += 1
 
     def delete_goods_row(self):
-        pass
+        # can put a limit
+        for i in range(9):
+            self.rows[-1].destroy()
+            self.rows.pop(-1)
+        self.entries.pop(-1)
+        self.total_goods_rows -= 1
