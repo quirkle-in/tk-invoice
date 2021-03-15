@@ -106,7 +106,6 @@ class Table:
         self.total_goods_rows += 1
 
     def delete_goods_row(self):
-        # can put a limit
         for i in range(9):
             self.rows[-1].destroy()
             self.rows.pop(-1)
