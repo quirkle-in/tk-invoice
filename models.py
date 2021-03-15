@@ -259,16 +259,18 @@ def purchase_report(start_date=False, end_date=False):
         detail_data = db.query(Details).filter_by(
             invoice_id=x.invoice_id).all()
         for y in detail_data:
-            details_dict = {'Sr No': s_no,
-                            "Inv ID": x.invoice_id,
-                            'name': y.name,
-                            'hsn': y.hsn,
-                            'qty': y.qty,
-                            'rate': y.rate,
-                            'mrp': y.mrp,
-                            'total': y.total,
-                            'discount': y.discount,
-                            'taxable_amt': y.taxable_amt}
+            details_dict = {
+                'Sr_No': s_no,
+                "Inv ID": x.invoice_id,
+                'prod': y.prod,
+                'hsn': y.hsn,
+                'batch_no': y.batch_no,
+                'mfg_date': y.mfg_date,
+                'qty': y.qty,
+                'size': y.size,
+                'rate': y.rate,
+                'mrp': y.mrp,
+                'taxable_amt': y.taxable_amt}
             details.append(details_dict)
             s_no += 1
     return details
@@ -293,15 +295,16 @@ def sales_report(start_date=False, end_date=False):
             invoice_id=x.invoice_id).all()
         for y in detail_data:
             details_dict = {
-                'Sr No': s_no,
+                'Sr_No': s_no,
                 "Inv ID": x.invoice_id,
-                'name': y.name,
+                'prod': y.prod,
                 'hsn': y.hsn,
+                'batch_no': y.batch_no,
+                'mfg_date': y.mfg_date,
                 'qty': y.qty,
+                'size': y.size,
                 'rate': y.rate,
                 'mrp': y.mrp,
-                'total': y.total,
-                'discount': y.discount,
                 'taxable_amt': y.taxable_amt}
             details.append(details_dict)
             s_no += 1

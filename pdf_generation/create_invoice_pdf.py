@@ -91,7 +91,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
 
     ''' Table '''
 
-    deets_w = {'Sr_No': 5.5, 'hsn': 10, 'prod': 20, 'batch_no': 8, 'mfg': 9, 'qty': 9.5,
+    deets_w = {'Sr_No': 5.5, 'hsn': 8, 'prod': 20, 'batch_no': 8, 'mfg_date': 9, 'qty': 9, 'size': 8,
                'rate': 7, 'mrp': 7, 'taxable_amt': 16}
     pdf.ln(30)
     pdf.set_font('Times', 'IB', 9.0)

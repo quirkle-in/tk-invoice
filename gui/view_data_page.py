@@ -8,14 +8,13 @@ import tkinter as tk
 import models
 import json
 
-
 INVOICE_COLUMNS = [
     "invoice_id", "invoice_no", "invoice_date", "name", "address", "gst",
     "purchase", "account_no", "total_tax_amt", "total_after_tax"
 ]
 
 DETAIL_COLUMNS = [
-    "deet_id", "Sr_No", "invoice_id", "hsn", "prod", "batch_no", "mfg",
+    "deet_id", "Sr_No", "invoice_id", "hsn", "prod", "batch_no", "mfg_date",
     "qty", "rate", "mrp", "taxable_amt"
 ]
 
