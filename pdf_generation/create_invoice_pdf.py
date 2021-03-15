@@ -96,7 +96,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
     pdf.text(x=175, y=88, txt=str(INVOICE["party_code"]))
 
     pdf.ln(24)
-    pdf.cell(190, 6, "", border = "T", fill = None)
+    pdf.cell(190, 6, "", border="T", fill=None)
 
     ''' Table '''
     deets_w = {'Sr_No': 5.5, 'hsn': 8, 'prod': 20, 'batch_no': 8, 'mfg_date': 9, 'qty': 9, 'size': 8,
@@ -104,7 +104,8 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
     pdf.ln(6)
     pdf.set_font('Times', 'IB', 9.0)
     for ii in deets_w:
-        pdf.cell(deets_w[ii] * 2, 6, str(ii).replace("_", " ").title(), border=1, align='C', fill=False)
+        pdf.cell(deets_w[ii] * 2, 6, str(ii).replace("_",
+                                                     " ").title(), border=1, align='C', fill=False)
     pdf.ln(2)
 
     pdf.set_font('Arial', '', 9.0)
@@ -187,7 +188,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
 
     pdf.cell(90, 6, "", border=0, align='C', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
-    
+
     pdf.set_font('Arial', 'B', 9.0)
     pdf.cell(40, 6, 'Total after Tax:', border=1, align='L', fill=False)
     pdf.set_font('Arial', '', 9.0)
@@ -198,7 +199,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
 
     pdf.cell(90, 6, "", border=0, align='C', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
-    
+
     pdf.set_font('Arial', 'B', 9.0)
     pdf.cell(40, 6, 'GST Reverse Charges:', border=1, align='L', fill=False)
     pdf.set_font('Arial', '', 9.0)
