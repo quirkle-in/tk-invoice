@@ -106,7 +106,7 @@ class Table:
         self.total_goods_rows += 1
 
     def delete_goods_row(self):
-        for i in range(9):
+        for i in range(10):
             self.rows[-1].destroy()
             self.rows.pop(-1)
         self.entries.pop(-1)
