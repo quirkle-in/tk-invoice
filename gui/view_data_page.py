@@ -336,15 +336,17 @@ class ViewDataPage:
         details = []
         s_no = 0
         for y in x[1]:
-            details_dict = {'deet_no': s_no,
-                            'name': y.name,
-                            'hsn': y.hsn,
-                            'qty': y.qty,
-                            'rate': y.rate,
-                            'mrp': y.mrp,
-                            'total': y.total,
-                            'discount': y.discount,
-                            'taxable_amt': y.taxable_amt}
+            details_dict = {
+                'Sr_No': s_no,
+                'prod': y.prod,
+                'hsn': y.hsn,
+                'batch_no': y.batch_no,
+                'mfg_date': y.mfg_date,
+                'qty': y.qty,
+                'size': y.size,
+                'rate': y.rate,
+                'mrp': y.mrp,
+                'taxable_amt': y.taxable_amt}
             details.append(details_dict)
             s_no += 1
 
