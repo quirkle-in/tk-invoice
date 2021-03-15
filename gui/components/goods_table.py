@@ -15,19 +15,29 @@ class Table:
         self.base_frame = ttk.Frame(self.root, borderwidth=2, relief="groove")
         self.base_frame.pack(padx=10)
 
-        self.btn_add_row = ttk.Button(
-            self.root, text="Add New Row",
-            command=self.add_new_goods_row,
-            width=20
-        )
-        self.btn_add_row.pack(expand=True)
+        self.button_frame = ttk.Frame(self.base_frame)
+        self.button_frame.pack(padx = 10, pady = 10, side=tk.BOTTOM)
 
-        self.btn_add_row = ttk.Button(
-            self.root, text="Delete Row",
+        self.btn_add_row1 = ttk.Button(
+            self.button_frame, text="Add Row: Madhusheel Plus",
+            command=self.add_new_goods_row_m,
+            width=30
+        )
+        self.btn_add_row1.pack(side=tk.LEFT)
+
+        self.btn_add_row2 = ttk.Button(
+            self.button_frame, text="Add Row: Ashrangi Capsule",
+            command=self.add_new_goods_row_a,
+            width=30
+        )
+        self.btn_add_row2.pack(side=tk.LEFT)
+
+        self.btn_del_row = ttk.Button(
+            self.button_frame, text="Delete Row",
             command=self.delete_goods_row,
             width=20
         )
-        self.btn_add_row.pack(expand=True)
+        self.btn_del_row.pack(side=tk.LEFT) #where's the delete btn put that alososi n thatuat frame
 
         self.canvas = tk.Canvas(self.base_frame, width=960, height=120)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame,  # canvas, maybe
@@ -64,8 +74,8 @@ class Table:
             self.i.grid(row=0, column=col)
             col += 1
 
-        for _ in range(1):
-            self.add_new_goods_row()
+        # for _ in range(1):
+        #     self.add_new_goods_row()
 
     def getGoodsDetails(self):
         list_of_entries = []
@@ -85,8 +95,15 @@ class Table:
             if valid:
                 list_of_entries.append(txn)
         return list_of_entries
+    
+    def add_new_goods_row_m(self):
+        self.add_new_goods_row(prod_type='Madhusheel Plus')
 
-    def add_new_goods_row(self):
+    def add_new_goods_row_a(self):
+        self.add_new_goods_row(prod_type='Ashrangi Capsule')
+    
+
+    def add_new_goods_row(self, prod_type):
         x = {}
         for field in self.titles:
             x[field] = tk.StringVar(self.root)
@@ -95,9 +112,20 @@ class Table:
 
         col = 0
         for field in self.titles:
-            en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
-                           textvariable=self.entries[self.total_goods_rows][field])
-            en.grid(row=self.total_goods_rows + 1, column=col)
+            if field == 'prod' and prod_type == 'Madhusheel Plus':
+                self.entries[self.total_goods_rows][field].set(prod_type)
+                en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
+                            textvariable=self.entries[self.total_goods_rows][field])
+                en.grid(row=self.total_goods_rows + 1, column=col)
+            elif field == 'prod' and prod_type == 'Ashrangi Capsule':
+                self.entries[self.total_goods_rows][field].set(prod_type)
+                en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
+                            textvariable=self.entries[self.total_goods_rows][field])
+                en.grid(row=self.total_goods_rows + 1, column=col)
+            else:
+                en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
+                            textvariable=self.entries[self.total_goods_rows][field])
+                en.grid(row=self.total_goods_rows + 1, column=col)
             self.rows.append(en)
             col += 1
 
