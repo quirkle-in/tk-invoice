@@ -17,7 +17,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
     pdf.add_page()
 
     pdf.set_font('Arial', 'B', 14.0)
-    pdf.text(x=80, y=15, txt=NAME)
+    pdf.cell(200, 6, txt=NAME, align='C', fill=False)
     pdf.ln(2)
 
     pdf.set_font('Arial', '', 10.0)
@@ -33,7 +33,7 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
     pdf.text(x=90, y=43, txt='TAX INVOICE')
 
     pdf.line(10, 48, 200, 48)
-    pdf.line(10, 58, 200, 58)
+    pdf.line(105, 58, 200, 58)
 
     pdf.set_font('Arial', 'B', 9.0)
     pdf.text(x=15, y=64, txt='Invoice Number: ')
@@ -59,7 +59,9 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
     pdf.text(x=75, y=88, txt=str(code))
 
     # Vertical Line
-    pdf.line(105, 48, 105, 93)
+    pdf.line(105, 48, 105, 94)
+    pdf.line(10, 48, 10, 94)
+    pdf.line(200, 48, 200, 94)
 
     ''' Right side bill to party '''
     pdf.set_font('Arial', 'B', 9.0)
@@ -67,37 +69,42 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
 
     pdf.set_font('Arial', 'B', 9.0)
     pdf.text(x=115, y=64, txt='Name: ')
+    pdf.set_font('Arial', '', 9.0)
     pdf.text(x=130, y=64, txt=str(INVOICE["name"]))
 
     pdf.set_font('Arial', 'B', 9.0)
     pdf.text(x=115, y=70, txt='Address:')  # Address
-
     pdf.ln(56)
     pdf.cell(120, 6, "")
+    pdf.set_font('Arial', '', 9.0)
     pdf.multi_cell(w=70, h=2, txt=str(INVOICE['address']),
                    align="L", fill=False, border=0)
+
     pdf.set_font('Arial', 'B', 9.0)
     pdf.text(x=115, y=82, txt='GSTIN No: ')
+    pdf.set_font('Arial', '', 9.0)
     pdf.text(x=160, y=82, txt=str(INVOICE["gst"]))
 
     pdf.set_font('Arial', 'B', 9.0)
-    state = 'Goa'
     pdf.text(x=115, y=88, txt='State: ')
+    pdf.set_font('Arial', '', 9.0)
     pdf.text(x=130, y=88, txt=str(INVOICE["party_state"]))
 
     pdf.set_font('Arial', 'B', 9.0)
     pdf.text(x=160, y=88, txt='Code: ')
+    pdf.set_font('Arial', '', 9.0)
     pdf.text(x=175, y=88, txt=str(INVOICE["party_code"]))
 
-    ''' Table '''
+    pdf.ln(24)
+    pdf.cell(190, 6, "", border = "T", fill = None)
 
+    ''' Table '''
     deets_w = {'Sr_No': 5.5, 'hsn': 8, 'prod': 20, 'batch_no': 8, 'mfg_date': 9, 'qty': 9, 'size': 8,
-               'rate': 7, 'mrp': 7, 'taxable_amt': 16}
-    pdf.ln(30)
+               'rate': 7, 'mrp': 7, 'taxable_amt': 14}
+    pdf.ln(6)
     pdf.set_font('Times', 'IB', 9.0)
     for ii in deets_w:
-        pdf.cell(deets_w[ii] * 2, 6, str(ii).replace("_",
-                                                     " ").title(), border=1, align='C', fill=False)
+        pdf.cell(deets_w[ii] * 2, 6, str(ii).replace("_", " ").title(), border=1, align='C', fill=False)
     pdf.ln(2)
 
     pdf.set_font('Arial', '', 9.0)
@@ -110,8 +117,8 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
 
     pdf.ln(10)
 
-    pdf.set_font('Times', 'IB', 9.0)
-    pdf.multi_cell(90, 6, 'Rs. in words: ' +
+    pdf.set_font('Times', 'B', 9.0)
+    pdf.multi_cell(90, 6, 'Total Rs. in Words: ' +
                    str(INVOICE["rupees_in_words"]), border=0, align='L', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
 
@@ -121,48 +128,58 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
     pdf.cell(90, 6, 'AYURVEDIC PROP. MEDICINE',
              border="BT", align='C', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
+    pdf.set_font('Arial', 'B', 9.0)
     pdf.cell(40, 6, 'Total before Tax:', border=1, align='L', fill=False)
+    pdf.set_font('Arial', '', 9.0)
     pdf.cell(40, 6, str(INVOICE["total_before_tax"]),
              border=1, align='C', fill=False)
 
     pdf.ln(6)
 
+    pdf.set_font('Arial', 'B', 9.0)
     pdf.cell(90, 6, "Bank Name: " +
              str(INVOICE["bank_name"]), border=0, align='L', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
+    pdf.set_font('Arial', 'B', 9.0)
     pdf.cell(40, 6, 'CGST', border=1, align='L', fill=False)
+    pdf.set_font('Arial', '', 9.0)
     pdf.cell(40, 6, str(INVOICE["total_cgst"]),
              border=1, align='C', fill=False)
 
     pdf.ln(6)
 
+    pdf.set_font('Arial', 'B', 9.0)
     pdf.cell(90, 6, "Account No.:: " +
              str(INVOICE["account_no"]), border=0, align='L', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
+    pdf.set_font('Arial', 'B', 9.0)
     pdf.cell(40, 6, 'SGST', border=1, align='L', fill=False)
+    pdf.set_font('Arial', '', 9.0)
     pdf.cell(40, 6, str(INVOICE["total_sgst"]),
              border=1, align='C', fill=False)
 
     pdf.ln(6)
 
+    pdf.set_font('Arial', 'B', 9.0)
     pdf.cell(90, 6, "IFSC Code:" +
              str(INVOICE["ifsc"]), border=0, align='L', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
+    pdf.set_font('Arial', 'B', 9.0)
     pdf.cell(40, 6, 'IGST', border=1, align='L', fill=False)
+    pdf.set_font('Arial', '', 9.0)
     pdf.cell(40, 6, str(INVOICE["total_igst"]),
              border=1, align='C', fill=False)
 
     pdf.ln(6)
 
     pdf.set_font('Times', 'IB', 9.0)
-
     pdf.cell(90, 6, "Goods once sold cannot be returned or replaced",
              border="T", align='C', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
 
-    pdf.set_font('Arial', '', 9.0)
-
+    pdf.set_font('Arial', 'B', 9.0)
     pdf.cell(40, 6, 'Total Tax Amount:', border=1, align='L', fill=False)
+    pdf.set_font('Arial', '', 9.0)
     pdf.cell(40, 6, str(INVOICE["total_tax_amt"]),
              border=1, align='C', fill=False)
 
@@ -170,7 +187,10 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
 
     pdf.cell(90, 6, "", border=0, align='C', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
+    
+    pdf.set_font('Arial', 'B', 9.0)
     pdf.cell(40, 6, 'Total after Tax:', border=1, align='L', fill=False)
+    pdf.set_font('Arial', '', 9.0)
     pdf.cell(40, 6, str(INVOICE["total_after_tax"]),
              border=1, align='C', fill=False)
 
@@ -178,7 +198,10 @@ def create_invoice_pdf(INVOICE, DETAILS, FILEPATH, SETTINGS):
 
     pdf.cell(90, 6, "", border=0, align='C', fill=False)
     pdf.cell(20, 6, '', border=0, align='L', fill=False)
+    
+    pdf.set_font('Arial', 'B', 9.0)
     pdf.cell(40, 6, 'GST Reverse Charges:', border=1, align='L', fill=False)
+    pdf.set_font('Arial', '', 9.0)
     pdf.cell(40, 6, str(INVOICE["gst_reverse_charge"]),
              border=1, align='C', fill=False)
 

@@ -396,6 +396,7 @@ class InvoiceForm:
 
             words = num2words(self.entry_total_after_tax_amt.get())
             words = words.replace("point", "rupees and") + " paise only."
+            words = words.title()
             self.entry_rs_in_words.insert("0.0", words)
 
         except Exception as e:
