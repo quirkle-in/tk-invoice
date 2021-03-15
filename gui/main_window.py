@@ -5,6 +5,7 @@ from gui.view_data_page import ViewDataPage
 from gui.settings_page import SettingsPage
 from ttkthemes import ThemedStyle
 import tkinter as tk
+from tkinter import ttk
 import json
 
 
@@ -18,27 +19,47 @@ class MainWindow:
         
         self.SETTINGS = None
 
+        self.window.configure(bg='#e2e2e2')
+
         style = ThemedStyle(self.window)
         style.set_theme("breeze")
   
         self.window.iconbitmap('favicon.ico')
 
-        self.btn_create_invoice = TkinterCustomButton(text="Create Invoice", command = self.create_invoice_page, width = 200, 
-                                    corner_radius=15, hover_color = '#960020', fg_color='#f72c58', text_font=('Avenir',13))
+        # self.btn_create_invoice = TkinterCustomButton(text="Create Invoice", command = self.create_invoice_page, width = 200, 
+        #                             corner_radius=15, hover_color = '#960020', fg_color='#f72c58', text_font=('Avenir',13))
+        # self.btn_create_invoice.pack(expand=True)
+
+        # self.btn_add_entity = TkinterCustomButton(text="Add Entity", command = self.add_entity_page, width = 200, 
+        #                             corner_radius=15, hover_color = '#cc7a10', fg_color = "#ccab28", text_font=('Avenir',13))
+        
+        # self.btn_add_entity.pack(expand=True)
+
+        # self.btn_view_invoices = TkinterCustomButton(text="View & Export Data", command = self.view_invoice_page, width = 200, 
+        #                             corner_radius=15, hover_color = '#4f86ff', fg_color='#6399ff', text_font=('Avenir',13))
+        # self.btn_view_invoices.pack(expand=True)
+
+
+        # self.btn_settings = TkinterCustomButton(text="Settings", command = self.settings_page, width = 200, 
+        #                             corner_radius=15, hover_color = '#005e50', fg_color='#00966e', text_font=('Avenir',13))
+        # self.btn_settings.pack(expand=True)
+
+        self.btn_create_invoice = ttk.Button(text="Create Invoice", command = self.create_invoice_page, width = 30, 
+                                    )
         self.btn_create_invoice.pack(expand=True)
 
-        self.btn_add_entity = TkinterCustomButton(text="Add Entity", command = self.add_entity_page, width = 200, 
-                                    corner_radius=15, hover_color = '#cc7a10', fg_color = "#ccab28", text_font=('Avenir',13))
+        self.btn_add_entity = ttk.Button(text="Add Entity", command = self.add_entity_page, width = 30, 
+                                    )
         
         self.btn_add_entity.pack(expand=True)
 
-        self.btn_view_invoices = TkinterCustomButton(text="View & Export Data", command = self.view_invoice_page, width = 200, 
-                                    corner_radius=15, hover_color = '#4f86ff', fg_color='#6399ff', text_font=('Avenir',13))
+        self.btn_view_invoices = ttk.Button(text="View & Export Data", command = self.view_invoice_page, width = 30, 
+                                  )
         self.btn_view_invoices.pack(expand=True)
 
 
-        self.btn_settings = TkinterCustomButton(text="Settings", command = self.settings_page, width = 200, 
-                                    corner_radius=15, hover_color = '#005e50', fg_color='#00966e', text_font=('Avenir',13))
+        self.btn_settings = ttk.Button(text="Settings", command = self.settings_page, width = 30, 
+                                    )
         self.btn_settings.pack(expand=True)
   
         self.window.lift()
