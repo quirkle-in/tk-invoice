@@ -364,7 +364,7 @@ class InvoiceForm:
 
                 ''' continue '''
                 if i['Sr_No'] != '':
-                    i['taxable_amt'] = int(i['qty']) * int(i['rate'])
+                    i['taxable_amt'] = float(i['qty']) * float(i['rate'])
                     total = total + i['taxable_amt']
 
                     # print(self.goods_table.entries[j])
@@ -372,7 +372,7 @@ class InvoiceForm:
                     # self.goods_table.entries[j]['total'].set(i['total'])
 
                     self.goods_table.entries[j]['taxable_amt'].set(
-                        int(i['qty']) * int(i['rate']))
+                        float(i['qty']) * float(i['rate']))
                     j = j + 1
 
             ''' clear fields before inserting '''
