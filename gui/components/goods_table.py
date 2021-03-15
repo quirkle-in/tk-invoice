@@ -23,7 +23,7 @@ class Table:
 
         self.btn_add_row = ttk.Button(
             self.root, text="Delete Row",
-            command=self.add_new_goods_row,
+            command=self.delete_goods_row,
             width=20
         )
         self.btn_add_row.pack(expand=True)
@@ -102,3 +102,6 @@ class Table:
         # default id
         self.entries[self.total_goods_rows]["Sr_No"].set(len(self.entries))
         self.total_goods_rows += 1
+
+    def delete_goods_row(self):
+        pass
