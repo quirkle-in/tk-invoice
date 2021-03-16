@@ -71,7 +71,10 @@ class SettingsPage:
     
     def on_closing(self):
         if messagebox.askokcancel("Quit", "Do you want to quit?", master=self.window):
-            self.main_window.destroy()
+            try:
+                self.main_window.destroy()
+            except:
+                pass
             self.window.destroy()
 
     def save_settings(self):
@@ -101,8 +104,6 @@ class SettingsPage:
 
     def back_to_home(self):
         self.window.destroy()
-        self.main_window.update()
-        self.main_window.deiconify()
 
 
 def save_setting(setting, value):

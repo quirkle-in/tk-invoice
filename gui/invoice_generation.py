@@ -328,7 +328,10 @@ class InvoiceForm:
     
     def on_closing(self):
         if messagebox.askokcancel("Quit", "Do you want to quit?", master=self.window):
-            self.main_window.destroy()
+            try:
+                self.main_window.destroy()
+            except:
+                pass
             self.window.destroy()
     
     def calOpen(self, event):
@@ -584,6 +587,4 @@ class InvoiceForm:
 
     def back_to_home_page(self):
         self.window.destroy()
-        self.main_window.update()
-        self.main_window.deiconify()
         
