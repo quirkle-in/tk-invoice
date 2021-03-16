@@ -3,10 +3,9 @@ from pdf_generation.purchase_sale_view import purchase_report
 from tkinter import messagebox, ttk, filedialog
 from gui.components import datepick
 from ttkthemes import ThemedStyle
-from datetime import datetime
 import tkinter as tk
 import models
-import json
+
 
 INVOICE_COLUMNS = [
     "invoice_id", "invoice_no", "invoice_date", "name", "address", "gst",
@@ -224,7 +223,14 @@ class ViewDataPage:
             self.report_frame, text="Generate Sales Report", width=30, command=self.generate_sales_report)
         self.btn_sales_report.pack(side=tk.LEFT, padx=10, pady=10)
 
+        self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
+        
         self.window.mainloop()
+    
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to quit?", master=self.window):
+            self.main_window.destroy()
+            self.window.destroy()
 
     def calOpen_start(self, event):
         datepick.CalWindow(self.var_start_date)
@@ -378,9 +384,8 @@ class ViewDataPage:
         else:
             return messagebox.showerror("Error", "Could not delete", master=self.delete_frame)
 
+
     def back_to_home_page(self):
-        self.window.destroy()
-        self.main_window.lift()
-        self.main_window.attributes('-topmost', True)
-        self.main_window.after_idle(
-            self.main_window.attributes, '-topmost', False)
+        self.main_window.update()
+        self.main_window.deiconify()
+    

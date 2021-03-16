@@ -28,13 +28,13 @@ class AddEntityPage:
         self.titles.remove('entity_id')
 
         self.header_frame = ttk.Frame(self.window)
-        self.header_frame.pack(side = tk.TOP, expand = True)
+        self.header_frame.pack(padx=10, pady=10, expand = True)
 
-        ttk.Label(self.header_frame, text="ADD ENTITY", font = ("Arial", 14, "bold")).pack(side = tk.TOP, expand = True, padx = 15)
+        ttk.Label(self.header_frame, text="ADD ENTITY", font = ("Arial", 14, "bold")).pack(padx = 10, pady=5)
         ttk.Button(self.header_frame, text = "Back", command = self.back_to_home).pack(padx = 10, pady = 5)
         
         self.base_frame = ttk.Frame(self.window)
-        self.base_frame.pack(anchor="n")
+        self.base_frame.pack(anchor="n", expand = True)
 
         for field in self.titles:
             self.data[field] = tk.StringVar(self.window)
@@ -43,12 +43,18 @@ class AddEntityPage:
             ttk.Label(f, text = field.replace("_", " ").upper()).pack(side = tk.LEFT, padx = 10, pady = 5)
             en = ttk.Entry(f, width = 30, textvariable = self.data[field])
             en.pack(side = tk.RIGHT, padx = 10, pady = 5)
-            f.pack(anchor="e")
+            f.pack(anchor="e", expand = True)
 
-        ttk.Button(self.window, text = "Add Entity", command = self.add_entity, width = 30).pack(expand = True, pady = 10)
+        ttk.Button(self.window, text = "Add Entity", command = self.add_entity, width = 30).pack(pady = 5, expand = True)
 
+        self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
+        
         self.window.mainloop()
 
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to quit?", master=self.window):
+            self.main_window.destroy()
+            self.window.destroy()
 
     def add_entity(self):
         data = {}
@@ -70,6 +76,5 @@ class AddEntityPage:
 
     def back_to_home(self):
         self.window.destroy()
-        self.main_window.lift()
-        self.main_window.attributes('-topmost',True)
-        self.main_window.after_idle(self.main_window.attributes,'-topmost', False)
+        self.main_window.update()
+        self.main_window.deiconify()

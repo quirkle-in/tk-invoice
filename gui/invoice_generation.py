@@ -322,9 +322,15 @@ class InvoiceForm:
             self.footer_frame, text='Print', command=self.onPrint, width=30)
         self.btn_invoice_print.grid(row=4, column=0, padx=10, pady=14)
 
-        ''' Window Mainloop '''
+        self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
+        
         self.window.mainloop()
-
+    
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to quit?", master=self.window):
+            self.main_window.destroy()
+            self.window.destroy()
+    
     def calOpen(self, event):
         datepick.CalWindow(self.dating)
 
@@ -573,12 +579,11 @@ class InvoiceForm:
                 self.invoice_number_default.set(x)
         except Exception as e:
             print(e)
-            self.window.destroy()
+            self.back_to_home()
             return
 
     def back_to_home_page(self):
         self.window.destroy()
-        self.main_window.lift()
-        self.main_window.attributes('-topmost', True)
-        self.main_window.after_idle(
-            self.main_window.attributes, '-topmost', False)
+        self.main_window.update()
+        self.main_window.deiconify()
+        

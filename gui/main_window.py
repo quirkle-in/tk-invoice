@@ -1,18 +1,18 @@
-from gui.components.tkinter_custom_button import TkinterCustomButton
 from gui.invoice_generation import InvoiceForm
 from gui.add_entity_page import AddEntityPage
 from gui.view_data_page import ViewDataPage
 from gui.settings_page import SettingsPage
 from ttkthemes import ThemedStyle
-import tkinter as tk
+from tkinter import messagebox
 from tkinter import ttk
+import tkinter as tk
 import json
 
 
 class MainWindow:
     def __init__(self):
         self.window = tk.Tk()
-        self.window["background"]="red"
+        self.window["background"]="#f3f3f3"
         self.window.title("Home")
         self.window.geometry("1200x700")
         self.window.resizable(True, True)
@@ -64,26 +64,35 @@ class MainWindow:
         self.window.attributes('-topmost',True)
         self.window.after_idle(self.window.attributes,'-topmost', False)
 
+        self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
+        
         self.window.mainloop()
-
+    
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to quit?", master=self.window):
+            self.window.destroy()
 
     def create_invoice_page(self):
         self.get_and_set_settings()
+        self.window.withdraw()
         InvoiceForm(self.SETTINGS, self.window)
 
     
     def view_invoice_page(self):
         self.get_and_set_settings()
+        self.window.withdraw()
         ViewDataPage(self.SETTINGS, self.window)
 
 
     def add_entity_page(self):
         self.get_and_set_settings()
+        self.window.withdraw()
         AddEntityPage(self.SETTINGS, self.window)
     
 
     def settings_page(self):
         self.get_and_set_settings()
+        self.window.withdraw()
         SettingsPage(self.SETTINGS, self.window)
 
 

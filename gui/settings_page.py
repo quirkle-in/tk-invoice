@@ -2,7 +2,6 @@ from tkinter import ttk, messagebox
 from ttkthemes import ThemedStyle
 import tkinter as tk
 import json
-import os
 
 
 file_path = "settings.json"
@@ -66,8 +65,14 @@ class SettingsPage:
             entry.pack(side = tk.RIGHT, expand = True, padx = 30, pady = 10)
             f.pack(anchor = "e", padx = 10, pady = 5)
 
+        self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
+        
         self.window.mainloop()
     
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to quit?", master=self.window):
+            self.main_window.destroy()
+            self.window.destroy()
 
     def save_settings(self):
         for setting in self.SETTINGS:
@@ -96,9 +101,8 @@ class SettingsPage:
 
     def back_to_home(self):
         self.window.destroy()
-        self.main_window.lift()
-        self.main_window.attributes('-topmost',True)
-        self.main_window.after_idle(self.main_window.attributes,'-topmost', False)
+        self.main_window.update()
+        self.main_window.deiconify()
 
 
 def save_setting(setting, value):
@@ -111,3 +115,5 @@ def save_setting(setting, value):
     except Exception as e:
         print(e)
         return False
+    
+    
