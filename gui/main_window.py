@@ -29,7 +29,7 @@ class MainWindow:
         self.window.iconbitmap('favicon.ico')
 
         ttk.Label(self.window, text=self.SETTINGS["pdf_title"], font=("Arial", 30, "bold")).pack(padx=60, expand=True)
-        ttk.Label(self.window, text="Invoice Manager", font=("Arial", 24)).pack(padx=60)
+        ttk.Label(self.window, text="Invoice Manager", font=("Arial", 24)).pack(padx=60, pady=20)
 
         # self.btn_create_invoice = TkinterCustomButton(text="Create Invoice", command = self.create_invoice_page, width = 200, 
         #                             corner_radius=15, hover_color = '#960020', fg_color='#f72c58', text_font=('Avenir',13))
@@ -50,16 +50,19 @@ class MainWindow:
         # self.btn_settings.pack(expand=True)
 
         self.btn_create_invoice = ttk.Button(text="Create Invoice", command = self.create_invoice_page, width=60)
-        self.btn_create_invoice.pack(expand=True, padx=60)
+        self.btn_create_invoice.pack(padx=60, pady=20)
 
         self.btn_add_entity = ttk.Button(text="Add Entity", command = self.add_entity_page, width=60)
-        self.btn_add_entity.pack(expand=True, padx=60)
+        self.btn_add_entity.pack(padx=60, pady=20)
 
         self.btn_view_invoices = ttk.Button(text="View & Export Data", command = self.view_invoice_page, width=60)
-        self.btn_view_invoices.pack(expand=True, padx=60)
+        self.btn_view_invoices.pack(padx=60, pady=20)
 
         self.btn_settings = ttk.Button(text="Settings", command = self.settings_page, width=60)
-        self.btn_settings.pack(expand=True, padx=60)
+        self.btn_settings.pack(padx=60, pady=20)
+
+        self.btn_exit = ttk.Button(text="Exit", command = self.on_closing, width=60)
+        self.btn_exit.pack(padx=60, expand = True)
   
         self.window.lift()
         self.window.attributes('-topmost',True)
