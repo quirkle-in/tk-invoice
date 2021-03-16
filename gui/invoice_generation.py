@@ -406,7 +406,7 @@ class InvoiceForm:
             words_before_point = num2words(self.entry_total_after_tax_amt.get()[
                 :self.entry_total_after_tax_amt.get().index('.')])
             words_after_point = num2words(self.entry_total_after_tax_amt.get()[
-                self.entry_total_after_tax_amt.get().index('.') + 1:])
+                self.entry_total_after_tax_amt.get().index('.') + 1:]).replace("and ", "")
             words = (words_before_point + ' rupees and ' +
                      words_after_point + ' paise only.').title()
             self.entry_rs_in_words.insert("0.0", words)
@@ -587,4 +587,5 @@ class InvoiceForm:
 
     def back_to_home_page(self):
         self.window.destroy()
+
         
