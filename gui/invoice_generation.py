@@ -394,9 +394,12 @@ class InvoiceForm:
             self.entry_total_after_tax_amt.insert(
                 0, round(total + (total * ((cgst + sgst + igst)) / 100), 2))
 
-            words = num2words(self.entry_total_after_tax_amt.get())
-            words = words.replace("point", "rupees and") + " paise only."
-            words = words.title()
+            words_before_point = num2words(self.entry_total_after_tax_amt.get()[
+                :self.entry_total_after_tax_amt.get().index('.')])
+            words_after_point = num2words(self.entry_total_after_tax_amt.get()[
+                self.entry_total_after_tax_amt.get().index('.') + 1:])
+            words = (words_before_point + ' ruppees and ' +
+                     words_after_point + ' paise only/-').title()
             self.entry_rs_in_words.insert("0.0", words)
 
         except Exception as e:
