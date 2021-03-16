@@ -74,25 +74,21 @@ class MainWindow:
 
     def create_invoice_page(self):
         self.get_and_set_settings()
-        self.window.withdraw()
         InvoiceForm(self.SETTINGS, self.window)
 
     
     def view_invoice_page(self):
         self.get_and_set_settings()
-        self.window.withdraw()
         ViewDataPage(self.SETTINGS, self.window)
 
 
     def add_entity_page(self):
         self.get_and_set_settings()
-        self.window.withdraw()
         AddEntityPage(self.SETTINGS, self.window)
     
 
     def settings_page(self):
         self.get_and_set_settings()
-        self.window.withdraw()
         SettingsPage(self.SETTINGS, self.window)
 
 
