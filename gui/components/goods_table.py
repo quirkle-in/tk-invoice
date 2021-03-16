@@ -1,9 +1,10 @@
-from sys import maxsize
 from sqlalchemy.ext.declarative import base
+from gui.components import datepick
 from models import Details
 from tkinter import ttk
 import tkinter as tk
 
+selected_row = None
 
 class Table:
 
@@ -112,20 +113,13 @@ class Table:
 
         col = 0
         for field in self.titles:
-            if field == 'prod' and prod_type == 'Madhusheel Plus':
+            if field == 'prod':
                 self.entries[self.total_goods_rows][field].set(prod_type)
-                en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
-                            textvariable=self.entries[self.total_goods_rows][field])
-                en.grid(row=self.total_goods_rows + 1, column=col)
-            elif field == 'prod' and prod_type == 'Ashrangi Capsule':
-                self.entries[self.total_goods_rows][field].set(prod_type)
-                en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
-                            textvariable=self.entries[self.total_goods_rows][field])
-                en.grid(row=self.total_goods_rows + 1, column=col)
-            else:
-                en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
-                            textvariable=self.entries[self.total_goods_rows][field])
-                en.grid(row=self.total_goods_rows + 1, column=col)
+            en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
+                        textvariable=self.entries[self.total_goods_rows][field])
+            en.grid(row=self.total_goods_rows + 1, column=col)
+            if field == "mfg_date":
+                en.bind("<1>", lambda x : self.select_mfg_date(self.entries[self.total_goods_rows - 1][field]))
             self.rows.append(en)
             col += 1
 
@@ -140,3 +134,6 @@ class Table:
                 self.rows.pop(-1)
             self.entries.pop(-1)
             self.total_goods_rows -= 1
+
+    def select_mfg_date(self, x):
+        datepick.CalWindow(x)
