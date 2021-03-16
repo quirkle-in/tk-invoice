@@ -32,7 +32,7 @@ class TableView:
         self.base_frame = ttk.Frame(self.root)
         self.base_frame.pack(side=tk.BOTTOM, pady=20)
 
-        self.canvas = tk.Canvas(self.base_frame, width=920, height=300)
+        self.canvas = tk.Canvas(self.base_frame, width=980, height=300)
         self.scrollbar_y = ttk.Scrollbar(
             self.base_frame, orient=tk.VERTICAL, command=self.canvas.yview)
         self.frame = ttk.Frame(self.canvas)
@@ -65,7 +65,7 @@ class TableView:
         col = 0
         for field in self.columns:
             i = tk.Text(self.frame, width=12, height=2,
-                        font=('Arial', 8, "bold"), wrap=tk.WORD)
+                        font=('Arial', 9, "bold"), wrap=tk.WORD)
             i.tag_configure('tag-center', justify='center')
             i.insert(tk.END, field.replace("_", " ").upper(), 'tag-center')
             i.configure(state="disabled")
@@ -78,7 +78,7 @@ class TableView:
             col = 0
             for field in self.columns:
                 en = tk.Text(self.frame, width=12, height=2,
-                             font=('Arial', 8), wrap=tk.WORD)
+                             font=('Arial', 9), wrap=tk.WORD)
                 en.insert(tk.END, str(x[field]))
                 en.configure(state="disabled")
                 en.grid(row=row + 1, column=col)
@@ -113,7 +113,7 @@ class ViewDataPage:
         self.header_frame.pack(side=tk.TOP, padx=10, pady=10)
 
         self.title = ttk.Label(
-            self.header_frame, text="VIEW & EXPORT", font=("Arial", 14, "bold"))
+            self.header_frame, text="VIEW & EXPORT DATA", font=("Arial", 14, "bold"))
         self.title.pack(side=tk.TOP, padx=300, pady=20)
 
         self.back_to_home = ttk.Button(
@@ -132,19 +132,19 @@ class ViewDataPage:
             row=0, column=0, padx=20)
         self.filter_table = ttk.OptionMenu(
             self.filter_frame, self.filters["table"], "None Selected", "None Selected", "Details", "Invoices", "Entities")
-        self.filter_table.grid(row=0, column=1)
+        self.filter_table.grid(row=0, column=1, padx=10, pady=10)
 
         ttk.Label(self.filter_frame, text="Type: ").grid(
             row=0, column=2, padx=20)
         self.filter_type = ttk.OptionMenu(
             self.filter_frame, self.filters["type"], "All", "Purchases", "Sales", "All")
-        self.filter_type.grid(row=0, column=3)
+        self.filter_type.grid(row=0, column=3, padx=10, pady=10)
 
         self.btn_execute = ttk.Button(
             self.filter_frame, text="Get Data / Refresh",
             command=self.get_view
         )
-        self.btn_execute.grid(row=0, column=4, padx=20)
+        self.btn_execute.grid(row=0, column=4, padx=20, pady=10)
 
         self.bottom_frame = ttk.Frame(
             self.window, borderwidth=2, relief="groove")

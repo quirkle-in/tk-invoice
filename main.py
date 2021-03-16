@@ -7,9 +7,9 @@ default_settings = {
                     "pdf_title": "Rajeshree Marketing",
                     "pdf_address": "1/16, Vijay Nagar, Bandrekarwadi, Jogeshwari (East), Mumbai 400060.",
                     "pdf_gst_no": "27AKEPB0058K1ZE",
-                    "sgst": "6",
-                    "cgst": "7",
-                    "igst": "8",
+                    "sgst": "12",
+                    "cgst": "6",
+                    "igst": "6",
                     "state": "Maharashtra",
                     "default_save_folder": os.path.join(os.environ["HOMEPATH"], "Desktop")
                 }

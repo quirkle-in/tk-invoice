@@ -37,7 +37,7 @@ class SettingsPage:
         self.base_frame = ttk.Frame(self.window, borderwidth=2, relief="groove")
         self.base_frame.pack(padx=20, pady=10)
     
-        self.canvas = tk.Canvas(self.base_frame, width=900, height = 600)
+        self.canvas = tk.Canvas(self.base_frame, width=700, height=500)
         self.scrollbar_y = ttk.Scrollbar(self.base_frame, #canvas, maybe
             orient = "vertical", command = self.canvas.yview)
         self.frame = ttk.Frame(self.canvas)
@@ -52,14 +52,14 @@ class SettingsPage:
         self.canvas.create_window((0, 0), window=self.frame, anchor="n")
         self.canvas.configure(yscrollcommand=self.scrollbar_y.set)
 
-        self.canvas.pack(side="left", fill="both", expand=True)
+        self.canvas.pack(side="left", fill="both")
         self.scrollbar_y.pack(side="right", fill = "y")
 
 
         for setting in self.SETTINGS:
             self.setting_variables[setting] = tk.StringVar(self.window, value = self.SETTINGS[setting])
             
-            f = ttk.Frame(self.frame)
+            f = ttk.Frame(self.frame, borderwidth=2, relief=tk.GROOVE)
             ttk.Label(f, text = setting.replace("_", " ").upper(), font = ("Arial", 10, "bold")).pack(side = tk.LEFT, padx = 10, pady = 30)
             entry = ttk.Entry(f, textvariable = self.setting_variables[setting],  width = 60)
             entry.pack(side = tk.RIGHT, expand = True, padx = 30, pady = 10)

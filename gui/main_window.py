@@ -49,7 +49,7 @@ class MainWindow:
         #                             corner_radius=15, hover_color = '#005e50', fg_color='#00966e', text_font=('Avenir',13))
         # self.btn_settings.pack(expand=True)
 
-        self.btn_create_invoice = ttk.Button(text="Create Invoice", command = self.create_invoice_page, width=60)
+        self.btn_create_invoice = ttk.Button(text="Create an Invoice", command = self.create_invoice_page, width=60)
         self.btn_create_invoice.pack(padx=60, pady=20)
 
         self.btn_add_entity = ttk.Button(text="Add Entity", command = self.add_entity_page, width=60)
@@ -58,7 +58,7 @@ class MainWindow:
         self.btn_view_invoices = ttk.Button(text="View & Export Data", command = self.view_invoice_page, width=60)
         self.btn_view_invoices.pack(padx=60, pady=20)
 
-        self.btn_settings = ttk.Button(text="Settings", command = self.settings_page, width=60)
+        self.btn_settings = ttk.Button(text="Settings & Default Values", command = self.settings_page, width=60)
         self.btn_settings.pack(padx=60, pady=20)
 
         self.btn_exit = ttk.Button(text="Exit", command = self.on_closing, width=60)

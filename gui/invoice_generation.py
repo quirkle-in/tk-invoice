@@ -95,7 +95,7 @@ class InvoiceForm:
             self.header_frame, text="Back", command=self.back_to_home_page)
         self.back_to_home.grid(row=0, column=0, padx=90, pady=5)
 
-        ttk.Label(self.header_frame, text="TAX INVOICE", font=(
+        ttk.Label(self.header_frame, text="CREATE A TAX INVOICE", font=(
             "Arial", 16, "bold")).grid(row=0, column=1, padx=200, pady=5)
 
         ''' AutoFill Party '''

@@ -30,8 +30,8 @@ class AddEntityPage:
         self.header_frame = ttk.Frame(self.window)
         self.header_frame.pack(padx=10, pady=10, expand = True)
 
-        ttk.Label(self.header_frame, text="ADD ENTITY", font = ("Arial", 14, "bold")).pack(padx = 10, pady=5)
-        ttk.Button(self.header_frame, text = "Back", command = self.back_to_home).pack(padx = 10, pady = 5)
+        ttk.Label(self.header_frame, text="ADD ENTITY", font = ("Arial", 14, "bold")).pack(side=tk.TOP, padx=300, pady=20)
+        ttk.Button(self.header_frame, text = "Back", command = self.back_to_home).pack(side=tk.LEFT, padx = 10, pady = 5)
         
         self.base_frame = ttk.Frame(self.window)
         self.base_frame.pack(anchor="n", expand = True)
