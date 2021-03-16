@@ -18,6 +18,7 @@ class MainWindow:
         self.window.resizable(True, True)
         
         self.SETTINGS = None
+        self.get_and_set_settings()
 
         self.window.configure(bg='#e2e2e2')
 
@@ -26,7 +27,7 @@ class MainWindow:
   
         self.window.iconbitmap('favicon.ico')
 
-        ttk.Label(self.window, text="Rajeshree Marketing", font=("Arial", 30, "bold")).pack(padx=60, expand=True)
+        ttk.Label(self.window, text=self.SETTINGS["pdf_title"], font=("Arial", 30, "bold")).pack(padx=60, expand=True)
         ttk.Label(self.window, text="Invoice Manager", font=("Arial", 24)).pack(padx=60)
 
         # self.btn_create_invoice = TkinterCustomButton(text="Create Invoice", command = self.create_invoice_page, width = 200, 
