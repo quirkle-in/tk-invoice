@@ -404,8 +404,8 @@ class InvoiceForm:
                 :self.entry_total_after_tax_amt.get().index('.')])
             words_after_point = num2words(self.entry_total_after_tax_amt.get()[
                 self.entry_total_after_tax_amt.get().index('.') + 1:])
-            words = (words_before_point + ' ruppees and ' +
-                     words_after_point + ' paise only/-').title()
+            words = (words_before_point + ' rupees and ' +
+                     words_after_point + ' paise only.').title()
             self.entry_rs_in_words.insert("0.0", words)
 
         except Exception as e:
