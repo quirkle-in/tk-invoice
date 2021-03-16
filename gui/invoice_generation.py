@@ -420,16 +420,23 @@ class InvoiceForm:
         ''' collect data '''
         self.collect_field_data()
 
-        ''' insert '''
-        inv_id = self.insertInvoice()
-        if inv_id:
-            print("Invoice created.")
-            x = self.insertDetails(inv_id)
-            if x:
-                print("Details recorded.")
-                messagebox.showinfo(
-                    title='Invoice Status', message='Invoice and details have been successfully recorded', master=self.window)
-                return True
+        message = "Confirm data to be Submitted:\n"
+        for field in self.invoice_data:
+            message += f"\n{field} : {self.invoice_data[field]}"
+        x = messagebox.askokcancel("Confirmation!", message, master = self.window)
+        #print(x)
+        if x:
+            ''' insert '''
+            inv_id = self.insertInvoice()
+            if inv_id:
+                print("Invoice created.")
+                x = self.insertDetails(inv_id)
+                if x:
+                    print("Details recorded.")
+                    messagebox.showinfo(
+                        title='Invoice Status', message='Invoice and details have been successfully recorded', master=self.window)
+                    return True
+        return False
 
     def onRefresh(self):
         path = 'settings.json'
