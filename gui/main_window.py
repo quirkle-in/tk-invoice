@@ -12,19 +12,17 @@ import sys
 
 class MainWindow:
     def __init__(self):
-        self.window = tk.Tk()
-        self.window["background"]="#f3f3f3"
-        self.window.title("Home")
-        self.window.geometry("1200x700")
-        self.window.resizable(True, True)
-        
         self.SETTINGS = None
         self.get_and_set_settings()
 
-        self.window.configure(bg='#e2e2e2')
+        self.window = tk.Tk()
+        self.window["background"]="#f3f3f3"
+        self.window.title(f'{self.SETTINGS["pdf_title"]} | Home')
+        self.window.geometry("1200x700")
+        self.window.resizable(True, True)
 
         style = ThemedStyle(self.window)
-        style.set_theme("breeze")
+        style.set_theme(self.SETTINGS["theme"])
   
         self.window.iconbitmap('favicon.ico')
 

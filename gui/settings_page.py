@@ -5,6 +5,7 @@ import json
 
 
 file_path = "settings.json"
+themes = ["adapta", "aquativo", "arc", "black", "blue", "breeze", "clearlooks", "elegance", "equilux", "itft1", "keramik", "kroc", "plastik", "radiance", "scidblue", "scidgreen", "smog", "vista", "winxpblue", "yaru"]
 
 class SettingsPage:
     def __init__(self, SETTINGS, main_window):
@@ -13,13 +14,12 @@ class SettingsPage:
         self.main_window = main_window
 
         self.window = tk.Tk()
-        self.window.configure(background="#f3f3f3")
-        self.window.title("Settings")
+        self.window.title(f'{self.SETTINGS["pdf_title"]} | Settings')
         self.window.geometry("900x750")
         self.window.resizable(True, True)
 
         style = ThemedStyle(self.window)
-        style.set_theme("breeze")
+        style.set_theme(self.SETTINGS["theme"])
 
         self.window.iconbitmap('favicon.ico')
 
@@ -58,12 +58,16 @@ class SettingsPage:
 
         for setting in self.SETTINGS:
             self.setting_variables[setting] = tk.StringVar(self.window, value = self.SETTINGS[setting])
-            
             f = ttk.Frame(self.frame, borderwidth=2, relief=tk.GROOVE)
-            ttk.Label(f, text = setting.replace("_", " ").upper(), font = ("Arial", 10, "bold")).pack(side = tk.LEFT, padx = 10, pady = 30)
-            entry = ttk.Entry(f, textvariable = self.setting_variables[setting],  width = 60)
-            entry.pack(side = tk.RIGHT, expand = True, padx = 30, pady = 10)
-            f.pack(anchor = "e", padx = 10, pady = 5)
+            ttk.Label(f, text = setting.replace("_", " ").upper(), font = ("Arial", 10, "bold")).pack(side = tk.LEFT, padx = 10, pady = 30)                
+            if setting == "theme":
+                x = ttk.OptionMenu(f, self.setting_variables[setting], self.setting_variables[setting].get(), *themes)
+                x.pack(padx = 20, pady = 10)
+                f.pack(padx = 10, pady = 5)
+            else:
+                entry = ttk.Entry(f, textvariable = self.setting_variables[setting],  width = 60)
+                entry.pack(side = tk.RIGHT, expand = True, padx = 30, pady = 10)
+                f.pack(anchor = "e", padx = 10, pady = 5)
 
         self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
         

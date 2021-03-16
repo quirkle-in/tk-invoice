@@ -4,6 +4,7 @@ from gui.main_window import MainWindow
 from models import Base, engine
 
 default_settings = {
+                    "theme": "breeze",
                     "pdf_title": "Rajeshree Marketing",
                     "pdf_address": "1/16, Vijay Nagar, Bandrekarwadi, Jogeshwari (East), Mumbai 400060.",
                     "pdf_gst_no": "27AKEPB0058K1ZE",
@@ -23,17 +24,23 @@ if __name__ == "__main__":
         # print('Table Exists')
         pass
 
+    settings = None
     try:
-        with open("settings.json", 'rw') as json_file:
-            settings = json_file.read()
-            for default in default_settings:
-                if default not in settings:
-                    settings[default] = default_settings[default]
+        with open("settings.json", 'r') as json_file:
+            try:
+                settings = json.load(json_file)
+                for default in default_settings:
+                    if default not in settings:
+                        settings[default] = default_settings[default]
+            except:
+                pass
+        with open("settings.json", "w") as json_file:
             try:
                 json.dump(settings, json_file)
             except Exception as e:
                 print(e)
-    except:
+    except Exception as e:
+        print("Can't load settings!!!")
         with open("settings.json", 'w') as json_file:
                 json.dump(default_settings, json_file)
 

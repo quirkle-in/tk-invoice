@@ -12,14 +12,13 @@ class AddEntityPage:
         self.main_window = main_window
         
         self.window = tk.Tk()
-        self.window.configure(background = "#f3f3f3")
-        self.window.title("Add an Entity")
+        self.window.title(f'{self.SETTINGS["pdf_title"]} | Add an Entity')
         self.window.geometry("1200x700")
         self.window.resizable(True, True)
 
         
         style = ThemedStyle(self.window)
-        style.set_theme("breeze")
+        style.set_theme(self.SETTINGS["theme"])
 
         self.window.iconbitmap('favicon.ico')
 

@@ -24,13 +24,12 @@ class InvoiceForm:
         self.main_window = main_window
 
         self.window = tk.Tk()
-        self.window.configure(background="#f3f3f3")
-        self.window.title("Create Invoice")
+        self.window.title(f'{self.SETTINGS["pdf_title"]} | Create Invoice')
         self.window.geometry("1200x800")
         self.window.resizable(True, True)
 
         style = ThemedStyle(self.window)
-        style.set_theme("breeze")
+        style.set_theme(self.SETTINGS["theme"])
 
         self.window.iconbitmap('favicon.ico')
 
