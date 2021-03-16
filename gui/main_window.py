@@ -12,9 +12,9 @@ import json
 class MainWindow:
     def __init__(self):
         self.window = tk.Tk()
-        self.window.configure(background="#f3f3f3")
+        self.window["background"]="red"
         self.window.title("Home")
-        self.window.geometry("400x400")
+        self.window.geometry("1200x700")
         self.window.resizable(True, True)
         
         self.SETTINGS = None
@@ -25,6 +25,9 @@ class MainWindow:
         style.set_theme("breeze")
   
         self.window.iconbitmap('favicon.ico')
+
+        ttk.Label(self.window, text="Rajeshree Marketing", font=("Arial", 30, "bold")).pack(padx=60, expand=True)
+        ttk.Label(self.window, text="Invoice Manager", font=("Arial", 24)).pack(padx=60)
 
         # self.btn_create_invoice = TkinterCustomButton(text="Create Invoice", command = self.create_invoice_page, width = 200, 
         #                             corner_radius=15, hover_color = '#960020', fg_color='#f72c58', text_font=('Avenir',13))
@@ -44,23 +47,17 @@ class MainWindow:
         #                             corner_radius=15, hover_color = '#005e50', fg_color='#00966e', text_font=('Avenir',13))
         # self.btn_settings.pack(expand=True)
 
-        self.btn_create_invoice = ttk.Button(text="Create Invoice", command = self.create_invoice_page, width = 30, 
-                                    )
-        self.btn_create_invoice.pack(expand=True)
+        self.btn_create_invoice = ttk.Button(text="Create Invoice", command = self.create_invoice_page, width=60)
+        self.btn_create_invoice.pack(expand=True, padx=60)
 
-        self.btn_add_entity = ttk.Button(text="Add Entity", command = self.add_entity_page, width = 30, 
-                                    )
-        
-        self.btn_add_entity.pack(expand=True)
+        self.btn_add_entity = ttk.Button(text="Add Entity", command = self.add_entity_page, width=60)
+        self.btn_add_entity.pack(expand=True, padx=60)
 
-        self.btn_view_invoices = ttk.Button(text="View & Export Data", command = self.view_invoice_page, width = 30, 
-                                  )
-        self.btn_view_invoices.pack(expand=True)
+        self.btn_view_invoices = ttk.Button(text="View & Export Data", command = self.view_invoice_page, width=60)
+        self.btn_view_invoices.pack(expand=True, padx=60)
 
-
-        self.btn_settings = ttk.Button(text="Settings", command = self.settings_page, width = 30, 
-                                    )
-        self.btn_settings.pack(expand=True)
+        self.btn_settings = ttk.Button(text="Settings", command = self.settings_page, width=60)
+        self.btn_settings.pack(expand=True, padx=60)
   
         self.window.lift()
         self.window.attributes('-topmost',True)
@@ -87,7 +84,6 @@ class MainWindow:
     def settings_page(self):
         self.get_and_set_settings()
         SettingsPage(self.SETTINGS, self.window)
-
 
 
     def get_and_set_settings(self):
