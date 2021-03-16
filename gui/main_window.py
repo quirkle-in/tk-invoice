@@ -7,6 +7,7 @@ from tkinter import messagebox
 from tkinter import ttk
 import tkinter as tk
 import json
+import sys
 
 
 class MainWindow:
@@ -70,7 +71,7 @@ class MainWindow:
     
     def on_closing(self):
         if messagebox.askokcancel("Quit", "Do you want to quit?", master=self.window):
-            self.window.destroy()
+            sys.exit()
 
     def create_invoice_page(self):
         self.get_and_set_settings()
