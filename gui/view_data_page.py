@@ -386,6 +386,7 @@ class ViewDataPage:
 
 
     def back_to_home_page(self):
+        self.window.destroy()
         self.main_window.update()
         self.main_window.deiconify()
     
