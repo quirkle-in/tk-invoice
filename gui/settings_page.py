@@ -107,6 +107,9 @@ class SettingsPage:
 
 
     def back_to_home(self):
+        style = ThemedStyle(self.main_window)
+        style.set_theme(self.SETTINGS["theme"])
+  
         self.window.destroy()
 
 

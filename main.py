@@ -4,7 +4,6 @@ from gui.main_window import MainWindow
 from models import Base, engine
 
 default_settings = {
-                    "theme": "breeze",
                     "pdf_title": "Rajeshree Marketing",
                     "pdf_address": "1/16, Vijay Nagar, Bandrekarwadi, Jogeshwari (East), Mumbai 400060.",
                     "pdf_gst_no": "27AKEPB0058K1ZE",
@@ -12,7 +11,8 @@ default_settings = {
                     "cgst": "6",
                     "igst": "6",
                     "state": "Maharashtra",
-                    "default_save_folder": os.path.join(os.environ["HOMEPATH"], "Desktop")
+                    "default_save_folder": os.path.join(os.environ["HOMEPATH"], "Desktop"),
+                    "theme": "breeze"
                 }
 
 if __name__ == "__main__":
@@ -40,7 +40,6 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
     except Exception as e:
-        print("Can't load settings!!!")
         with open("settings.json", 'w') as json_file:
                 json.dump(default_settings, json_file)
 
