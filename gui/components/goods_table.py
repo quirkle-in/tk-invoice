@@ -26,7 +26,7 @@ class Table:
         self.btn_add_row1.pack(side=tk.LEFT)
 
         self.btn_add_row2 = ttk.Button(
-            self.button_frame, text="Add Row: Ashrangi Capsule",
+            self.button_frame, text="Add Row: Arshangi Capsule",
             command=self.add_new_goods_row_a,
             width=30
         )
@@ -100,7 +100,7 @@ class Table:
         self.add_new_goods_row(prod_type='Madhusheel Plus')
 
     def add_new_goods_row_a(self):
-        self.add_new_goods_row(prod_type='Ashrangi Capsule')
+        self.add_new_goods_row(prod_type='Arshangi Capsule')
     
 
     def add_new_goods_row(self, prod_type):
@@ -117,8 +117,13 @@ class Table:
                 en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
                             textvariable=self.entries[self.total_goods_rows][field])
                 en.grid(row=self.total_goods_rows + 1, column=col)
-            elif field == 'prod' and prod_type == 'Ashrangi Capsule':
+            elif field == 'prod' and prod_type == 'Arshangi Capsule':
                 self.entries[self.total_goods_rows][field].set(prod_type)
+                en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
+                            textvariable=self.entries[self.total_goods_rows][field])
+                en.grid(row=self.total_goods_rows + 1, column=col)
+            elif field == 'hsn':
+                self.entries[self.total_goods_rows][field].set('30049011')
                 en = ttk.Entry(self.frame, width=14, font=('Arial', 8),
                             textvariable=self.entries[self.total_goods_rows][field])
                 en.grid(row=self.total_goods_rows + 1, column=col)
